@@ -21,21 +21,9 @@
   &:hover {
     opacity: 0.8 !important;
   }
-  &_import {
-    border-color: #1570ef !important;
-    color: #1570ef !important;
-  }
-  &_active {
-    background-color: #12b76a !important;
-    color: #fff !important;
-  }
 
-  &_inactive {
-    background-color: #f58220 !important;
-    color: #fff !important;
-  }
-  &_delete {
-    background-color: #b71226 !important;
-    color: #fff !important;
+  &_export {
+    color: #1570ef !important;
+    border-color: #1570ef !important;
   }
 }

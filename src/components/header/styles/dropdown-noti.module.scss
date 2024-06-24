@@ -1,0 +1,13 @@
+.notify {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 100%;
+  background-color: #eff4fb;
+  &:hover {
+    opacity: 0.8;
+  }
+}

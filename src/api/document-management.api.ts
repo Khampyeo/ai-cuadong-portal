@@ -1,7 +1,7 @@
 import { IDocument } from "@/interfaces/document.interface";
 import { IResponseListEntity } from "@/interfaces/response.interface";
 
-export const getDocument: () => Promise<
+export const getDocuments: () => Promise<
   IResponseListEntity<IDocument>
 > = async () => {
   const response: IResponseListEntity<IDocument> = {

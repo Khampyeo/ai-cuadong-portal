@@ -4,7 +4,7 @@ import {
   HISTORY_CHATBOT,
   HOMEPAGE,
 } from "@/constants/pages";
-import { DropDownProps } from "antd";
+import MoonIcon from "@/../public/icon/icon_moon.svg";
 
 export const menuItem = [
   HOMEPAGE,
@@ -16,6 +16,7 @@ export const menuItem = [
 export const menuItemUser = [
   {
     key: "1",
-    label: "Item 1",
+    label: "Display & accessibility",
+    icon: <MoonIcon />,
   },
 ];

@@ -1,5 +1,4 @@
 "use client";
-import { getDocument } from "@/api/document-management.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +7,8 @@ import { useState } from "react";
 import styles from "./common.module.scss";
 import { columnConfig } from "@/components/training-bot/document/config";
 import HeaderTable from "@/components/training-bot/document/header-table/HeaderTable";
+import { getDocuments } from "@/api/document-management.api";
+
 const DocumentManagement = () => {
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [form] = Form.useForm();
@@ -21,7 +22,7 @@ const DocumentManagement = () => {
     queryKey: ["list-document", filterData, param, keyWordSearch],
 
     queryFn: () => {
-      return getDocument();
+      return getDocuments();
     },
   });
 

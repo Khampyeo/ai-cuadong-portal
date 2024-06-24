@@ -1,10 +1,10 @@
 "use client";
 import { usePathname } from "next/navigation";
-import styles from "./common.module.scss";
+import styles from "./styles/common.module.scss";
 import { useEffect, useState } from "react";
 import { menuItem } from "./config";
-import DropdownNotification from "./DropdownNotification";
-import DropdownUser from "./DropdownUser";
+import DropdownNotification from "./notify/DropdownNotification";
+import DropdownUser from "./user/DropdownUser";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;

@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import IconNotification from "@/../public/icon/icon_notify.svg";
-import styles from "./common.module.scss";
+import styles from "../styles/dropdown-noti.module.scss";
+
 const DropdownNotification = () => {
   return (
     <>
