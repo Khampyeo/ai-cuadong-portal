@@ -1,0 +1,30 @@
+.container {
+  min-height: 3.5rem;
+  width: 100%;
+  display: flex;
+  .header {
+    position: fixed;
+    top: 0;
+    height: 3.5rem;
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+      rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  }
+  .header_title {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+}
+
+.block {
+  display: block;
+}
+.hidden {
+  display: none;
+}

@@ -1,0 +1,30 @@
+.layout {
+  display: flex;
+  overflow: hidden;
+  .content_container {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    flex: 1;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all;
+    transition-duration: 300ms;
+    background-color: #017df9;
+    .main_content {
+      height: 100%;
+      margin: 0.5rem;
+    }
+  }
+  .content {
+    height: 100%;
+  }
+}
+
+.sidebar_opened {
+  margin-left: 16.25rem;
+}
+.sidebar_closed {
+  margin-left: 4.5rem;
+}

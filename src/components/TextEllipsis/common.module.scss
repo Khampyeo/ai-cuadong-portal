@@ -1,0 +1,35 @@
+.wrapper {
+  position: relative;
+  .wrapperMoreDetails {
+    overflow: hidden;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+  }
+  .lineNum_1 {
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+  }
+  .lineNum_2 {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+  }
+  .lineNum_3 {
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+  }
+  .lineNum_4 {
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+  }
+  .tooltip {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 20px;
+    width: 60px;
+    opacity: 0;
+    overflow: hidden;
+  }
+}

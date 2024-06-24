@@ -1,0 +1,13 @@
+import {
+  CHUNK_MANAGEMENT,
+  DOCUMENT_MANAGEMENT,
+  HISTORY_CHATBOT,
+  HOMEPAGE,
+} from "@/constants/pages";
+
+export const menuItem = [
+  HOMEPAGE,
+  DOCUMENT_MANAGEMENT,
+  CHUNK_MANAGEMENT,
+  HISTORY_CHATBOT,
+];

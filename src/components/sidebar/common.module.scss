@@ -1,0 +1,115 @@
+.sidebar {
+  :global {
+    .ant-menu {
+      background-color: #181e47 !important;
+    }
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      padding-left: 12px !important;
+    }
+    .ant-menu-inline-collapsed {
+      width: 60px !important;
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        padding: 0px !important;
+        padding-left: calc(50% - 15px) !important;
+        svg {
+          transform: translateY(calc(18px - 50%));
+        }
+      }
+    }
+    .ant-menu-sub {
+      .ant-menu-item {
+        padding-left: 40px !important;
+        margin-left: 8px !important;
+        margin-right: 8px !important;
+      }
+    }
+  }
+  position: fixed;
+  z-index: 999;
+  height: 100%;
+  background-color: #181e47;
+  transition: all;
+  transition-duration: 300ms;
+  width: 16.25rem;
+  display: flex;
+  flex-direction: column;
+
+  p {
+    margin: 0;
+  }
+  .logo_wrapper {
+    height: 7.5rem;
+    border-bottom: 2px dashed #344054;
+  }
+  .collapse_icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #181e47;
+    border-radius: 100%;
+    box-shadow: 0 4px 24px 0 #b0b4d1;
+    position: absolute;
+    top: calc(7.5rem - 12px);
+    right: -0.75rem;
+    transition: all;
+    transition-duration: 300ms;
+    cursor: pointer;
+    z-index: 99;
+  }
+  .content {
+    padding: 0.5rem 0.75rem;
+  }
+  .footer_wrapper {
+    margin-top: auto;
+  }
+  .support {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    color: #f2f7ff;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-wrap: nowrap;
+    padding: 1.25rem 0;
+  }
+  .footer {
+    color: #fbfdff;
+    font-size: 0.825rem;
+    padding: 1rem 0;
+    font-weight: 400;
+    text-align: center;
+    border-top: 2px dashed #344054;
+    overflow: hidden;
+    text-wrap: nowrap;
+  }
+}
+
+.collapsed {
+  width: 4.5rem;
+  transition: all;
+  transition-duration: 300ms;
+
+  .logo_wrapper {
+    padding: 2rem 0;
+    .logo {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+  }
+  .content {
+    padding: 0.5rem 0.375rem;
+  }
+  .support {
+    display: none;
+  }
+  .footer {
+    display: none;
+  }
+}
+.rotate_180 {
+  transform: rotateZ(180deg);
+}
