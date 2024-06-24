@@ -7,6 +7,7 @@ import { Form, Table } from "antd";
 import { useState } from "react";
 import styles from "./common.module.scss";
 import { columnConfig } from "@/components/training-bot/document/config";
+import HeaderTable from "@/components/training-bot/document/header-table/HeaderTable";
 const DocumentManagement = () => {
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [form] = Form.useForm();
@@ -32,6 +33,7 @@ const DocumentManagement = () => {
   return (
     <>
       <div className={styles.container}>
+        <HeaderTable />
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({})}
