@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   margin: 0;
@@ -7,7 +11,7 @@ body {
   height: 100%;
   font-family: Arial, sans-serif;
   background-color: #fff;
-  color: #333;
+  color: var(--text-dark);
   line-height: 1.6;
   font-size: 16px;
 }
@@ -20,15 +24,32 @@ body {
 
 :root {
   --text-primary: #333;
+  --text-white:#fff
+  --background: #fff;
+  --background-content: #f2f4f7;
+  --background-selected: #eff4fb;
+}
+
+.dark-mode {
+  --text-primary: #fff;
+  --text-white: #333;
+  --background: #111a2c;
+  --background-content: #333;
+  --background-selected: #555;
 }
 
 .ant-menu-item-selected,
 .ant-menu-submenu-selected {
-  background-color: #3b4168 !important;
+  background-color: var(--background-selected) !important;
 }
+
 .ant-menu.ant-menu-sub.ant-menu-vertical {
   margin-left: 0.625rem !important;
+}
+.ant-menu-root.ant-menu-inline{
+  border-inline-end: none !important;
 }
 .ant-pagination {
   margin: 1rem !important;
 }
+

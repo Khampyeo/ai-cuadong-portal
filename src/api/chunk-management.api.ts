@@ -1,217 +1,56 @@
-import { IDocument } from "@/interfaces/document.interface";
-import { IResponseListEntity } from "@/interfaces/response.interface";
+import axios from "@/config/axios";
+import { ENDPOINTS } from "@/constants/endpoints";
+import { IResponseListEntity } from "@/types/response.interface";
+import { ChunkType } from "@/types/chunk.types";
+import { IParamsList } from "@/types/common";
 
-export const getChunks: () => Promise<
-  IResponseListEntity<IDocument>
-> = async () => {
-  const response: IResponseListEntity<IDocument> = {
-    status: 200,
+export const getChunkDocuments: (
+  params: IParamsList
+) => Promise<IResponseListEntity<ChunkType>> = async (params: IParamsList) => {
+  const data = await axios.get(ENDPOINTS.CHUNK.LIST, {
+    params,
+  });
+
+  const totalPages = Math.ceil(data.data?.totalCount / params.MaxResultCount);
+  const response = {
+    status: data.status,
     data: {
-      data: [
-        {
-          id: "94b8f6e5-0ba2-44c2-8b34-2a08e90deef4",
-          scope: "fso vn",
-          label: "ssc",
-          path: "topic",
-          category: "ssc",
-          content:
-            "The official Vietnam Public Holiday 2024 as follow:\n- New Year’s Day: January 1, 2024.\n- Lunar New Year: From February 8, 2024 until February 14, 2024.\n- Hung King’s Festival: April 18, 2024.\n- Reunification Day: April 30, 2024.\n- Labor Day: May 1, 2024.\n- National Day of Vietnam: From September 2, 2024 to September 3, 2024.",
-          language: "en",
-          source:
-            "https://fpt.workplace.com/groups/csnhansu/permalink/1312988649339133/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "other",
-          document_name: "Vietnam Public Holiday 2024",
-          create_date: "2024-06-21T09:04:32.513Z",
-          published_date: "2024-06-21T00:00:00Z",
-        },
-        {
-          id: "1c00ee80-be6b-4064-b31c-0a3decd5a8e9",
-          scope: "fso vn",
-          label: "ssc",
-          path: "topic",
-          category: "ssc",
-          content:
-            "Lịch nghỉ lễ tại Việt Nam năm 2024:\n- Tết Dương Lịch: Ngày 01/01/2024;\n- Tết Nguyên Đán: Từ ngày 08/02/2024 đến hết ngày 14/02/2024;\n- Giỗ tổ Hùng Vương: Ngày 18/04/2024;\n- Ngày Thống nhất: Ngày 30/04/2024;\n- Ngày Quốc tế lao động: Ngày 01/05/2024;\n- Ngày Quốc Khánh: Ngày 02/09/2024 và 03/09/2024.",
-          language: "vi",
-          source:
-            "https://fpt.workplace.com/groups/csnhansu/permalink/1312988649339133/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "other",
-          document_name: "LỊCH NGÀY NGHỈ LỄ NĂM 2024",
-          create_date: "2024-06-21T09:03:43.324Z",
-          published_date: "2024-06-21T00:00:00Z",
-        },
-        {
-          id: "3def867d-a24b-4712-8090-79b305bbc351",
-          scope: "fso vn",
-          label: "ssc",
-          path: "topic",
-          category: "ssc",
-          content:
-            "Official Vietnam Public Holiday 2023 as follow:\n- New Year’s Day: January 1, 2023 (Employees are entitled to an additional day-off on January 2, 2023 as the New Year’s Day falls on a Sunday).\n- Lunar New Year: From January 20, 2023 until January 26, 2023.\n- Hung King’s Festival: April 29, 2023 (Employees are entitled to an additional day off on May 2, 2023 as the Hung King’s Festival falls on a Saturday).\n- Reunification Day: April 30, 2023 (Employees are entitled to an additional day-off on May 3, 2023 as the Reunification Day falls on a Sunday).\n- Labor Day: May 1, 2023.\n- National Day of Vietnam: From September 1, 2023 to September 2, 2023 (Employees are entitled to an additional day-off on September 4, 2023 as the 1st of September falls on a Saturday).",
-          language: "en",
-          source:
-            "https://fpt.workplace.com/groups/fsoftssc/permalink/1135484124057363/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "other",
-          document_name: "Vietnam Public Holiday 2023",
-          create_date: "2024-06-21T09:02:46.51Z",
-          published_date: "2024-06-21T00:00:00Z",
-        },
-        {
-          id: "2bba95d1-844d-4bb5-a7f0-b54dd7dfb2de",
-          scope: "fso vn",
-          label: "ssc",
-          path: "topic",
-          category: "ssc",
-          content:
-            "Lịch nghỉ lễ tại Việt Nam năm 2023:\n- Tết Dương Lịch: Ngày 01/01/2023 (ngày 02/01/2023 nghỉ bù cho ngày Tết Dương Lịch);\n- Tết Nguyên Đán: Từ ngày 20/01/2023 đến hết ngày 26/01/2023;\n- Giỗ tổ Hùng Vương: Ngày 29/04/2023 (Ngày 02/05/2023 nghỉ bù cho Ngày Giỗ tổ Hùng Vương);\n- Ngày Thống nhất: Ngày 30/04/2023 (Ngày 03/05/2023 nghỉ bù cho ngày Thống nhất);\n- Ngày Quốc tế lao động: Ngày 01/05/2023;\n- Ngày Quốc Khánh: Ngày 01/09/2023 và 02/09/2023 (Ngày 04/09/2023 nghỉ bù cho 1 ngày Quốc khánh.",
-          language: "vi",
-          source:
-            "https://fpt.workplace.com/groups/fsoftssc/permalink/1135484124057363/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "other",
-          document_name: "LỊCH NGÀY NGHỈ LỄ NĂM 2023",
-          create_date: "2024-06-21T09:01:22.166Z",
-          published_date: "2024-06-21T00:00:00Z",
-        },
-        {
-          id: "a98fa58a-5de8-44a3-86c6-d1cd721064a4",
-          scope: "fso vn",
-          label: "qms",
-          path: "topic",
-          category: "ssc",
-          content:
-            "5.1 Điều kiện hưởng chế độ hỗ trợ nghỉ mát\n1. CBNV được hưởng chế độ hỗ trợ nghỉ mát bao gồm ngày nghỉ mát và tiền hỗ trợ nghỉ mát nếu thỏa mãn các điều kiện sau đây:\n2. Đạt các mục tiêu thâm niên làm việc liên tục tại Công ty (dưới 1 năm (dưới 12 tháng), từ đủ 1 năm (12 tháng) đến dưới 3 năm (dưới 36 tháng), từ đủ 3 năm (36 tháng) trở lên), và\n\n3. Đi nghỉ mát tập trung theo tập thể (đơn vị, bộ phận, nhóm) và đảm bảo một tập thể này có tối thiểu 05 CBNV được hưởng chế độ nghỉ mát.\n\n",
-          language: "vi",
-          source:
-            "https://qms.fpt.com/document-detail/4b501b87-225c-45c9-bdf4-33a255fea2c8/view",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "qna",
-          document_name: "quy định nghỉ mát",
-          create_date: "2024-06-14T09:10:00.583Z",
-          published_date: "2024-06-14T00:00:00Z",
-        },
-        {
-          id: "bcc3ce57-64ed-4379-82e1-3c85899a9331",
-          scope: "fso vn",
-          label: "workplace",
-          path: "event",
-          category: "event",
-          content:
-            "⏰ KHÔNG NGỪNG CẢI TIẾN ĐỂ HAPPY BREAK THỰC SỰ HAPPY!\n(English version below)\n\uD83D\uDC49 Trong quá trình triển khai, BTC đã liên tục tiếp thu tích cực các ý kiến, cũng như thực hiện những điều chỉnh cần thiết để Happy Break thực sự mang đến giá trị cho sức khỏe của CBNV.\n\uD83D\uDC49 Với tinh thần luôn luôn ghi nhận đóng góp và cải tiến, BTC xin thông báo từ ngày 17.05.2024, Happy Break sẽ chính thức sử dụng âm nhạc và động tác từ bài tập Rajio Taiso - phương pháp tập thể dục của người Nhật và được khuyến cáo từ Bộ Y tế. Bài tập 3 phút với âm thanh thư giãn cùng những đông tác dễ thực hiện sẽ giúp CBNV:\nKích thích tuần hoàn máu\nCải thiện sự linh hoạt của cơ bắp sau nhiều giờ ngồi làm việc căng thẳng.\n⭐️ BTC Happy Break hy vọng những điều chỉnh này sẽ thuận lợi hơn cho CBNV hưởng ứng và duy trì thói quen vận động nhẹ nhàng để cải thiện sức khỏe của bản thân, cũng như cùng đồng nghiệp thực sự happy và break.\n`\n> tham khảo hình ảnh *bepam.jpge* là rất quan trọng để biết cách đặt lịch hẹn nộp hồ sơ tờ khai và thực hiện bước đúng cách.\n\n`\n",
-          language: "vi",
-          source:
-            "https://testfpt.workplace.com/groups/438789528692694/posts/454208260484154/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "event",
-          document_name: "KHÔNG NGỪNG CẢI TIẾN ĐỂ HAPPY BREAK THỰC SỰ HAPPY!",
-          create_date: "2024-06-14T06:40:00.361Z",
-          published_date: "2024-06-14T00:00:00Z",
-        },
-        {
-          id: "9e0cce7e-9191-432b-b9a7-95944e026a2d",
-          scope: "fso vn",
-          label: "workplace",
-          path: "event",
-          category: "event",
-          content:
-            "NHỮNG HÌNH ẢNH ĐẦU TIÊN CỦA TỶ PHÚ CÔNG NGHỆ ẤN ĐỘ NARAYANA MURTHY TẠI FPT\n\uD83E\uDD73 Sáng nay (ngày 20/5), tỷ phú công nghệ Ấn Độ - Narayana Murthy đã có mặt tại FPT Tower, bắt đầu chuyến thăm và làm việc đầu tiên tại đây. Đón đoàn có Tổng Giám đốc FPT Nguyễn Văn Khoa, Phó Tổng giám đốc FPT Nguyễn Thế Phương, Phó tổng giám đốc FPT kiêm TGĐ FPT Software Phạm Minh Tuấn, Chủ tịch FPT Software Chu Thị Thanh Hà và PTGĐ FPT Software Nguyễn Khải Hoàn.\n\nSau một vòng tham quan tòa nhà, ông Narayana Murthy có buổi gặp gỡ thân mật với Chủ tịch FPT Trương Gia Bình cùng lãnh đạo Tập đoàn và CTTV. Tại buổi gặp gỡ, ông chia sẻ thân tình những kinh nghiệm thực tiễn trong kinh doanh, quản trị, xây dựng văn hóa doanh nghiệp... yếu tố đã giúp ông và cộng sự đưa Infosys từ công ty vô danh thành công ty công nghệ có tầm ảnh hưởng toàn cầu.\nFPT luôn xem Infosys là hình mẫu lý tưởng để học tập và mô hình đào tạo lập trình viên của Infosys đã được Tập đoàn áp dụng triển khai từ năm 2010. FPT đến thăm Tập đoàn Infosys lần đầu tiên vào năm 1999 để tìm hiểu và học hỏi kinh nghiệm làm xuất khẩu phần mềm (outsourcing).\n",
-          language: "vi",
-          source:
-            "https://testfpt.workplace.com/groups/785127113418269/permalink/911841030746876/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "event",
-          document_name: "TỶ PHÚ CÔNG NGHỆ ẤN ĐỘ NARAYANA MURTHY TẠI FPT",
-          create_date: "2024-06-14T02:34:37.205Z",
-          published_date: "2024-06-14T00:00:00Z",
-        },
-        {
-          id: "61a8c6a3-edc6-476c-9542-4d870cf6ef89",
-          scope: "fso all",
-          label: "ssc",
-          path: "topic",
-          category: "ssc",
-          content:
-            "# Thông tin để trả lời các vấn đề về: Hướng dẫn quy trình hủy, đăng ký xe OT\nBạn vui lòng xem hướng dẫn tại link sau: https://fptsoftware362.sharepoint.com/:i:/r/sites/Maya/Shared%20Documents/CR%20-%20Campus/H%C3%B2a%20L%E1%BA%A1c/OM/Quy%20tr%C3%ACnh%20%C4%91%C4%83ng%20k%C3%BD,%20h%E1%BB%A7y%20xe%20OT.jpg?csf=1&web=1&e=pTH3Gi'\n\n`\n> tham khảo hình ảnh *pam.png* là rất quan trọng để có thể thực hiện quy trình hủy, đăng ký xe OT\n`\n",
-          language: "vi",
-          source:
-            "https://fptsoftware362.sharepoint.com/:i:/r/sites/Maya/Shared%20Documents/CR%20-%20Campus/H%C3%B2a%20L%E1%BA%A1c/OM/Quy%20tr%C3%ACnh%20%C4%91%C4%83ng%20k%C3%BD,%20h%E1%BB%A7y%20xe%20OT.jpg?csf=1&web=1&e=pTH3Gi",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "qna",
-          document_name: "Hướng dẫn quy trình hủy, đăng ký xe OT",
-          create_date: "2024-06-14T02:16:34.199Z",
-          published_date: "2024-04-02T00:00:00Z",
-        },
-        {
-          id: "2f3f4363-affa-4c87-9c26-d77b59765565",
-          scope: "fso vn",
-          label: "workplace",
-          path: "event",
-          category: "event",
-          content:
-            "Let kick off\n\nFPT Software sẽ mở văn phòng thứ 16 tại Châu Âu tại thành phố Nürnberg. Tuần qua, Phó TGĐ FPT Phạm Minh Tuấn thăm và làm việc tại châu Âu và Trung Đông, FPT Slovakia mở rộng hợp tác cùng Kosice IT Valley, FEU và DXG ký thỏa thuận trị giá 1,6 triệu euro với Daimler, FJP.NVI và FHM quyết định nâng cấp MEICOM thành mega account, và FPT Korea mở rộng hợp tác cùng Đại học hàng đầu Hàn Quốc. [#131newsroom]\n`\n> tham khảo hình ảnh *pam.png* là rất quan trọng để hiểu rõ hơn về sự kiện let kick off này nhé.\n`\n",
-          language: "vi",
-          source:
-            "https://testfpt.workplace.com/groups/785127113418269/permalink/899558831975096/",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "event",
-          document_name: "Let kick off",
-          create_date: "2024-06-14T02:02:30.144Z",
-          published_date: "2024-06-14T00:00:00Z",
-        },
-        {
-          id: "8d8865d5-e06c-4cdc-bdf9-dc166cbbafc9",
-          scope: "fso vn",
-          label: "qms",
-          path: "topic",
-          category: "ssc",
-          content: "\ngfhg",
-          language: "vi",
-          source:
-            "https://qms.fpt.com/#/document-detail/cc4f70cc-fcc8-4fda-8871-5231d2d4a331/view",
-          creator: "synt1@fpt.com",
-          status: "Active",
-          company_name: "fsoft",
-          hr_page: 1,
-          doc_type: "regulation",
-          document_name: "Quy định chế độ nghỉ mát",
-          create_date: "2024-06-14T01:42:25.491Z",
-          published_date: "2024-06-14T00:00:00Z",
-        },
-      ],
-      pageNo: 1,
-      pageSize: 10,
-      totalPages: 145,
+      totalPages: totalPages,
+      items: data.data.items,
     },
   };
+  return response;
+};
+
+export const createChunkDocument: (body: any) => Promise<any> = async (
+  body: any
+) => {
+  const response = axios.post(ENDPOINTS.CHUNK.CREATE, body);
+
+  return response;
+};
+export const getChunkDocumentById: (id: string) => Promise<any> = async (
+  id: string
+) => {
+  const url = `${ENDPOINTS.CHUNK.GET_BY_ID.replace("{id}", id)}`;
+  const response = axios.get(url);
+  return response;
+};
+
+export const updateChunkDocument: (
+  id: string,
+  body: any
+) => Promise<any> = async (id: string, body: any) => {
+  const url = `${ENDPOINTS.CHUNK.UPDATE.replace("{id}", id)}`;
+
+  const response = axios.put(url, body);
+  return response;
+};
+
+export const deleteChunkDocument: (id: string) => Promise<any> = async (
+  id: string
+) => {
+  const url = `${ENDPOINTS.CHUNK.DELETE.replace("{id}", id)}`;
+  const response = axios.delete(url);
   return response;
 };

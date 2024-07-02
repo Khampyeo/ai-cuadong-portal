@@ -1,24 +1,17 @@
+import axios from "@/config/axios";
+import { ENDPOINTS } from "@/constants/endpoints";
+
 export const login = async (body: ILogin) => {
-  let response: any = {
-    status: 404,
-  };
-
-  if (body.password === "123" && body.email === "kietnc3") {
-    response = {
-      status: 200,
-    };
-  }
-
+  const response = await axios.post(ENDPOINTS.LOGIN, body);
   return response;
 };
 
 export const getAccount = async () => {
-  const response = {
-    status: 200,
-    data: {
-      name: "Admin",
-      account: "kietnc3",
-    },
-  };
+  const response = await axios.get(ENDPOINTS.MY_PROFILE);
+  return response;
+};
+
+export const logout = async () => {
+  const response = await axios.get(ENDPOINTS.LOGOUT);
   return response;
 };

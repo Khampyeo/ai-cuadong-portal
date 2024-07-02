@@ -1,9 +1,7 @@
 "use client";
-import { getAccount, login } from "@/api/authenticate.api";
-import { AUTH_TOKEN_KEY } from "@/constants/app";
-import { clearAuthToken } from "@/utils/cookies";
-import Cookies from "js-cookie";
+import { getAccount, login, logout } from "@/api/authenticate.api";
 import { useRouter } from "next/navigation";
+
 import {
   createContext,
   ReactNode,
@@ -15,48 +13,43 @@ import {
 interface AuthContextProps {
   isAuthenticated: boolean;
   isLoading: boolean;
+  isFetching: boolean;
   account: any | null;
-  isCheckToken: boolean;
   errorMessage: string | null;
-  handleLogin: (username: string, password: string) => Promise<void>;
+  handleLogin: (
+    username: string,
+    password: string,
+    rememberMe: boolean
+  ) => Promise<void>;
   handleLogout: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isLoading: true,
+  isFetching: true,
   account: null,
   handleLogin: async () => {},
   handleLogout: () => {},
-  isCheckToken: true,
   errorMessage: null,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckToken, setIsCheckToken] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFetched, setIsFetched] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [account, setAccount] = useState<any | null>(null);
 
   useEffect(() => {
-    const token = Cookies.get(AUTH_TOKEN_KEY);
-
-    if (token) {
-      handleGetAccount().finally(() => {
-        setIsLoading(false);
-        setIsCheckToken(false);
-      });
-    } else {
-      setIsLoading(false);
-      setIsCheckToken(false);
-    }
+    handleGetAccount();
+    setIsLoading(false);
   }, []);
 
   const handleGetAccount = async () => {
     try {
+      setIsFetching(true);
       const response = await getAccount();
 
       if (response.status === 200 || response.data) {
@@ -70,16 +63,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(false);
       setAccount(null);
     }
+    setIsFetching(false);
   };
 
-  const handleLogin = async (email: string, password: string) => {
-    setIsFetched(true);
+  const handleLogin = async (
+    email: string,
+    password: string,
+    rememberMe: boolean
+  ) => {
+    setIsFetching(true);
     try {
-      const response = await login({ email, password });
-
-      if (response.status === 200) {
+      const response = await login({
+        userNameOrEmailAddress: email,
+        password,
+        rememberMe,
+      });
+      if (response.status === 200 && response.data.result === 1) {
         await handleGetAccount();
-        router.push("/vn/homepage");
+        router.push("/");
       } else {
         setErrorMessage("Authentication Failed");
       }
@@ -87,11 +88,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setErrorMessage("Authentication Failed");
       console.error(error);
     }
-    setIsFetched(false);
+    setIsFetching(false);
   };
 
-  const handleLogout = () => {
-    clearAuthToken();
+  const handleLogout = async () => {
+    await logout();
     setIsAuthenticated(false);
     setAccount(null);
     router.push("/login");
@@ -102,11 +103,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isAuthenticated,
         isLoading,
+        isFetching,
         account,
         handleLogin,
         errorMessage,
         handleLogout,
-        isCheckToken,
       }}
     >
       {children}

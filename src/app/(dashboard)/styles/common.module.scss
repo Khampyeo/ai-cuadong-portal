@@ -1,0 +1,12 @@
+.homepage_container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: calc(100vh - 3.5rem - 1rem);
+  .content {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+}

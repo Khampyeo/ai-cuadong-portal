@@ -1,8 +1,9 @@
 "use client";
-import "@/../styles/global.scss";
+import { App } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
+import "@/../styles/global.scss";
 
 export default function RootLayout({
   children,
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            <AntdRegistry>{children}</AntdRegistry>
+            <AntdRegistry>
+              <App>{children}</App>
+            </AntdRegistry>
           </AuthProvider>
         </QueryClientProvider>
       </body>

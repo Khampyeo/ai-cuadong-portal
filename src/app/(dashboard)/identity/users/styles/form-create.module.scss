@@ -1,0 +1,17 @@
+.form_modal_content {
+  :global {
+    .ant-form-item-label {
+      width: 10rem !important;
+      text-align: start !important;
+      .ant-form-item-required {
+        &::before {
+          display: none !important;
+        }
+        &::after {
+          content: "*";
+          color: red;
+        }
+      }
+    }
+  }
+}

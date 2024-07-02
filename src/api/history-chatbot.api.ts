@@ -1,4 +1,4 @@
-import { IResponseListEntity } from "@/interfaces/response.interface";
+import { IResponseListEntity } from "@/types/response.interface";
 
 export const getHistoryChatbot: () => Promise<
   IResponseListEntity<IHistoryChatbot>
@@ -6,7 +6,7 @@ export const getHistoryChatbot: () => Promise<
   const response: IResponseListEntity<IHistoryChatbot> = {
     status: 200,
     data: {
-      data: [
+      items: [
         {
           id: "f4caad87-291a-40ab-9d5e-24bfb797200f",
           timeSend: "2024-06-24T06:53:36.690581Z",
@@ -632,8 +632,6 @@ export const getHistoryChatbot: () => Promise<
           subpurpose: "",
         },
       ],
-      pageNo: 1,
-      pageSize: 50,
       totalPages: 1399,
     },
   };
