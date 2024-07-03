@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { App, Button, Dropdown, Modal, Table } from "antd";
 import type { TableProps } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -15,8 +15,10 @@ import ListIcon from "@/../public/icon/icon_3dots.svg";
 import CreateModal from "./Components/CreateModal";
 import UpdateModal from "./Components/UpdateModal";
 import PermissionsModal from "./Components/PermissionsModal";
+import { useHeaderStore } from "@/stores/headerStore";
 
 const RoleManagement = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
@@ -161,6 +163,13 @@ const RoleManagement = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    setHeaderTitle("Roles");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
 
   return (
     <>

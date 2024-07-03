@@ -1,15 +1,17 @@
 "use client";
+import { useEffect, useState } from "react";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useQuery } from "@tanstack/react-query";
 import { Form, Table } from "antd";
-import { useState } from "react";
-import styles from "./common.module.scss";
 import { columnConfig } from "./config";
 import HeaderTable from "./components/HeaderTable";
 import { getHistoryChatbot } from "@/api/history-chatbot.api";
+import { useHeaderStore } from "@/stores/headerStore";
+import styles from "./common.module.scss";
 
 const HistoryChatbot = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [form] = Form.useForm();
   const [filterData, setFilterData] = useState<any>({});
@@ -30,6 +32,13 @@ const HistoryChatbot = () => {
     useOnClickCheckboxTable(data?.data.items || []);
 
   const [questionSelected, setQuestionSelected] = useState(null);
+
+  useEffect(() => {
+    setHeaderTitle("Chatbot History");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
 
   return (
     <>

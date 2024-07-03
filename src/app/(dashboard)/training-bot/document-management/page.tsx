@@ -1,10 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useQuery } from "@tanstack/react-query";
 import { Form, Table } from "antd";
-import { useState } from "react";
-import styles from "./common.module.scss";
 import { columnConfig } from "@/app/(dashboard)/training-bot/document-management/config";
 import HeaderTable from "@/app/(dashboard)/training-bot/document-management/components/HeaderTable";
 import { getDocuments } from "@/api/document-management.api";
@@ -14,8 +13,11 @@ import { convertPagination } from "@/utils/convert-pagination";
 import ModalUpdate from "@/app/(dashboard)/training-bot/document-management/components/ModalUpdate";
 import ModalDelete from "@/app/(dashboard)/training-bot/document-management/components/ModalDelete";
 import { IParamsList } from "@/types/common";
+import { useHeaderStore } from "@/stores/headerStore";
+import styles from "./common.module.scss";
 
 const DocumentManagement = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [form] = Form.useForm();
   const [filterData, setFilterData] = useState<any>({});
@@ -60,6 +62,13 @@ const DocumentManagement = () => {
     closeModalDeleteDocument,
     openModalDeleteDocument,
   ] = useToggle();
+
+  useEffect(() => {
+    setHeaderTitle("Document Management");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
 
   return (
     <>

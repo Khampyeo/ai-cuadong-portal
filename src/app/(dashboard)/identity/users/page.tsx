@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { App, Button, Table } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -15,8 +15,10 @@ import ModalCreate from "./Components/ModalCreate";
 import ModalUpdate from "./Components/ModalUpdate";
 import ModalDelete from "./Components/ModalDelete";
 import { IParamsList } from "@/types/common";
+import { useHeaderStore } from "@/stores/headerStore";
 
 const UsersManagement = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
@@ -48,6 +50,14 @@ const UsersManagement = () => {
     refetch();
     setUserIdSelected(null);
   };
+
+  useEffect(() => {
+    setHeaderTitle("Users");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
+
   return (
     <>
       <div className="table-container bg-white rounded-lg">

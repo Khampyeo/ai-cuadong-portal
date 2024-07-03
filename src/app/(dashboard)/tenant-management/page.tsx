@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { App, Button, Dropdown, Modal, Table } from "antd";
+import { useEffect, useState } from "react";
+import { App, Button, Dropdown, Table } from "antd";
 import type { TableProps } from "antd";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -12,10 +12,12 @@ import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
+import { useHeaderStore } from "@/stores/headerStore";
 import CreateModal from "./Components/CreateModal";
 import UpdateModal from "./Components/UpdateModal";
 
 const TenantManagement = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
@@ -130,6 +132,13 @@ const TenantManagement = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    setHeaderTitle("Tenant Management");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
 
   return (
     <>
