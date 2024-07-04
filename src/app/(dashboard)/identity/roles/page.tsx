@@ -1,21 +1,22 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { App, Button, Dropdown, Modal, Table } from "antd";
-import type { TableProps } from "antd";
+import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { App, Button, Dropdown, Table } from "antd";
+import type { TableProps } from "antd";
+import ListIcon from "@/../public/icon/icon_3dots.svg";
+import AddIcon from "@/../public/icon/icon_add__circle.svg";
+import EditIcon from "@/../public/icon/icon_edit.svg";
+import { deleteRole, getRoles } from "@/api/role-management.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
-import { deleteRole, getRoles } from "@/api/role-management.api";
-import { GetRolesInput, RoleDto } from "@/types/role";
-import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
-import AddIcon from "@/../public/icon/icon_add__circle.svg";
-import EditIcon from "@/../public/icon/icon_edit.svg";
-import ListIcon from "@/../public/icon/icon_3dots.svg";
-import CreateModal from "./Components/CreateModal";
-import UpdateModal from "./Components/UpdateModal";
-import PermissionsModal from "./Components/PermissionsModal";
 import { useHeaderStore } from "@/stores/headerStore";
+import { GetRolesInput, RoleDto } from "@/types/role";
+import CreateModal from "./Components/CreateModal";
+import PermissionsModal from "./Components/PermissionsModal";
+import UpdateModal from "./Components/UpdateModal";
 
 const RoleManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);

@@ -1,14 +1,15 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
-import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useQuery } from "@tanstack/react-query";
 import { Form, Table } from "antd";
-import { columnConfig } from "./config";
-import HeaderTable from "./components/HeaderTable";
 import { getHistoryChatbot } from "@/api/history-chatbot.api";
+import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
+import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useHeaderStore } from "@/stores/headerStore";
 import styles from "./common.module.scss";
+import HeaderTable from "./components/HeaderTable";
+import { columnConfig } from "./config";
 
 const HistoryChatbot = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
@@ -57,8 +58,8 @@ const HistoryChatbot = () => {
             pageSize: param.size,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
-            hideOnSinglePage: false,
-            total: data ? data.data?.totalPages * param.size : undefined,
+            hideOnSinglePage: true,
+            total: data?.totalCount,
           }}
           onChange={(page: any) =>
             setParam({ ...param, page: page?.current, size: page?.pageSize })

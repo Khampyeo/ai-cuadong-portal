@@ -1,7 +1,3 @@
-import AllIcon from "@/../public/icon/icon_list.svg";
-import ProductIcon from "@/../public/icon/icon_product.svg";
-import SupportIcon from "@/../public/icon/icon_support.svg";
-import ChatbotIcon from "@/../public/icon/icon_chatbot.svg";
 import {
   AccountBookOutlined,
   AlibabaOutlined,
@@ -24,6 +20,11 @@ import {
   WindowsOutlined,
   XOutlined,
 } from "@ant-design/icons";
+import ChatbotIcon from "@/../public/icon/icon_chatbot.svg";
+import AllIcon from "@/../public/icon/icon_list.svg";
+import ProductIcon from "@/../public/icon/icon_product.svg";
+import SupportIcon from "@/../public/icon/icon_support.svg";
+
 export const FEATURES = [
   {
     key: 0,

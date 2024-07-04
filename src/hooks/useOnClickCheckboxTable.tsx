@@ -30,6 +30,6 @@ export const useOnClickCheckboxTable = <T extends Record<string, any>>(
   return [rowSelection, currentSelected, setCurrentSelected] as [
     typeof rowSelection,
     typeof currentSelected,
-    typeof setCurrentSelected
+    typeof setCurrentSelected,
   ];
 };

@@ -1,6 +1,5 @@
 import { Button, Flex, Modal } from "antd";
 import styles from "./common.module.scss";
-import DeleteIcon from "@/../public/icon/icon_delete.svg";
 
 interface props {
   isOpen: boolean;

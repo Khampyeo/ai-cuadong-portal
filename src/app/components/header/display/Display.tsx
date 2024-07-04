@@ -1,7 +1,7 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import ArrowIcon from "@/../public/icon/icon_arrow__left.svg";
 import MoonIcon from "@/../public/icon/icon_moon.svg";
 import styles from "../styles/display.module.scss";
-import ArrowIcon from "@/../public/icon/icon_arrow__left.svg";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface DisplayProps {
   isDisplaySetting: boolean;

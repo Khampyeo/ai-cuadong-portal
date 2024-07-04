@@ -1,5 +1,5 @@
-import HomeIcon from "@/../public/icon/icon_home.svg";
 import BotIcon from "@/../public/icon/icon_bot.svg";
+import HomeIcon from "@/../public/icon/icon_home.svg";
 import TenantIcon from "@/../public/icon/icon_tenant.svg";
 import UsersIcon from "@/../public/icon/icon_users.svg";
 import { IMenuItem } from "@/types/sidebar.interface";

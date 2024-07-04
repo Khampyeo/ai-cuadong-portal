@@ -1,9 +1,10 @@
 "use client";
-import { Checkbox, Form, Input, Radio, Select, Switch } from "antd";
-import styles from "../styles/form-create.module.scss";
+
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Checkbox, Form, Input, Switch } from "antd";
 import { getRoles } from "@/api/role-management.api";
+import styles from "../styles/form-create.module.scss";
 
 interface Props {
   form: any;

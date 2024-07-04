@@ -1,7 +1,9 @@
 "use client";
-import styles from "./common.module.scss";
+
 import Link from "next/link";
 import BreadcrumbCustom from "@/app/components/breadcrumb/BreadcrumbCustom";
+import styles from "./common.module.scss";
+
 const Chatbot = () => {
   return (
     <div className={styles.chatbot_container}>

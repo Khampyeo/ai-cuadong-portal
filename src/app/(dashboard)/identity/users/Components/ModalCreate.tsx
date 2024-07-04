@@ -1,10 +1,11 @@
 "use client";
+
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
+import { Form, message, Modal } from "antd";
+import { createUser } from "@/api/users-management.api";
 import styles from "../styles/modal-create.module.scss";
 import FormCreate from "./FormCreate";
-import { createUser } from "@/api/users-management.api";
-import { useState } from "react";
 
 const ModalCreate = ({
   showModalCreateUser,

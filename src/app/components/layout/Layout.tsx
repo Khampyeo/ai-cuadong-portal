@@ -1,8 +1,10 @@
 "use client";
-import React, { useState, ReactNode, useEffect } from "react";
-import styles from "./common.module.scss";
-import Sidebar from "../sidebar/Sidebar";
+
+import React, { useState } from "react";
 import Header from "../header";
+import Sidebar from "../sidebar/Sidebar";
+import styles from "./common.module.scss";
+
 export default function DefaultLayout({
   children,
 }: {

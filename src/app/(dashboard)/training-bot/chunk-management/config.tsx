@@ -1,9 +1,10 @@
-import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
 import { Button, Dropdown, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import EditIcon from "@/../public/icon/icon_edit.svg";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
+import EditIcon from "@/../public/icon/icon_edit.svg";
+import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
 import styles from "./styles/config.module.scss";
+
 export const columnConfig = ({
   setChunkIdSelected,
   openModalUpdateChunk,

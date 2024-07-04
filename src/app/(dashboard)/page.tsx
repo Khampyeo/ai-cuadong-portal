@@ -1,9 +1,10 @@
 "use client";
-import FeatureItem from "./components/FeatureItem";
-import styles from "./styles/common.module.scss";
-import HomepageHeader from "./components/HomepageHeader";
+
 import { useState } from "react";
 import { ITEMS } from "@/constants/homepage";
+import FeatureItem from "./components/FeatureItem";
+import HomepageHeader from "./components/HomepageHeader";
+import styles from "./styles/common.module.scss";
 
 const Homepage = () => {
   const [filterSelectedItem, setFilterSelectedItem] = useState<number>(0);

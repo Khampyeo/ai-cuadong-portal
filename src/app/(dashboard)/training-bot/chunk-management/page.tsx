@@ -1,19 +1,20 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
-import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useQuery } from "@tanstack/react-query";
 import { Form, Table } from "antd";
-import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
-import HeaderTable from "@/app/(dashboard)/training-bot/chunk-management/components/HeaderTable";
 import { getChunkDocuments } from "@/api/chunk-management.api";
-import { convertPagination } from "@/utils/convert-pagination";
-import { useToggle } from "@/hooks/useToggle";
+import HeaderTable from "@/app/(dashboard)/training-bot/chunk-management/components/HeaderTable";
 import ModalCreate from "@/app/(dashboard)/training-bot/chunk-management/components/ModalCreate";
-import ModalUpdate from "@/app/(dashboard)/training-bot/chunk-management/components/ModalUpdate";
 import ModalDelete from "@/app/(dashboard)/training-bot/chunk-management/components/ModalDelete";
-import { IParamsList } from "@/types/common";
+import ModalUpdate from "@/app/(dashboard)/training-bot/chunk-management/components/ModalUpdate";
+import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
+import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
+import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
+import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
+import { IParamsList } from "@/types/common";
+import { convertPagination } from "@/utils/convert-pagination";
 import styles from "./styles/common.module.scss";
 
 const ChunkManagement = () => {
@@ -83,8 +84,8 @@ const ChunkManagement = () => {
             pageSize: param.size,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
-            hideOnSinglePage: false,
-            total: data ? data.data?.totalPages * param.size : undefined,
+            hideOnSinglePage: true,
+            total: data?.totalCount,
           }}
           onChange={(page: any) =>
             setParam({ ...param, page: page?.current, size: page?.pageSize })

@@ -1,9 +1,9 @@
-import { Button, Flex, Input } from "antd";
-import SearchIcon from "@/../public/icon/icon_search.svg";
-import styles from "../styles/header-table.module.scss";
-import FilterComponent from "@/app/components/filter";
-import AddIcon from "@/../public/icon/icon_add__circle.svg";
+import { Button, Input } from "antd";
 import ExportIcon from "@/../public/icon/icon_export.svg";
+import SearchIcon from "@/../public/icon/icon_search.svg";
+import FilterComponent from "@/app/components/filter";
+import styles from "../styles/header-table.module.scss";
+
 const HeaderTable = () => {
   return (
     <div className={styles.header_table_container}>

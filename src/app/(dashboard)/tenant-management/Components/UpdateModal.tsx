@@ -1,5 +1,5 @@
-import { Form, Input, message, Modal } from "antd";
 import { useMutation } from "@tanstack/react-query";
+import { Form, Input, message, Modal } from "antd";
 import { updateTenant } from "@/api/tenant-management.api";
 import { TenantDto } from "@/types/tenant";
 

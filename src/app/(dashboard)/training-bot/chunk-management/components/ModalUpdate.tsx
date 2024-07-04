@@ -1,13 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
-import styles from "../styles/modal-update.module.scss";
-import { updateDocument } from "@/api/document-management.api";
-import FormUpdate from "./FormUpdate";
-import moment from "moment";
+import { Form, message, Modal } from "antd";
 import {
   getChunkDocumentById,
   updateChunkDocument,
 } from "@/api/chunk-management.api";
+import styles from "../styles/modal-update.module.scss";
+import FormUpdate from "./FormUpdate";
 
 const ModalUpdate = ({
   chunkIdSelected,

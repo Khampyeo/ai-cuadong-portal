@@ -1,17 +1,17 @@
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Checkbox, Divider, message, Modal, Tabs } from "antd";
 import type { CheckboxProps } from "antd";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getRolePermissions,
   updateRolePermissions,
 } from "@/api/role-management.api";
+import useCheckedList from "@/hooks/useCheckedList";
 import {
   GetPermissionListResultDto,
   PermissionGroupDto,
   RoleDto,
 } from "@/types/role";
-import { useEffect, useState } from "react";
-import useCheckedList from "@/hooks/useCheckedList";
 
 type Props = {
   isOpen: boolean;

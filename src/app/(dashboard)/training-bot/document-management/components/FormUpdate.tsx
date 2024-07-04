@@ -1,8 +1,9 @@
 "use client";
-import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
-import styles from "../styles/form-update.module.scss";
+
 import { useEffect } from "react";
+import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
 import moment from "moment";
+import styles from "../styles/form-update.module.scss";
 
 interface Props {
   form?: FormInstance;

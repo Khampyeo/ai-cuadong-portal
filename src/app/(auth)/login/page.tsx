@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
-import styles from "../styles/login-page.module.scss";
 import LoginForm from "@/app/(auth)/components/LoginForm";
+import styles from "../styles/login-page.module.scss";
 
 export const metadata: Metadata = {
   title: "Login",

@@ -1,8 +1,9 @@
 "use client";
-import DropdownNotification from "./notify/DropdownNotification";
-import DropdownUser from "./user/DropdownUser";
+
 import { useHeaderStore } from "@/stores/headerStore";
+import DropdownNotification from "./notify/DropdownNotification";
 import styles from "./styles/common.module.scss";
+import DropdownUser from "./user/DropdownUser";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;

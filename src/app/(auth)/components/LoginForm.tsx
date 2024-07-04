@@ -1,12 +1,13 @@
 "use client";
+
 import React from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import styles from "../styles/login-form.module.scss";
 import { Button, Checkbox, Form, Input } from "antd";
 import Link from "next/link";
 import EmailIcon from "@/../public/icon/icon_email.svg";
 import LockIcon from "@/../public/icon/icon_lock.svg";
 import UnlockIcon from "@/../public/icon/icon_unlock.svg";
+import { useAuth } from "@/contexts/AuthContext";
+import styles from "../styles/login-form.module.scss";
 
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm();

@@ -1,25 +1,23 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { App, Button, Table } from "antd";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Table } from "antd";
+import { getUsers } from "@/api/users-management.api";
+import { columnConfig } from "@/app/(dashboard)/identity/users/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
-import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
-import AddIcon from "@/../public/icon/icon_add__circle.svg";
-import { columnConfig } from "@/app/(dashboard)/identity/users/config";
+import { useHeaderStore } from "@/stores/headerStore";
+import { IParamsList } from "@/types/common";
 import { convertPagination } from "@/utils/convert-pagination";
-import { getUsers } from "@/api/users-management.api";
 import HeaderTable from "./Components/HeaderTable";
 import ModalCreate from "./Components/ModalCreate";
-import ModalUpdate from "./Components/ModalUpdate";
 import ModalDelete from "./Components/ModalDelete";
-import { IParamsList } from "@/types/common";
-import { useHeaderStore } from "@/stores/headerStore";
+import ModalUpdate from "./Components/ModalUpdate";
 
 const UsersManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
-  const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
   const [keywordSearch, setKeywordSearch] = useState({
@@ -79,8 +77,8 @@ const UsersManagement = () => {
             pageSize: param.size,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
-            hideOnSinglePage: false,
-            total: data?.data.totalPages,
+            hideOnSinglePage: true,
+            total: data?.data.totalCount,
           }}
           onChange={(page: any) =>
             setParam({ ...param, page: page?.current, size: page?.pageSize })

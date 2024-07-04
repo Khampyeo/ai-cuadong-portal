@@ -1,9 +1,10 @@
 "use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import DefaultLayout from "@/app/components/layout/Layout";
 import Loader from "@/app/components/loader/Loader";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const MainLayout = ({
   children,

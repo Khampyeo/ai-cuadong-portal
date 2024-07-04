@@ -1,8 +1,6 @@
 import { IResponseListEntity } from "@/types/response.interface";
 
-export const getHistoryChatbot: () => Promise<
-  IResponseListEntity<IHistoryChatbot>
-> = async () => {
+export const getHistoryChatbot = async () => {
   const response: IResponseListEntity<IHistoryChatbot> = {
     status: 200,
     data: {
@@ -632,7 +630,7 @@ export const getHistoryChatbot: () => Promise<
           subpurpose: "",
         },
       ],
-      totalPages: 1399,
+      totalCount: 1399,
     },
   };
   return response;

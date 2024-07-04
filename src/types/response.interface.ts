@@ -1,7 +1,7 @@
 export interface IResponseListEntity<T> {
   status: number;
   data: {
-    totalPages: number;
+    totalCount: number;
     items: T[];
   };
 }

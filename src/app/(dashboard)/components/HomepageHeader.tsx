@@ -1,6 +1,8 @@
 "use client";
-import styles from "../styles/homepage-header.module.scss";
+
 import { FEATURES } from "@/constants/homepage";
+import styles from "../styles/homepage-header.module.scss";
+
 const HomepageHeader = ({ filterSelectedItem, setFilterSelectedItem }: any) => {
   return (
     <div className={styles.container}>

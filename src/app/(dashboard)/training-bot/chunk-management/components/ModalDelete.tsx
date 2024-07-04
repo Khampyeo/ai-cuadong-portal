@@ -1,8 +1,9 @@
-import Notification from "@/app/components/notification/Notifcation";
-import IconDelete from "@/../public/icon/icon_delete.svg";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
+import IconDelete from "@/../public/icon/icon_delete.svg";
 import { deleteChunkDocument } from "@/api/chunk-management.api";
+import Notification from "@/app/components/notification/Notifcation";
+
 const ModalDelete = ({
   chunkIdSelected,
   showModalDeleteChunk,

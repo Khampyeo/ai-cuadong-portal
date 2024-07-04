@@ -1,6 +1,4 @@
 "use client";
-import { getAccount, login, logout } from "@/api/authenticate.api";
-import { useRouter } from "next/navigation";
 
 import {
   createContext,
@@ -9,6 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
+import { getAccount, login, logout } from "@/api/authenticate.api";
 
 interface AuthContextProps {
   isAuthenticated: boolean;

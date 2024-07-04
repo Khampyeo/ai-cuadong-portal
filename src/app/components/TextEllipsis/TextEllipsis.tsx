@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import styles from "./common.module.scss";
 import { Tooltip } from "antd";
+import styles from "./common.module.scss";
+
 const RenderContent = ({ text, lineNum = 2 }: any) => {
   const [isOverflowed, setIsOverflowed] = useState(false);
   useEffect(() => {

@@ -1,4 +1,5 @@
 import styles from "./styles/layout-auth.module.scss";
+
 const AuthLayout = ({
   children,
 }: Readonly<{

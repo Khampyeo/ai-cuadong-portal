@@ -1,4 +1,5 @@
 import styles from "./common.module.scss";
+
 const Loader = ({ type = "screen", size = "xl" }) => {
   return (
     <div className={`${styles.loader} ${styles[type]} `}>

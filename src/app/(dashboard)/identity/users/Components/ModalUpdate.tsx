@@ -1,14 +1,15 @@
 "use client";
+
+import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
-import styles from "../styles/modal-update.module.scss";
-import FormUpdate from "./FormUpdate";
+import { Form, message, Modal } from "antd";
 import {
   getRoleUserById,
   getUserById,
   updateUser,
 } from "@/api/users-management.api";
-import { useState } from "react";
+import styles from "../styles/modal-update.module.scss";
+import FormUpdate from "./FormUpdate";
 
 const ModalUpdate = ({
   userIdSelected,

@@ -1,13 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
-import styles from "../styles/modal-update.module.scss";
-import {
-  createDocument,
-  getDocumentById,
-  updateDocument,
-} from "@/api/document-management.api";
-import FormUpdate from "./FormUpdate";
+import { Form, message, Modal } from "antd";
 import moment from "moment";
+import { getDocumentById, updateDocument } from "@/api/document-management.api";
+import styles from "../styles/modal-update.module.scss";
+import FormUpdate from "./FormUpdate";
 
 const ModalUpdate = ({
   documentIdSelected,
