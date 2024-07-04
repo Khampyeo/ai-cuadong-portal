@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
 import Link from "next/link";
+import { Button, Checkbox, Form, Input } from "antd";
 import EmailIcon from "@/../public/icon/icon_email.svg";
 import LockIcon from "@/../public/icon/icon_lock.svg";
 import UnlockIcon from "@/../public/icon/icon_unlock.svg";

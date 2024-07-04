@@ -1,5 +1,5 @@
-import { Select } from "antd";
 import Link from "next/link";
+import { Select } from "antd";
 import styles from "@/../styles/not-found.module.scss";
 
 export default function PageNotFound() {
