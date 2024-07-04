@@ -3,10 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { Button, Checkbox, Form, Input } from "antd";
+import { useAuth } from "@/contexts/AuthContext";
 import EmailIcon from "@/../public/icon/icon_email.svg";
 import LockIcon from "@/../public/icon/icon_lock.svg";
 import UnlockIcon from "@/../public/icon/icon_unlock.svg";
-import { useAuth } from "@/contexts/AuthContext";
 import styles from "../styles/login-form.module.scss";
 
 const LoginForm: React.FC = () => {

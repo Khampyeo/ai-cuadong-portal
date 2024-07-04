@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
 import { createChunkDocument } from "@/api/chunk-management.api";
-import styles from "../styles/modal-create.module.scss";
 import FormCreate from "./FormCreate";
+import styles from "../styles/modal-create.module.scss";
 
 const ModalCreate = ({
   showModalCreateChunk,

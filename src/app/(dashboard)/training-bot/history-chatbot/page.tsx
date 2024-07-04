@@ -7,9 +7,9 @@ import { getHistoryChatbot } from "@/api/history-chatbot.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useHeaderStore } from "@/stores/headerStore";
-import styles from "./common.module.scss";
 import HeaderTable from "./components/HeaderTable";
 import { columnConfig } from "./config";
+import styles from "./common.module.scss";
 
 const HistoryChatbot = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);

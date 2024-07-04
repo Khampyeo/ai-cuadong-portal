@@ -8,7 +8,10 @@
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
-    "^@/(.*)$",
+    "^@/(?!.*.(css|scss|svg)$).*",
+    "^./(?!.*.(css|scss|svg)$).*",
+    "^../(?!.*.(css|scss|svg)$).*",
+    ".svg$",
     "^(?!.*[.]css$)[./].*$",
     ".css$"
   ]

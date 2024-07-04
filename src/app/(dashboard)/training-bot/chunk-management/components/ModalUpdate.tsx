@@ -4,8 +4,8 @@ import {
   getChunkDocumentById,
   updateChunkDocument,
 } from "@/api/chunk-management.api";
-import styles from "../styles/modal-update.module.scss";
 import FormUpdate from "./FormUpdate";
+import styles from "../styles/modal-update.module.scss";
 
 const ModalUpdate = ({
   chunkIdSelected,

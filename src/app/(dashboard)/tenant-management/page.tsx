@@ -5,9 +5,6 @@ import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Dropdown, Table } from "antd";
 import type { TableProps } from "antd";
-import ListIcon from "@/../public/icon/icon_3dots.svg";
-import AddIcon from "@/../public/icon/icon_add__circle.svg";
-import EditIcon from "@/../public/icon/icon_edit.svg";
 import { deleteTenant, getTenants } from "@/api/tenant-management.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
@@ -16,6 +13,9 @@ import { useHeaderStore } from "@/stores/headerStore";
 import { GetTenantsInput, TenantDto } from "@/types/tenant";
 import CreateModal from "./Components/CreateModal";
 import UpdateModal from "./Components/UpdateModal";
+import ListIcon from "@/../public/icon/icon_3dots.svg";
+import AddIcon from "@/../public/icon/icon_add__circle.svg";
+import EditIcon from "@/../public/icon/icon_edit.svg";
 
 const TenantManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);

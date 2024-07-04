@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "antd";
-import CollapseIcon from "@/../public/icon/icon_collapse.svg";
-import QuestionIcon from "@/../public/icon/icon_question.svg";
 import useClickOutside from "@/hooks/useDetectClickOutSide";
 import { IMenuItem, ISidebarProps } from "@/types/sidebar.interface";
-import styles from "./common.module.scss";
 import { menuSidebar } from "./config";
+import CollapseIcon from "@/../public/icon/icon_collapse.svg";
+import QuestionIcon from "@/../public/icon/icon_question.svg";
+import styles from "./common.module.scss";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
   const router = useRouter();

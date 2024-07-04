@@ -8,8 +8,8 @@ import {
   getUserById,
   updateUser,
 } from "@/api/users-management.api";
-import styles from "../styles/modal-update.module.scss";
 import FormUpdate from "./FormUpdate";
+import styles from "../styles/modal-update.module.scss";
 
 const ModalUpdate = ({
   userIdSelected,

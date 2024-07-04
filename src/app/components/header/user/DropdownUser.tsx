@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Dropdown } from "antd";
-import Icon from "@/../public/icon/icon_bot.svg";
-import IconChervon from "@/../public/icon/icon_chervon__right.svg";
-import IconLogout from "@/../public/icon/icon_logout.svg";
 import { useAuth } from "@/contexts/AuthContext";
 import { menuItemUser } from "../config";
 import Display from "../display/Display";
+import Icon from "@/../public/icon/icon_bot.svg";
+import IconChervon from "@/../public/icon/icon_chervon__right.svg";
+import IconLogout from "@/../public/icon/icon_logout.svg";
 import styles from "../styles/dropdown-user.module.scss";
 
 const DropdownUser = () => {

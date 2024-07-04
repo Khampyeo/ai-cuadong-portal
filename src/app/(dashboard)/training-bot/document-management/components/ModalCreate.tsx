@@ -2,8 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
 import moment from "moment";
 import { createDocument } from "@/api/document-management.api";
-import styles from "../styles/modal-create.module.scss";
 import FormCreate from "./FormCreate";
+import styles from "../styles/modal-create.module.scss";
 
 const ModalCreate = ({
   showModalCreateDocument,
