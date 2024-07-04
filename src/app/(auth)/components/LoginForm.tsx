@@ -11,8 +11,7 @@ import styles from "../styles/login-form.module.scss";
 
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm();
-  const { handleLogin, isFetching } = useAuth();
-  console.log(process.env.API_URL);
+  const { handleLogin, isFetching, errorMessage } = useAuth();
 
   const login = () => {
     form
@@ -104,6 +103,9 @@ const LoginForm: React.FC = () => {
           </Link>
         </div>
       </div>
+      {errorMessage && (
+        <div className={styles.error_message}>{errorMessage}</div>
+      )}
       <Button
         size="large"
         className={styles.login_btn}

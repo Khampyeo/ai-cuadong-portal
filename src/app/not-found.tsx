@@ -22,7 +22,7 @@ export default function PageNotFound() {
           ]}
         />
         <p>
-          Start from{" "}
+          Start from
           <Link href={"/"} className={styles.link_homepage}>
             home page
           </Link>
