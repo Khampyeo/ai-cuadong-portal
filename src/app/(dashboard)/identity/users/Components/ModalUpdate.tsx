@@ -12,7 +12,7 @@ import {
   updateUser,
 } from "@/api/user-management.api";
 import { RoleDto } from "@/types/role";
-import { UserDto } from "@/types/user.type";
+import { UserDto } from "@/types/user";
 import FormUpdate from "./FormUpdate";
 import styles from "../styles/modal-update.module.scss";
 

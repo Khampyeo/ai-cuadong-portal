@@ -1,4 +1,4 @@
-import { IMenuItem } from "@/types/sidebar.interface";
+import { IMenuItem } from "@/types/sidebar";
 import BotIcon from "@/../public/icon/icon_bot.svg";
 import HomeIcon from "@/../public/icon/icon_home.svg";
 import TenantIcon from "@/../public/icon/icon_tenant.svg";

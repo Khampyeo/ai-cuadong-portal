@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Button, Dropdown } from "antd";
 import { ColumnsType } from "antd/es/table";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
-import { UserDto } from "@/types/user.type";
+import { UserDto } from "@/types/user";
 import { formatDateTime } from "@/utils/time-formating";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";

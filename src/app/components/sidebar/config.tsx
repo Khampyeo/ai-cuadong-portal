@@ -5,7 +5,7 @@ import {
   TRAINING_BOT,
 } from "@/constants/pages";
 
-import { IMenuItem } from "@/types/sidebar.interface";
+import { IMenuItem } from "@/types/sidebar";
 
 export const menuSidebar: IMenuItem[] = [
   HOMEPAGE,

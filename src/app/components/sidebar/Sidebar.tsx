@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "antd";
 import useClickOutside from "@/hooks/useDetectClickOutSide";
-import { IMenuItem, ISidebarProps } from "@/types/sidebar.interface";
+import { IMenuItem, ISidebarProps } from "@/types/sidebar";
 import { menuSidebar } from "./config";
 import CollapseIcon from "@/../public/icon/icon_collapse.svg";
 import QuestionIcon from "@/../public/icon/icon_question.svg";

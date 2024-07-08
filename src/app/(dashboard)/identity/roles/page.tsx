@@ -10,7 +10,7 @@ import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { PaginationType } from "@/types/pagination.type";
+import { PaginationType } from "@/types/common";
 import { GetRolesInput, RoleDto } from "@/types/role";
 import CreateModal from "./Components/CreateModal";
 import PermissionsModal from "./Components/PermissionsModal";

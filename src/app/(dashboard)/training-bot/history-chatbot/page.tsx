@@ -30,7 +30,7 @@ const HistoryChatbot = () => {
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
-    useOnClickCheckboxTable(data?.data.items || []);
+    useOnClickCheckboxTable(data?.items || []);
 
   const [questionSelected, setQuestionSelected] = useState(null);
 
@@ -48,7 +48,7 @@ const HistoryChatbot = () => {
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({})}
-          dataSource={data?.data.items || []}
+          dataSource={data?.items || []}
           scroll={{
             x: 1400,
             y: 500,

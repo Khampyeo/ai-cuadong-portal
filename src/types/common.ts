@@ -14,3 +14,8 @@ export interface IParamsList {
   skipCount: number;
   maxResultCount: number;
 }
+
+export type PaginationType = {
+  page: number;
+  size: number;
+};
