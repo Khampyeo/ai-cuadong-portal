@@ -1,96 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Checkbox,
-  Form,
-  Input,
-  Switch,
-} from "antd";
-import { getRoles } from "@/api/role-management.api";
+import { Checkbox, Form, FormInstance, Input, Switch, Tabs } from "antd";
+import { RoleDto } from "@/types/role";
 import styles from "../styles/form-update.module.scss";
 
 interface Props {
-  form?: any;
-  data: any;
-  role: any;
-  selected: number;
-  setSelected: any;
+  form: FormInstance;
+  listRoles: RoleDto[];
 }
-const FormUpdate = ({ form, data, role, selected, setSelected }: Props) => {
-  const [roles, setRoles] = useState<any>([]);
-
-  const listRoles = useQuery({
-    queryKey: ["list-roles"],
-    queryFn: async () => {
-      return await getRoles();
-    },
-  });
+interface Role {
+  value: string;
+  label: string;
+}
+const FormUpdate = ({ form, listRoles }: Props) => {
+  const [roles, setRoles] = useState<Role[]>();
 
   useEffect(() => {
-    if (data && form) {
-      form.setFieldsValue({
-        name: data.name,
-        email: data.email,
-        "phone-number": data.phoneNumber,
-        surname: data.surname,
-        username: data.userName,
-        "lockout-enabled": data.lockoutEnabled,
-        "is-active": data.isActive,
-        roles: role?.items.map((item: any) => item.name),
-      });
-    }
-  }, [data, form, role]);
-
-  useEffect(() => {
-    if (listRoles?.data) {
+    if (listRoles) {
       setRoles(
-        listRoles.data.items.map((item: any) => ({
+        listRoles.map((item: RoleDto) => ({
           value: item.name,
           label: item.name,
         }))
       );
     }
-  }, [listRoles.data]);
-
-  const validatePassword = (_: any, value: any) => {
-    if (!value || form.getFieldValue("password") === value) {
-      return Promise.resolve();
-    }
-    return Promise.reject(
-      new Error("The two passwords that you entered do not match!")
-    );
-  };
-
-  return (
-    <div className="">
-      <div className="flex gap-4 mb-8 font-semibold text-base ">
-        <p
-          className={`cursor-pointer relative transition-all hover:text-[#1676fd] 
-          after:content-[''] after:transition-all after:absolute after:top-full after:w-full after:h-[2px] after:bg-[#1676fd] after:hover:block
-          ${selected === 0 ? "text-[#1676fd] after:block" : "after:hidden"}
-          `}
-          onClick={() => setSelected(0)}
-        >
-          User Information
-        </p>
-        <p
-          className={`cursor-pointer relative transition-all hover:text-[#1676fd] 
-            after:content-[''] after:transition-all after:absolute after:top-full after:w-full after:h-[2px] after:bg-[#1676fd] after:hover:block
-            ${selected === 1 ? "text-[#1676fd] after:block" : "after:hidden"}
-            `}
-          onClick={() => setSelected(1)}
-        >
-          Roles
-        </p>
-      </div>
-      <Form
-        form={form}
-        className={styles.form_modal_content}
-        initialValues={{ "lockout-enabled": true, "is-active": true }}
-      >
-        <div className={`${selected !== 0 && "hidden"}`}>
+  }, [listRoles]);
+  
+  const items = [
+    {
+      key: "1",
+      label: "User Information",
+      children: (
+        <>
           <Form.Item
             rules={[
               {
@@ -104,7 +46,7 @@ const FormUpdate = ({ form, data, role, selected, setSelected }: Props) => {
             ]}
             style={{ flex: 1 }}
             label="Username"
-            name="username"
+            name="userName"
           >
             <Input placeholder="Enter name" />
           </Form.Item>
@@ -153,23 +95,38 @@ const FormUpdate = ({ form, data, role, selected, setSelected }: Props) => {
           </Form.Item>
 
           <div className="flex justify-between">
-            <Form.Item style={{ flex: 1 }} label="Active" name="is-active">
+            <Form.Item style={{ flex: 1 }} label="Active" name="isActive">
               <Switch />
             </Form.Item>
             <Form.Item
               style={{ flex: 1 }}
               label="Lockout Enabled"
-              name="lockout-enabled"
+              name="lockoutEnabled"
             >
               <Switch />
             </Form.Item>
           </div>
-        </div>
-        <div className={`${selected !== 1 && "hidden"}`}>
+        </>
+      ),
+    },
+    {
+      key: "2",
+      label: "Roles",
+      children: (
+        <>
           <Form.Item style={{ flex: 1 }} name="roles">
-            <Checkbox.Group options={roles} className="flex flex-col" />
+            <Checkbox.Group options={roles || []} className="flex flex-col" />
           </Form.Item>
-        </div>
+        </>
+      ),
+      forceRender: true,
+    },
+  ];
+
+  return (
+    <div>
+      <Form form={form} className={styles.form_modal_content}>
+        <Tabs defaultActiveKey="1" items={items} />
       </Form>
     </div>
   );

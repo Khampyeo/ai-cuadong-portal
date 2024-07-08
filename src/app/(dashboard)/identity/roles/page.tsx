@@ -10,6 +10,7 @@ import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
+import { PaginationType } from "@/types/pagination.type";
 import { GetRolesInput, RoleDto } from "@/types/role";
 import CreateModal from "./Components/CreateModal";
 import PermissionsModal from "./Components/PermissionsModal";
@@ -21,15 +22,14 @@ import EditIcon from "@/../public/icon/icon_edit.svg";
 const RoleManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
-  const [param, setParam] = useState(DEFAULT_PARAM);
-  const [filterData, setFilterData] = useState<any>({});
+  const [param, setParam] = useState<PaginationType>(DEFAULT_PARAM);
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
   });
 
   const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-roles", filterData, param, keywordSearch],
+    queryKey: ["list-roles", param, keywordSearch],
 
     queryFn: () => {
       const params: GetRolesInput = {
@@ -204,8 +204,12 @@ const RoleManagement = () => {
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination: { current?: number; pageSize?: number }) =>
+            setParam({
+              ...param,
+              page: pagination?.current ?? param.page,
+              size: pagination?.pageSize ?? param.size,
+            })
           }
           loading={isFetching}
           rowKey="id"

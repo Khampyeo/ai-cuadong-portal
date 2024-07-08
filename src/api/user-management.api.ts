@@ -1,19 +1,26 @@
 import axios from "@/config/axios";
 import { ENDPOINTS } from "@/constants/endpoints";
+import { PagedResultDto } from "@/types/common";
+import { RoleDto } from "@/types/role";
+import { UserDto } from "@/types/user";
 
 export const getUsers = async (params: any) => {
-  const data = await axios.get(ENDPOINTS.USERS.LIST, {
+  const data = await axios.get<PagedResultDto<UserDto>>(ENDPOINTS.USERS.LIST, {
     params,
   });
 
   const response = {
-    status: data.status,
-    data: {
-      totalCount: data.data?.totalCount,
-      items: data.data.items,
-    },
+    totalCount: data.data?.totalCount,
+    items: data.data.items,
   };
   return response;
+};
+
+export const getAssignableRoles = async () => {
+  const response = await axios.get<{ items: RoleDto[] }>(
+    ENDPOINTS.USERS.ASSIGNABLE_ROLES
+  );
+  return response.data.items;
 };
 
 export const createUser = async (body: any) => {
@@ -28,8 +35,8 @@ export const getUserById = async (id: string) => {
   return response;
 };
 
-export const getRoleUserById = async (id: string) => {
-  const url = `${ENDPOINTS.USERS.GET_ROLE_BY_ID.replace("{id}", id)}`;
+export const getUserRoles = async (userId: string) => {
+  const url = `${ENDPOINTS.USERS.GET_ROLE_BY_ID.replace("{id}", userId)}`;
   const response = axios.get(url);
   return response;
 };

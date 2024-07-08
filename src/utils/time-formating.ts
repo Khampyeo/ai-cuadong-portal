@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const timestampToFormattedString = (timestamp: string): string => {
   const date = new Date(timestamp);
   const hours = date.getHours();
@@ -17,3 +19,32 @@ export const timestampToFormattedString = (timestamp: string): string => {
 
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${ampm} ${formattedDate}/${formattedMonth}/${date.getFullYear()}`;
 };
+
+
+export function formatDate(date?: Date | string) {
+  if (!date) {
+    return "";
+  }
+
+  const parsedDate = dayjs(date);
+
+  if (!parsedDate.isValid()) {
+    return "Invalid date";
+  }
+
+  return parsedDate.format("DD/MM/YYYY");
+}
+
+export function formatDateTime(date?: Date | string) {
+  if (!date) {
+    return "";
+  }
+
+  const parsedDate = dayjs(date);
+
+  if (!parsedDate.isValid()) {
+    return "Invalid date";
+  }
+
+  return parsedDate.format("DD/MM/YYYY HH:mm:ss");
+}

@@ -1,32 +1,33 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Table } from "antd";
-import { getUsers } from "@/api/users-management.api";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { App, message, Table } from "antd";
+import { deleteUser, getUsers } from "@/api/user-management.api";
 import { columnConfig } from "@/app/(dashboard)/identity/users/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { IParamsList } from "@/types/common";
+import { PaginationType } from "@/types/pagination.type";
 import { convertPagination } from "@/utils/convert-pagination";
 import HeaderTable from "./Components/HeaderTable";
 import ModalCreate from "./Components/ModalCreate";
-import ModalDelete from "./Components/ModalDelete";
 import ModalUpdate from "./Components/ModalUpdate";
 
 const UsersManagement = () => {
+  const { modal } = App.useApp();
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
-  const [param, setParam] = useState(DEFAULT_PARAM);
-  const [filterData, setFilterData] = useState<any>({});
+  const [param, setParam] = useState<PaginationType>(DEFAULT_PARAM);
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
   });
 
   const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-users", filterData, param, keywordSearch],
+    queryKey: ["list-users", param, keywordSearch],
 
     queryFn: () => {
       const params: IParamsList = convertPagination(param.page, param.size);
@@ -36,17 +37,42 @@ const UsersManagement = () => {
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
-    useOnClickCheckboxTable(data?.data?.items || []);
+    useOnClickCheckboxTable(data?.items || []);
 
-  const [userIdSelected, setUserIdSelected] = useState(null);
+  const [userIdSelected, setUserIdSelected] = useState<string | undefined>(
+    undefined
+  );
 
   const [isCreateModalOpen, , hideCreateModal, showCreateModal] = useToggle();
   const [isUpdateModalOpen, , hideUpdateModal, showUpdateModal] = useToggle();
-  const [isDeleteModalOpen, , hideDeleteModal, showDeleteModal] = useToggle();
 
-  const handleRefetch = () => {
-    refetch();
-    setUserIdSelected(null);
+  const deleteUserMutation = useMutation({
+    mutationFn: () => {
+      if (userIdSelected) return deleteUser(userIdSelected);
+      else {
+        throw new Error("User ID is required to delete user.");
+      }
+    },
+    onSuccess: () => {
+      message.success("Delete successful!");
+      refetch();
+    },
+    onError: () => {
+      message.error("Delete failed!");
+    },
+  });
+
+  const onDeleteClick = () => {
+    modal.confirm({
+      title: "Are you sure delete this user?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        deleteUserMutation.mutate();
+      },
+    });
   };
 
   useEffect(() => {
@@ -65,9 +91,9 @@ const UsersManagement = () => {
           columns={columnConfig({
             setUserIdSelected,
             showUpdateModal,
-            showDeleteModal,
+            onDeleteClick,
           })}
-          dataSource={data?.data.items || []}
+          dataSource={data?.items || []}
           scroll={{
             x: 1400,
             y: 500,
@@ -78,10 +104,14 @@ const UsersManagement = () => {
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
-            total: data?.data.totalCount,
+            total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination: { current?: number; pageSize?: number }) =>
+            setParam({
+              ...param,
+              page: pagination?.current ?? param.page,
+              size: pagination?.pageSize ?? param.size,
+            })
           }
           loading={isFetching}
           rowKey="id"
@@ -89,22 +119,30 @@ const UsersManagement = () => {
         />
       </div>
       <ModalCreate
-        showModalCreateUser={isCreateModalOpen}
-        closeModalCreateUser={hideCreateModal}
-        handleRefetch={handleRefetch}
+        isOpen={isCreateModalOpen}
+        onClose={(success?: boolean) => {
+          hideCreateModal();
+          setUserIdSelected(undefined);
+          if (success) {
+            refetch();
+          }
+        }}
       />
-      <ModalUpdate
-        userIdSelected={userIdSelected}
-        showModalUpdateUser={isUpdateModalOpen}
-        closeModalUpdateUser={hideUpdateModal}
-        handleRefetch={handleRefetch}
-      />
-      <ModalDelete
-        userIdSelected={userIdSelected}
-        showModalDeleteUser={isDeleteModalOpen}
-        closeModalDeleteUser={hideDeleteModal}
-        handleRefetch={handleRefetch}
-      />
+      {userIdSelected && (
+        <ModalUpdate
+          key={"users-" + userIdSelected}
+          userId={userIdSelected}
+          isOpen={isUpdateModalOpen}
+          onClose={(success?: boolean) => {
+            hideUpdateModal();
+            setUserIdSelected(undefined);
+
+            if (success) {
+              refetch();
+            }
+          }}
+        />
+      )}
     </>
   );
 };

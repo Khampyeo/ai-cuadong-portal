@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserDto = {
   id?: string;
   creationTime: string;
   creatorId: string;

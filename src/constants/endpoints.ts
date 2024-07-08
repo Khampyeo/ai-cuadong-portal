@@ -44,5 +44,6 @@ export const ENDPOINTS = {
     DELETE: "/identity/users/{id}",
     GET_BY_ID: "/identity/users/{id}",
     GET_ROLE_BY_ID: "/identity/users/{id}/roles",
+    ASSIGNABLE_ROLES: "/identity/users/assignable-roles",
   },
 };

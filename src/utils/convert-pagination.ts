@@ -3,8 +3,12 @@ export const convertPagination = (
   pageSize: number,
   sorting?: string
 ) => {
-  const SkipCount = (pageNo - 1) * pageSize;
-  const MaxResultCount = pageSize;
-  const Sorting = sorting;
-  return { SkipCount, MaxResultCount, Sorting };
+  const skipCount = (pageNo - 1) * pageSize;
+  const maxResultCount = pageSize;
+
+  return {
+    skipCount,
+    maxResultCount,
+    sorting,
+  };
 };

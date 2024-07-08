@@ -10,7 +10,7 @@ export type PagedResultDto<T> = {
 };
 
 export interface IParamsList {
-  Sorting?: string;
-  SkipCount: number;
-  MaxResultCount: number;
+  sorting?: string;
+  skipCount: number;
+  maxResultCount: number;
 }

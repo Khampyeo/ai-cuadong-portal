@@ -1,86 +1,116 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
+import { AnyObject } from "antd/es/_util/type";
+import { AxiosError } from "axios";
 import {
-  getRoleUserById,
+  getAssignableRoles,
   getUserById,
+  getUserRoles,
   updateUser,
-} from "@/api/users-management.api";
+} from "@/api/user-management.api";
+import { RoleDto } from "@/types/role";
+import { UserDto } from "@/types/user.type";
 import FormUpdate from "./FormUpdate";
 import styles from "../styles/modal-update.module.scss";
 
-const ModalUpdate = ({
-  userIdSelected,
-  showModalUpdateUser,
-  closeModalUpdateUser,
-  handleRefetch,
-}: any) => {
+interface Props {
+  userId: string | undefined;
+  isOpen: boolean;
+  onClose: (success?: boolean) => void;
+}
+
+const ModalUpdate = ({ userId, isOpen, onClose }: Props) => {
   const [formUpdate] = Form.useForm();
-  const [selected, setSelected] = useState(0);
   const userData = useQuery({
-    queryKey: [userIdSelected, "user-data"],
+    queryKey: [userId, "user-data"],
     queryFn: async () => {
-      return await getUserById(userIdSelected);
+      if (userId) return await getUserById(userId);
+      else {
+        throw new Error("User ID is required to get data of user.");
+      }
     },
-    enabled: !!userIdSelected,
-  });
-  const userRole = useQuery({
-    queryKey: [userIdSelected, "user-role"],
-    queryFn: async () => {
-      return await getRoleUserById(userIdSelected);
-    },
-    enabled: !!userIdSelected,
+    enabled: !!userId,
   });
 
-  const mutationUpdateUser = useMutation({
-    mutationFn: () => {
-      const body = {
-        userName: formUpdate.getFieldValue("username"),
-        name: formUpdate.getFieldValue("name"),
-        surname: formUpdate.getFieldValue("surname"),
-        email: formUpdate.getFieldValue("email"),
-        phoneNumber: formUpdate.getFieldValue("phone-number"),
-        isActive: formUpdate.getFieldValue("is-active"),
-        lockoutEnabled: formUpdate.getFieldValue("lockout-enabled"),
-        roleNames: formUpdate.getFieldValue("roles"),
-        password: formUpdate.getFieldValue("password"),
-      };
-      return updateUser(userIdSelected, body);
+  const userRole = useQuery({
+    queryKey: [userId, "user-role"],
+    queryFn: async () => {
+      if (userId) return await getUserRoles(userId);
+      else {
+        throw new Error("User ID is required to get role of user.");
+      }
     },
-    onSuccess: async (data: any) => {
-      message.success("Update susccessed!");
-      handleClose();
-      handleRefetch();
+    enabled: !!userId,
+  });
+
+  const updateUserMutation = useMutation({
+    mutationFn: (values: UserDto) => {
+      if (userId) return updateUser(userId, values);
+      else {
+        throw new Error("User ID is required to update user.");
+      }
     },
-    onError: async (error: any) => {
-      message.error(error.response.data.error.message);
-      handleRefetch();
+    onSuccess: async () => {
+      message.success("Update successful!");
+      handleCloseModal(true);
+    },
+    onError: async (
+      error: AxiosError<{
+        error: AnyObject;
+      }>
+    ) => {
+      if (error.response?.data?.error?.message) {
+        message.error(error.response.data.error.message);
+      } else {
+        message.error("Failed to update user");
+      }
     },
   });
-  const handleClose = () => {
-    closeModalUpdateUser();
-    setSelected(0);
+
+  const listRoles = useQuery({
+    queryKey: ["list-roles"],
+    queryFn: async () => {
+      return await getAssignableRoles();
+    },
+  });
+
+  useEffect(() => {
+    if (userData.data && userRole.data) {
+      formUpdate.setFieldsValue({
+        ...userData.data.data,
+        roles: userRole.data.data.items.map((item: RoleDto) => item.name),
+      });
+    }
+  }, [userData, formUpdate, userRole]);
+
+  const handleCloseModal = (success?: boolean) => {
+    onClose(success);
+    formUpdate.resetFields();
   };
+
   return (
     <>
       <Modal
-        open={showModalUpdateUser}
+        open={isOpen}
         title={"Update user"}
         width={800}
-        onOk={() => mutationUpdateUser.mutate()}
-        onCancel={handleClose}
+        onOk={() =>
+          formUpdate
+            .validateFields()
+            .then((values: UserDto) => updateUserMutation.mutate(values))
+        }
+        onCancel={() => handleCloseModal()}
         okText={"Update"}
+        loading={userData.isFetching || userRole.isFetching}
+        confirmLoading={updateUserMutation.isPending}
       >
         <div className={styles.modal_wrapper}>
-          <FormUpdate
-            form={formUpdate}
-            data={userData?.data?.data}
-            role={userRole?.data?.data}
-            selected={selected}
-            setSelected={setSelected}
-          />
+          {userId && (
+            <FormUpdate form={formUpdate} listRoles={listRoles?.data || []} />
+          )}
         </div>
       </Modal>
     </>

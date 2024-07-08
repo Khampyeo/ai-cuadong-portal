@@ -93,7 +93,7 @@ const DocumentManagement = () => {
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
-            total: data?.totalCount,
+            total: data?.data.totalCount,
           }}
           onChange={(page: any) =>
             setParam({ ...param, page: page?.current, size: page?.pageSize })
