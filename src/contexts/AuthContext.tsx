@@ -8,13 +8,15 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { getAccount, login, logout } from "@/api/authenticate.api";
+import { getApplicationConfiguration } from "@/api/application-configuration.api";
+import { login, logout } from "@/api/authenticate.api";
+import { ApplicationConfiguration } from "@/types/application-configuration";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   isLoading: boolean;
   isFetching: boolean;
-  account: any | null;
+  configuration?: ApplicationConfiguration;
   errorMessage: string | null;
   handleLogin: (
     username: string,
@@ -27,8 +29,8 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isLoading: true,
-  isFetching: true,
-  account: null,
+  isFetching: false,
+  configuration: undefined,
   handleLogin: async () => {},
   handleLogout: () => {},
   errorMessage: null,
@@ -38,32 +40,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [account, setAccount] = useState<any | null>(null);
+  const [configuration, setConfiguration] = useState<
+    ApplicationConfiguration | undefined
+  >(undefined);
 
   useEffect(() => {
-    handleGetAccount();
-    setIsLoading(false);
+    handleGetApplicationConfiguration();
   }, []);
 
-  const handleGetAccount = async () => {
+  const handleGetApplicationConfiguration = async () => {
     try {
-      setIsFetching(true);
-      const response = await getAccount();
+      setIsLoading(true);
+      const response = await getApplicationConfiguration();
 
       if (response.status === 200 || response.data) {
-        setAccount(response.data);
-        setIsAuthenticated(true);
+        setConfiguration(response.data);
+        if (response.data.currentUser.isAuthenticated) {
+          setIsAuthenticated(true);
+        }
       } else {
         throw new Error("Failed to fetch account");
       }
     } catch (error) {
       console.error(error);
       setIsAuthenticated(false);
-      setAccount(null);
+      setConfiguration(undefined);
     }
-    setIsFetching(false);
+    setIsLoading(false);
   };
 
   const handleLogin = async (
@@ -72,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     rememberMe: boolean
   ) => {
     setIsFetching(true);
+    setErrorMessage(null);
     try {
       const response = await login({
         userNameOrEmailAddress: email,
@@ -79,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         rememberMe,
       });
       if (response.status === 200 && response.data.result === 1) {
-        await handleGetAccount();
+        await handleGetApplicationConfiguration();
         router.push("/");
       } else {
         setErrorMessage("Authentication Failed");
@@ -94,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const handleLogout = async () => {
     await logout();
     setIsAuthenticated(false);
-    setAccount(null);
+    setConfiguration(undefined);
     router.push("/login");
   };
 
@@ -104,7 +110,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         isLoading,
         isFetching,
-        account,
+        configuration,
         handleLogin,
         errorMessage,
         handleLogout,

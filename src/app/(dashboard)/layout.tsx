@@ -12,13 +12,13 @@ const MainLayout = ({
   children: React.ReactNode;
 }>) => {
   const router = useRouter();
-  const { isLoading, isAuthenticated, isFetching } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && !isFetching && !isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       router.replace("/login");
     }
-  }, [isLoading, isAuthenticated, router, isFetching]);
+  }, [isAuthenticated, router, isLoading]);
 
   return (
     <>

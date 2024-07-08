@@ -60,7 +60,11 @@ const CreateModal = ({ isOpen, onClose }: Props) => {
             label="Admin Email Address"
             name="adminEmailAddress"
             rules={[
-              { required: true, message: "Please input admin email address!" },
+              {
+                required: true,
+                type: "email",
+                message: "Please input admin email address!",
+              },
             ]}
           >
             <Input />
