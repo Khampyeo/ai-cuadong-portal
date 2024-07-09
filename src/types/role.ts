@@ -1,4 +1,4 @@
-import { PagedAndSortedResultRequestDto } from "./common";
+import { PaginationDto } from "./common";
 
 export type RoleDto = {
   id: string;
@@ -6,8 +6,8 @@ export type RoleDto = {
 };
 
 export type GetRolesInput = {
-  Filter?: string;
-} & PagedAndSortedResultRequestDto;
+  filter?: string;
+} & PaginationDto;
 
 export type PermissionGrantInfoDto = {
   name: string;

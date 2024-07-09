@@ -1,25 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { App, message, Table } from "antd";
+import { App, Button, message, Table } from "antd";
 import { deleteUser, getUsers } from "@/api/user-management.api";
 import { columnConfig } from "@/app/(dashboard)/identity/users/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { IParamsList, PaginationType } from "@/types/common";
 import { convertPagination } from "@/utils/convert-pagination";
-import HeaderTable from "./Components/HeaderTable";
 import ModalCreate from "./Components/ModalCreate";
 import ModalUpdate from "./Components/ModalUpdate";
+import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const UsersManagement = () => {
   const { modal } = App.useApp();
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
-  const [param, setParam] = useState<PaginationType>(DEFAULT_PARAM);
+  const [param, setParam] = useState(DEFAULT_PARAM);
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
@@ -29,7 +28,8 @@ const UsersManagement = () => {
     queryKey: ["list-users", param, keywordSearch],
 
     queryFn: () => {
-      const params: IParamsList = convertPagination(param.page, param.size);
+      const params = convertPagination(param.current, param.pageSize);
+      params.sorting = "NormalizedUserName";
 
       return getUsers(params);
     },
@@ -45,6 +45,10 @@ const UsersManagement = () => {
   const [isCreateModalOpen, , hideCreateModal, showCreateModal] = useToggle();
   const [isUpdateModalOpen, , hideUpdateModal, showUpdateModal] = useToggle();
 
+  const reloadClick = () => {
+    refetch();
+  };
+
   const deleteUserMutation = useMutation({
     mutationFn: () => {
       if (userIdSelected) return deleteUser(userIdSelected);
@@ -55,9 +59,6 @@ const UsersManagement = () => {
     onSuccess: () => {
       message.success("Delete successful!");
       refetch();
-    },
-    onError: () => {
-      message.error("Delete failed!");
     },
   });
 
@@ -83,8 +84,24 @@ const UsersManagement = () => {
 
   return (
     <>
-      <div className="table-container bg-white rounded-lg">
-        <HeaderTable openModalCreateUser={showCreateModal} />
+      <div className="table-container">
+        <div className="table-header flex mb-3">
+          <div></div>
+          <div className="flex-1 flex justify-end gap-3">
+            <Button type="primary" onClick={showCreateModal}>
+              <AddIcon />
+              Create
+            </Button>
+            <Button
+              type="primary"
+              className="!bg-sky-500"
+              onClick={reloadClick}
+            >
+              <ReloadOutlined />
+              Reload
+            </Button>
+          </div>
+        </div>
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
@@ -98,18 +115,18 @@ const UsersManagement = () => {
             y: 500,
           }}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(pagination: { current?: number; pageSize?: number }) =>
+          onChange={(pagination) =>
             setParam({
               ...param,
-              page: pagination?.current ?? param.page,
-              size: pagination?.pageSize ?? param.size,
+              current: pagination.current,
+              pageSize: pagination.pageSize,
             })
           }
           loading={isFetching}
@@ -117,16 +134,18 @@ const UsersManagement = () => {
           size={"large"}
         />
       </div>
-      <ModalCreate
-        isOpen={isCreateModalOpen}
-        onClose={(success?: boolean) => {
-          hideCreateModal();
-          setUserIdSelected(undefined);
-          if (success) {
-            refetch();
-          }
-        }}
-      />
+      {isCreateModalOpen && (
+        <ModalCreate
+          isOpen={isCreateModalOpen}
+          onClose={(success?: boolean) => {
+            hideCreateModal();
+            setUserIdSelected(undefined);
+            if (success) {
+              refetch();
+            }
+          }}
+        />
+      )}
       {userIdSelected && (
         <ModalUpdate
           key={"users-" + userIdSelected}

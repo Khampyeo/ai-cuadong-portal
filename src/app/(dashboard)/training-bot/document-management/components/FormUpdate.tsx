@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
-import moment from "moment";
 import styles from "../styles/form-update.module.scss";
 
 interface Props {
@@ -12,19 +11,16 @@ interface Props {
 const FormUpdate = ({ form, data }: Props) => {
   useEffect(() => {
     if (data && form) {
-      console.log(data);
-
       form.setFieldsValue({
         "document-name": data.name,
         category: data.category,
         language: data.language,
         "related-link": data.relatedLink,
         status: data.status,
-        "published-date": data.creationTime ? moment(data.creationTime) : null,
+        "published-date": data.creationTime,
       });
     }
   }, [data, form]);
-  console.log(form?.getFieldsValue());
 
   return (
     <Form form={form} className={styles.form_modal_content}>

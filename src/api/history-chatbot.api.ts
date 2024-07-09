@@ -626,7 +626,7 @@ export const getHistoryChatbot = async () => {
         subpurpose: "",
       },
     ],
-    totalCount: 1399,
+    totalCount: 50,
   };
   return response;
 };

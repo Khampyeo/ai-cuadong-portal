@@ -1,5 +1,6 @@
-import axios from "@/config/axios";
+import { fetchApi } from "@/config/fetchApi";
 import { ENDPOINTS } from "@/constants/endpoints";
+import { PagedResultDto } from "@/types/common";
 import {
   GetPermissionListResultDto,
   GetRolesInput,
@@ -7,43 +8,41 @@ import {
 } from "@/types/role";
 
 export const getRoles = async (params?: GetRolesInput) => {
-  const data = await axios.get(ENDPOINTS.ROLES.LIST, {
-    params,
-  });
-  const response = {
-    totalCount: data.data?.totalCount,
-    items: data.data.items,
-  };
+  const response = await fetchApi.get<PagedResultDto<RoleDto>>(
+    ENDPOINTS.ROLES.LIST,
+    params
+  );
+
   return response;
 };
 
 export const createRole = async (record: RoleDto) => {
-  const response = axios.post(ENDPOINTS.ROLES.CREATE, record);
+  const response = fetchApi.post(ENDPOINTS.ROLES.CREATE, record);
   return response;
 };
 
 export const getRoleById = async (id: string) => {
   const url = `${ENDPOINTS.ROLES.GET_BY_ID.replace("{id}", id)}`;
-  const response = axios.get(url);
+  const response = fetchApi.get(url);
   return response;
 };
 
 export const updateRole = async (id: string, record: RoleDto) => {
   const url = `${ENDPOINTS.ROLES.UPDATE.replace("{id}", id)}`;
-  const response = axios.put(url, record);
+  const response = fetchApi.put(url, record);
   return response;
 };
 
 export const deleteRole = async (id: string) => {
   const url = `${ENDPOINTS.ROLES.DELETE.replace("{id}", id)}`;
-  const response = axios.delete(url);
+  const response = fetchApi.delete(url);
   return response;
 };
 
 export const getRolePermissions = async (roleName: string) => {
   const url = `${ENDPOINTS.ROLES.GET_PERMISSIONS}?providerName=R&providerKey=${roleName}`;
-  const response = await axios.get<GetPermissionListResultDto>(url);
-  return response.data;
+  const response = await fetchApi.get<GetPermissionListResultDto>(url);
+  return response;
 };
 
 export const updateRolePermissions = async (
@@ -51,7 +50,7 @@ export const updateRolePermissions = async (
   permissions: { name: string; isGranted: boolean }[]
 ) => {
   const url = `${ENDPOINTS.ROLES.UPDATE_PERMISSIONS}?providerName=R&providerKey=${roleName}`;
-  await axios.put<GetPermissionListResultDto>(url, {
+  await fetchApi.put<GetPermissionListResultDto>(url, {
     permissions: permissions,
   });
 };

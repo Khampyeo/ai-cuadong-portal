@@ -1,4 +1,4 @@
-export interface IDocument {
+export type DocumentDto = {
   id: string;
   name: string;
   language: string;
@@ -9,4 +9,4 @@ export interface IDocument {
   creationTime: string;
   lastModificationTime: string;
   lastModifierId: string;
-}
+};

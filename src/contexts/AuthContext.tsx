@@ -55,9 +55,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(true);
       const response = await getApplicationConfiguration();
 
-      if (response.status === 200 || response.data) {
-        setConfiguration(response.data);
-        if (response.data.currentUser.isAuthenticated) {
+      if (response) {
+        setConfiguration(response);
+        if (response.currentUser.isAuthenticated) {
           setIsAuthenticated(true);
         }
       } else {
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password,
         rememberMe,
       });
-      if (response.status === 200 && response.data.result === 1) {
+      if (response.result === 1) {
         await handleGetApplicationConfiguration();
         router.push("/");
       } else {

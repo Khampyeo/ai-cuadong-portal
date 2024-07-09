@@ -2,25 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Form, Table } from "antd";
+import { Table } from "antd";
 import { getChunkDocuments } from "@/api/chunk-management.api";
-import HeaderTable from "@/app/(dashboard)/training-bot/chunk-management/components/HeaderTable";
-import ModalCreate from "@/app/(dashboard)/training-bot/chunk-management/components/ModalCreate";
-import ModalDelete from "@/app/(dashboard)/training-bot/chunk-management/components/ModalDelete";
-import ModalUpdate from "@/app/(dashboard)/training-bot/chunk-management/components/ModalUpdate";
 import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { IParamsList } from "@/types/common";
 import { convertPagination } from "@/utils/convert-pagination";
+import HeaderTable from "./components/HeaderTable";
+import ModalCreate from "./components/ModalCreate";
+import ModalUpdate from "./components/ModalUpdate";
 import styles from "./styles/common.module.scss";
 
 const ChunkManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
-  const [form] = Form.useForm();
   const [filterData, setFilterData] = useState<any>({});
   const [keyWordSearch, setKeyWordSearch] = useState({
     search: "",
@@ -31,14 +28,14 @@ const ChunkManagement = () => {
     queryKey: ["list-chunk-document", filterData, param, keyWordSearch],
 
     queryFn: () => {
-      const params: IParamsList = convertPagination(param.page, param.size);
+      const params = convertPagination(param.current, param.pageSize);
 
       return getChunkDocuments(params);
     },
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
-    useOnClickCheckboxTable(data?.data.items || []);
+    useOnClickCheckboxTable(data?.items || []);
 
   const [chunkIdSelected, setChunkIdSelected] = useState(null);
 
@@ -74,21 +71,25 @@ const ChunkManagement = () => {
             openModalUpdateChunk,
             openModalDeleteChunk,
           })}
-          dataSource={data?.data.items || []}
+          dataSource={data?.items || []}
           scroll={{
             x: 1400,
             y: 500,
           }}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination) =>
+            setParam({
+              ...param,
+              current: pagination?.current,
+              pageSize: pagination?.pageSize,
+            })
           }
           loading={isFetching}
           rowKey={(record: any) => record.id}
@@ -105,12 +106,6 @@ const ChunkManagement = () => {
         chunkIdSelected={chunkIdSelected}
         showModalUpdateChunk={showModalUpdateChunk}
         closeModalUpdateChunk={closeModalUpdateChunk}
-        handleRefetch={handleRefetch}
-      />
-      <ModalDelete
-        chunkIdSelected={chunkIdSelected}
-        showModalDeleteChunk={showModalDeleteChunk}
-        closeModalDeleteChunk={closeModalDeleteChunk}
         handleRefetch={handleRefetch}
       />
     </>

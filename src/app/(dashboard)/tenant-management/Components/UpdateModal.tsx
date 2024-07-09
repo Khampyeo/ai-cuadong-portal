@@ -20,9 +20,6 @@ const UpdateModal = ({ record, isOpen, onClose }: Props) => {
       message.success("Update successful!");
       onClose(true);
     },
-    onError: () => {
-      message.error("Update failed!");
-    },
   });
 
   const onSubmit = () => {

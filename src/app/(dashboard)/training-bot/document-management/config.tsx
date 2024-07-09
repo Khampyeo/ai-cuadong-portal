@@ -1,8 +1,8 @@
 import { Button, Dropdown, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
-import moment from "moment";
 import Status from "@/app/components/status/Status";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
+import { formatDateTime } from "@/utils/time-formating";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
 import styles from "./styles/config.module.scss";
@@ -57,13 +57,13 @@ export const columnConfig = ({
       title: "Created date",
       dataIndex: "creationTime",
       width: 176,
-      render: (date) => (date ? moment(date).format("DD-MM-YYYY, HH:mm") : ""),
+      render: (date) => formatDateTime(date),
     },
     {
       title: "Last modified date",
       dataIndex: "lastModificationTime",
       width: 202,
-      render: (date) => (date ? moment(date).format("DD-MM-YYYY, HH:mm") : ""),
+      render: (date) => formatDateTime(date),
     },
     {
       title: "Creator",

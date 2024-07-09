@@ -20,9 +20,6 @@ const CreateModal = ({ isOpen, onClose }: Props) => {
       form.resetFields();
       onClose(true);
     },
-    onError: () => {
-      message.error("Create failed!");
-    },
   });
 
   const onSubmit = () => {

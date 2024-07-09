@@ -27,10 +27,6 @@ const ModalCreate = ({
       closeModalCreateChunk();
       handleRefetch();
     },
-    onError: async (error: any) => {
-      message.error("Create failed!");
-      console.log(error);
-    },
   });
 
   return (

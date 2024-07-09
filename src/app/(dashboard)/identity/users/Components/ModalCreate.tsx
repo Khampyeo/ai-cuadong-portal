@@ -3,7 +3,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
 import { AnyObject } from "antd/es/_util/type";
-import { AxiosError } from "axios";
 import { createUser, getAssignableRoles } from "@/api/user-management.api";
 import { UserDto } from "@/types/user";
 import FormCreate from "./FormCreate";
@@ -24,17 +23,6 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
       message.success("Create successful!");
       formAdd.resetFields();
       onClose(true);
-    },
-    onError: async (
-      error: AxiosError<{
-        error: AnyObject;
-      }>
-    ) => {
-      if (error.response?.data?.error?.message) {
-        message.error(error.response.data.error.message);
-      } else {
-        message.error("Failed to create user");
-      }
     },
   });
 

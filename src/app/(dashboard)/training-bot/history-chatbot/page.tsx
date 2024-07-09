@@ -21,8 +21,8 @@ const HistoryChatbot = () => {
     seed: null,
   });
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: ["list-document", filterData, param, keyWordSearch],
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ["list-chats", filterData, param, keyWordSearch],
 
     queryFn: () => {
       return getHistoryChatbot();
@@ -54,15 +54,19 @@ const HistoryChatbot = () => {
             y: 500,
           }}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination: any) =>
+            setParam({
+              ...param,
+              current: pagination?.current,
+              pageSize: pagination?.pageSize,
+            })
           }
           loading={isFetching}
           rowKey={(record: any) => record.id}

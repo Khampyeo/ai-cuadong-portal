@@ -2,43 +2,40 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Form, Table } from "antd";
+import { Table } from "antd";
 import { getDocuments } from "@/api/document-management.api";
-import HeaderTable from "@/app/(dashboard)/training-bot/document-management/components/HeaderTable";
-import ModalCreate from "@/app/(dashboard)/training-bot/document-management/components/ModalCreate";
-import ModalDelete from "@/app/(dashboard)/training-bot/document-management/components/ModalDelete";
-import ModalUpdate from "@/app/(dashboard)/training-bot/document-management/components/ModalUpdate";
 import { columnConfig } from "@/app/(dashboard)/training-bot/document-management/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { IParamsList } from "@/types/common";
 import { convertPagination } from "@/utils/convert-pagination";
+import HeaderTable from "./components/HeaderTable";
+import ModalCreate from "./components/ModalCreate";
+import ModalUpdate from "./components/ModalUpdate";
 import styles from "./common.module.scss";
 
 const DocumentManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
-  const [form] = Form.useForm();
   const [filterData, setFilterData] = useState<any>({});
   const [keyWordSearch, setKeyWordSearch] = useState({
     search: "",
     seed: null,
   });
 
-  const { data, isLoading, isFetching, refetch } = useQuery({
+  const { data, isFetching, refetch } = useQuery({
     queryKey: ["list-document", filterData, param, keyWordSearch],
 
     queryFn: () => {
-      const params: IParamsList = convertPagination(param.page, param.size);
+      const params = convertPagination(param.current, param.pageSize);
 
       return getDocuments(params);
     },
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
-    useOnClickCheckboxTable(data?.data?.items || []);
+    useOnClickCheckboxTable(data?.items || []);
 
   const [documentIdSelected, setDocumentIdSelected] = useState(null);
 
@@ -82,21 +79,25 @@ const DocumentManagement = () => {
             openModalUpdateDocument,
             openModalDeleteDocument,
           })}
-          dataSource={data?.data?.items || []}
+          dataSource={data?.items || []}
           scroll={{
             x: 1400,
             y: 500,
           }}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
-            total: data?.data.totalCount,
+            total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination) =>
+            setParam({
+              ...param,
+              current: pagination?.current,
+              pageSize: pagination?.pageSize,
+            })
           }
           loading={isFetching}
           rowKey={(record: any) => record.id}
@@ -112,11 +113,6 @@ const DocumentManagement = () => {
         documentIdSelected={documentIdSelected}
         showModalUpdateDocument={showModalUpdateDocument}
         closeModalUpdateDocument={closeModalUpdateDocument}
-      />
-      <ModalDelete
-        documentIdSelected={documentIdSelected}
-        showModalDeleteDocument={showModalDeleteDocument}
-        closeModalDeleteDocument={closeModalDeleteDocument}
       />
     </>
   );

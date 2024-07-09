@@ -1,4 +1,4 @@
-export type PagedAndSortedResultRequestDto = {
+export type PaginationDto = {
   sorting?: string;
   skipCount?: number;
   maxResultCount: number;
@@ -9,13 +9,15 @@ export type PagedResultDto<T> = {
   items: T[];
 };
 
-export interface IParamsList {
-  sorting?: string;
-  skipCount: number;
-  maxResultCount: number;
-}
+export type PaginationData = {
+  current?: number;
+  pageSize?: number;
+};
 
-export type PaginationType = {
-  page: number;
-  size: number;
+export type ResponseError = {
+  error?: {
+    details?: string;
+    message?: string;
+    validationErrors?: { message?: string }[];
+  };
 };

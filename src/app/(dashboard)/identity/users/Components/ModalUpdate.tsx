@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
-import { AnyObject } from "antd/es/_util/type";
-import { AxiosError } from "axios";
 import {
   getAssignableRoles,
   getUserById,
@@ -57,17 +55,6 @@ const ModalUpdate = ({ userId, isOpen, onClose }: Props) => {
       message.success("Update successful!");
       handleCloseModal(true);
     },
-    onError: async (
-      error: AxiosError<{
-        error: AnyObject;
-      }>
-    ) => {
-      if (error.response?.data?.error?.message) {
-        message.error(error.response.data.error.message);
-      } else {
-        message.error("Failed to update user");
-      }
-    },
   });
 
   const listRoles = useQuery({
@@ -78,10 +65,10 @@ const ModalUpdate = ({ userId, isOpen, onClose }: Props) => {
   });
 
   useEffect(() => {
-    if (userData.data && userRole.data) {
+    if (userData.data) {
       formUpdate.setFieldsValue({
-        ...userData.data.data,
-        roles: userRole.data.data.items.map((item: RoleDto) => item.name),
+        ...userData.data,
+        roles: userRole.data?.items.map((item: RoleDto) => item.name),
       });
     }
   }, [userData, formUpdate, userRole]);

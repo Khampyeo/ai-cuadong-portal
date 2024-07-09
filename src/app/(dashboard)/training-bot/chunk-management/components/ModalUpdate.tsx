@@ -37,9 +37,6 @@ const ModalUpdate = ({
       closeModalUpdateChunk();
       handleRefetch();
     },
-    onError: async (error: any) => {
-      message.error("Create failed!");
-    },
   });
 
   return (
@@ -54,7 +51,7 @@ const ModalUpdate = ({
         centered
       >
         <div className={styles.modal_wrapper}>
-          <FormUpdate form={formUpdate} data={data?.data} />
+          <FormUpdate form={formUpdate} data={data} />
         </div>
       </Modal>
     </>

@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
-import moment from "moment";
 import { createDocument } from "@/api/document-management.api";
 import FormCreate from "./FormCreate";
 import styles from "../styles/modal-create.module.scss";
@@ -20,19 +19,13 @@ const ModalCreate = ({
         language: formAdd.getFieldValue("language"),
         relatedLink: formAdd.getFieldValue("related-link"),
         status: formAdd.getFieldValue("status"),
-        publishedDate: formAdd.getFieldValue("published-date")
-          ? moment(formAdd.getFieldValue("published-date")).toISOString()
-          : "",
+        publishedDate: formAdd.getFieldValue("published-date"),
       };
-      console.log(body);
       return createDocument(body);
     },
     onSuccess: async (data: any) => {
       message.success("Create susccessed!");
       closeModalCreateDocument();
-    },
-    onError: async (data: any) => {
-      message.error("Create failed!");
     },
   });
 

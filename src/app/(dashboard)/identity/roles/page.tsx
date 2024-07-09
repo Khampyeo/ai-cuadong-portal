@@ -10,8 +10,8 @@ import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { PaginationType } from "@/types/common";
 import { GetRolesInput, RoleDto } from "@/types/role";
+import { convertPagination } from "@/utils/convert-pagination";
 import CreateModal from "./Components/CreateModal";
 import PermissionsModal from "./Components/PermissionsModal";
 import UpdateModal from "./Components/UpdateModal";
@@ -22,7 +22,7 @@ import EditIcon from "@/../public/icon/icon_edit.svg";
 const RoleManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
-  const [param, setParam] = useState<PaginationType>(DEFAULT_PARAM);
+  const [param, setParam] = useState(DEFAULT_PARAM);
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
@@ -32,10 +32,11 @@ const RoleManagement = () => {
     queryKey: ["list-roles", param, keywordSearch],
 
     queryFn: () => {
-      const params: GetRolesInput = {
-        skipCount: (param.page - 1) * param.size,
-        maxResultCount: param.size,
-      };
+      const params: GetRolesInput = convertPagination(
+        param.current,
+        param.pageSize
+      );
+      params.sorting = "NormalizedName";
 
       return getRoles(params);
     },
@@ -48,7 +49,6 @@ const RoleManagement = () => {
     onSuccess: () => {
       refetch();
     },
-    onError: () => {},
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
@@ -175,7 +175,7 @@ const RoleManagement = () => {
   return (
     <>
       <div className="table-container">
-        <div className="table-header flex my-3">
+        <div className="table-header flex mb-3">
           <div></div>
           <div className="flex-1 flex justify-end gap-3">
             <Button type="primary" onClick={showCreateModal}>
@@ -197,18 +197,18 @@ const RoleManagement = () => {
           columns={columns}
           dataSource={data?.items || []}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(pagination: { current?: number; pageSize?: number }) =>
+          onChange={(pagination) =>
             setParam({
               ...param,
-              page: pagination?.current ?? param.page,
-              size: pagination?.pageSize ?? param.size,
+              current: pagination?.current,
+              pageSize: pagination?.pageSize,
             })
           }
           loading={isFetching}
@@ -219,18 +219,22 @@ const RoleManagement = () => {
       <CreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
       {selected && (
         <>
-          <UpdateModal
-            isOpen={isUpdateModalOpen}
-            onClose={onUpdateModalClose}
-            record={selected}
-            key={"roles-" + selected.id}
-          />
-          <PermissionsModal
-            isOpen={isPermissionsModalOpen}
-            onClose={onPermissionsModalClose}
-            record={selected}
-            key={"permissions-" + selected.id}
-          />
+          {isUpdateModalOpen && (
+            <UpdateModal
+              isOpen={isUpdateModalOpen}
+              onClose={onUpdateModalClose}
+              record={selected}
+              key={"roles-" + selected.id}
+            />
+          )}
+          {isPermissionsModalOpen && (
+            <PermissionsModal
+              isOpen={isPermissionsModalOpen}
+              onClose={onPermissionsModalClose}
+              record={selected}
+              key={"permissions-" + selected.id}
+            />
+          )}
         </>
       )}
     </>

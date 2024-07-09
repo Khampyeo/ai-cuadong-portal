@@ -1,10 +1,14 @@
+import { PaginationDto } from "@/types/common";
+
+const DEFAULT_PAGE_SIZE = 10;
+
 export const convertPagination = (
-  pageNo: number,
-  pageSize: number,
+  pageIndex?: number,
+  pageSize?: number,
   sorting?: string
-) => {
-  const skipCount = (pageNo - 1) * pageSize;
-  const maxResultCount = pageSize;
+): PaginationDto => {
+  const skipCount = ((pageIndex || 1) - 1) * (pageSize || DEFAULT_PAGE_SIZE);
+  const maxResultCount = pageSize || DEFAULT_PAGE_SIZE;
 
   return {
     skipCount,

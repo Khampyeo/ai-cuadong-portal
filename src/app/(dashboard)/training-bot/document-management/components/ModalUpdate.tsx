@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Form, message, Modal } from "antd";
-import moment from "moment";
 import { getDocumentById, updateDocument } from "@/api/document-management.api";
 import FormUpdate from "./FormUpdate";
 import styles from "../styles/modal-update.module.scss";
@@ -27,18 +26,13 @@ const ModalUpdate = ({
         language: formUpdate.getFieldValue("language"),
         relatedLink: formUpdate.getFieldValue("related-link"),
         status: formUpdate.getFieldValue("status"),
-        publishedDate: formUpdate.getFieldValue("published-date")
-          ? moment(formUpdate.getFieldValue("published-date")).toISOString()
-          : "",
+        publishedDate: formUpdate.getFieldValue("published-date"),
       };
       return updateDocument(documentIdSelected, body);
     },
     onSuccess: async (data: any) => {
       message.success("Create susccessed!");
       closeModalUpdateDocument();
-    },
-    onError: async (data: any) => {
-      message.error("Create failed!");
     },
   });
 
@@ -54,7 +48,7 @@ const ModalUpdate = ({
         centered
       >
         <div className={styles.modal_wrapper}>
-          <FormUpdate form={formUpdate} data={data?.data} />
+          <FormUpdate form={formUpdate} data={data} />
         </div>
       </Modal>
     </>

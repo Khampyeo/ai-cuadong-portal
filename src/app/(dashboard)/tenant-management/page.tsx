@@ -11,6 +11,7 @@ import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { GetTenantsInput, TenantDto } from "@/types/tenant";
+import { convertPagination } from "@/utils/convert-pagination";
 import CreateModal from "./Components/CreateModal";
 import UpdateModal from "./Components/UpdateModal";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
@@ -31,10 +32,11 @@ const TenantManagement = () => {
     queryKey: ["list-tenants", filterData, param, keywordSearch],
 
     queryFn: () => {
-      const params: GetTenantsInput = {
-        skipCount: (param.page - 1) * param.size,
-        maxResultCount: param.size,
-      };
+      const params: GetTenantsInput = convertPagination(
+        param.current,
+        param.pageSize
+      );
+      params.sorting = "Name";
 
       return getTenants(params);
     },
@@ -47,7 +49,6 @@ const TenantManagement = () => {
     onSuccess: () => {
       refetch();
     },
-    onError: () => {},
   });
 
   const [rowSelection, currentSelected, setCurrentSelected] =
@@ -144,7 +145,7 @@ const TenantManagement = () => {
   return (
     <>
       <div className="table-container">
-        <div className="table-header flex my-3">
+        <div className="table-header flex mb-3">
           <div></div>
           <div className="flex-1 flex justify-end gap-3">
             <Button type="primary" onClick={showCreateModal}>
@@ -166,15 +167,19 @@ const TenantManagement = () => {
           columns={columns}
           dataSource={data?.items || []}
           pagination={{
-            current: param.page,
-            pageSize: param.size,
+            current: param.current,
+            pageSize: param.pageSize,
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
             total: data?.totalCount,
           }}
-          onChange={(page: any) =>
-            setParam({ ...param, page: page?.current, size: page?.pageSize })
+          onChange={(pagination) =>
+            setParam({
+              ...param,
+              current: pagination?.current,
+              pageSize: pagination?.pageSize,
+            })
           }
           loading={isFetching}
           rowKey="id"

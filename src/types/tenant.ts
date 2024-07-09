@@ -1,4 +1,4 @@
-import { PagedAndSortedResultRequestDto } from "./common";
+import { PaginationDto } from "./common";
 
 export type TenantDto = {
   id: string;
@@ -7,4 +7,4 @@ export type TenantDto = {
 
 export type GetTenantsInput = {
   Filter?: string;
-} & PagedAndSortedResultRequestDto;
+} & PaginationDto;
