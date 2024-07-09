@@ -3,16 +3,54 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu } from "antd";
+import { useAuth } from "@/contexts/AuthContext";
 import useClickOutside from "@/hooks/useDetectClickOutSide";
 import { IMenuItem, ISidebarProps } from "@/types/sidebar";
-import { menuSidebar } from "./config";
+import { sidebarMenuItems } from "./config";
 import CollapseIcon from "@/../public/icon/icon_collapse.svg";
 import QuestionIcon from "@/../public/icon/icon_question.svg";
 import styles from "./common.module.scss";
 
+function filterMenuItems(
+  menuItems: IMenuItem[],
+  grantedPolicies: Record<string, boolean>
+): IMenuItem[] | undefined {
+  if (!menuItems || menuItems.length == 0) {
+    return undefined;
+  }
+
+  return menuItems
+    .filter((item) => {
+      if (!item.requiredPolicy) {
+        return true;
+      }
+
+      if (item.requiredPolicy.endsWith(".*")) {
+        const basePolicy = item.requiredPolicy.slice(0, -2);
+        return Object.keys(grantedPolicies).some(
+          (policy) => policy.startsWith(basePolicy) && grantedPolicies[policy]
+        );
+      }
+
+      return grantedPolicies[item.requiredPolicy];
+    })
+    .map((item) => {
+      const { requiredPolicy, ...rest } = item;
+      return {
+        ...rest,
+        children: filterMenuItems(item.children || [], grantedPolicies),
+      };
+    });
+}
+
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
   const router = useRouter();
   const pathName = usePathname();
+  const { configuration } = useAuth();
+  const menuItems = filterMenuItems(
+    sidebarMenuItems,
+    configuration?.auth.grantedPolicies || {}
+  );
   const [Item, settItem] = useState<string>("/");
   const [defaultOpenItem, setDefaultOpenItem] = useState<string | null>(null);
 
@@ -21,20 +59,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
   });
 
   useEffect(() => {
-    let menuDatas: IMenuItem[] = menuSidebar;
     let defaultValue: any = {
       parent: null,
       selected: "/",
     };
 
-    menuDatas.forEach((element) => {
-      if (pathName.includes(element?.key)) {
-        if (element.children) {
-          element.children.forEach((el) => {
-            if (pathName.includes(el.key)) {
+    sidebarMenuItems.forEach((menuItem) => {
+      if (pathName.includes(menuItem?.key)) {
+        if (menuItem.children) {
+          menuItem.children.forEach((menuChildItem) => {
+            if (pathName.includes(menuChildItem.key)) {
               defaultValue = {
-                parent: element.key,
-                selected: el.key,
+                parent: menuItem.key,
+                selected: menuChildItem.key,
               };
               return;
             }
@@ -42,7 +79,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
         } else {
           defaultValue = {
             parent: null,
-            selected: element.key,
+            selected: menuItem.key,
           };
           return;
         }
@@ -71,17 +108,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
           mode="inline"
           theme={"light"}
           inlineCollapsed={!sidebarOpen}
-          items={menuSidebar}
+          items={menuItems}
           onClick={(value) => handleClickNav(value)}
         />
       </div>
       <div className={styles.footer_wrapper}>
         <div className={styles.support}>
           <QuestionIcon />
-          <p> Need customer support?</p>
+          <p>Need customer support?</p>
         </div>
         <div className={styles.footer}>
-          <p> Copyright ©2024 | All rights reserved</p>
+          <p>Copyright ©{new Date().getFullYear()} | All rights reserved</p>
         </div>
       </div>
       <div

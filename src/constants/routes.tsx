@@ -1,6 +1,7 @@
 import { IMenuItem } from "@/types/sidebar";
 import BotIcon from "@/../public/icon/icon_bot.svg";
 import HomeIcon from "@/../public/icon/icon_home.svg";
+import SettingsIcon from "@/../public/icon/icon_settings.svg";
 import TenantIcon from "@/../public/icon/icon_tenant.svg";
 import UsersIcon from "@/../public/icon/icon_users.svg";
 
@@ -30,22 +31,26 @@ export const TRAINING_BOT: IMenuItem = {
   label: "Training Bot",
   icon: <BotIcon />,
   children: [DOCUMENT_MANAGEMENT, CHUNK_MANAGEMENT, HISTORY_CHATBOT],
+  requiredPolicy: "WebPortal.Documents",
 };
 
 export const TENANT_MANAGEMENT: IMenuItem = {
   key: "/tenant-management",
   label: "Tenant Management",
   icon: <TenantIcon />,
+  requiredPolicy: "AbpTenantManagement.Tenants",
 };
 
 export const IDENTITY_USERS: IMenuItem = {
   key: "/identity/users",
   label: "Users",
+  requiredPolicy: "AbpIdentity.Users",
 };
 
 export const IDENTITY_ROLES: IMenuItem = {
   key: "/identity/roles",
   label: "Roles",
+  requiredPolicy: "AbpIdentity.Roles",
 };
 
 export const IDENTITY_MANAGEMENT: IMenuItem = {
@@ -53,4 +58,21 @@ export const IDENTITY_MANAGEMENT: IMenuItem = {
   label: "Identity Management",
   icon: <UsersIcon />,
   children: [IDENTITY_USERS, IDENTITY_ROLES],
+  requiredPolicy: "AbpIdentity.*",
 };
+
+export const SETTING_MANAGEMENT: IMenuItem = {
+  key: "/settings-management",
+  label: "Setting Management",
+  icon: <SettingsIcon />,
+  children: [],
+  requiredPolicy: "SettingManagement.*",
+};
+
+export const routes = [
+  HOMEPAGE,
+  TRAINING_BOT,
+  TENANT_MANAGEMENT,
+  IDENTITY_MANAGEMENT,
+  SETTING_MANAGEMENT,
+];

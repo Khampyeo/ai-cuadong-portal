@@ -24,6 +24,7 @@ interface AuthContextProps {
     rememberMe: boolean
   ) => Promise<void>;
   handleLogout: () => void;
+  checkPermission: (name: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -34,6 +35,7 @@ const AuthContext = createContext<AuthContextProps>({
   handleLogin: async () => {},
   handleLogout: () => {},
   errorMessage: null,
+  checkPermission: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -104,6 +106,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     router.push("/login");
   };
 
+  const checkPermission = (name: string) => {
+    if (!configuration) {
+      return false;
+    }
+
+    if (name.endsWith(".*")) {
+      const basePolicy = name.slice(0, -2);
+      return Object.keys(configuration.auth.grantedPolicies).some(
+        (policy) =>
+          policy.startsWith(basePolicy) &&
+          configuration.auth.grantedPolicies[policy]
+      );
+    }
+
+    return !!configuration.auth.grantedPolicies[name];
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -114,6 +133,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         handleLogin,
         errorMessage,
         handleLogout,
+        checkPermission,
       }}
     >
       {children}

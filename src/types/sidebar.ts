@@ -10,4 +10,5 @@ export interface IMenuItem {
   label: string;
   icon?: ReactNode;
   children?: IMenuItem[];
+  requiredPolicy?: string;
 }

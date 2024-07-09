@@ -3,6 +3,10 @@
     .ant-menu {
       background-color: var(--background) !important;
     }
+    .ant-menu-submenu svg,
+    .ant-menu-item svg {
+      color: #1677ff !important;
+    }
     .ant-menu-item,
     .ant-menu-submenu-title {
       padding-left: 12px !important;

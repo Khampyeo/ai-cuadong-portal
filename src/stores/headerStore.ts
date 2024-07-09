@@ -7,5 +7,8 @@ interface HeaderState {
 
 export const useHeaderStore = create<HeaderState>((set) => ({
   headerTitle: "",
-  setHeaderTitle: (title: string) => set({ headerTitle: title }),
+  setHeaderTitle: (title: string) => {
+    set({ headerTitle: title });
+    document.title = title ? title + " - AVAGAI" : "AVAGAI";
+  },
 }));

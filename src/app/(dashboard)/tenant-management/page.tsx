@@ -7,6 +7,7 @@ import { App, Button, Dropdown, Table } from "antd";
 import type { TableProps } from "antd";
 import { deleteTenant, getTenants } from "@/api/tenant-management.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
+import { useAuth } from "@/contexts/AuthContext";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
@@ -21,12 +22,17 @@ import EditIcon from "@/../public/icon/icon_edit.svg";
 const TenantManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
+  const { checkPermission } = useAuth();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
   });
+
+  const allowCreate = checkPermission("AbpTenantManagement.Tenants.Create");
+  const allowUpdate = checkPermission("AbpTenantManagement.Tenants.Update");
+  const allowDelete = checkPermission("AbpTenantManagement.Tenants.Delete");
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["list-tenants", filterData, param, keywordSearch],
@@ -105,31 +111,35 @@ const TenantManagement = () => {
       width: 150,
       render: (record: TenantDto) => (
         <div className="flex gap-5 justify-center">
-          <Button
-            type="text"
-            size="small"
-            icon={<EditIcon />}
-            onClick={() => {
-              setSelected(record);
-              showUpdateModal();
-            }}
-          ></Button>
-          <Dropdown
-            placement="bottomRight"
-            menu={{
-              items: [
-                {
-                  key: "delete",
-                  danger: true,
-                  label: "Delete Tenant",
-                  onClick: () => onDeleteClick(record),
-                },
-              ],
-            }}
-            trigger={["click"]}
-          >
-            <Button type="text" size="small" icon={<ListIcon />}></Button>
-          </Dropdown>
+          {allowUpdate && (
+            <Button
+              type="text"
+              size="small"
+              icon={<EditIcon />}
+              onClick={() => {
+                setSelected(record);
+                showUpdateModal();
+              }}
+            ></Button>
+          )}
+          {allowDelete && (
+            <Dropdown
+              placement="bottomRight"
+              menu={{
+                items: [
+                  {
+                    key: "delete",
+                    danger: true,
+                    label: "Delete Tenant",
+                    onClick: () => onDeleteClick(record),
+                  },
+                ],
+              }}
+              trigger={["click"]}
+            >
+              <Button type="text" size="small" icon={<ListIcon />}></Button>
+            </Dropdown>
+          )}
         </div>
       ),
     },
@@ -148,10 +158,13 @@ const TenantManagement = () => {
         <div className="table-header flex mb-3">
           <div></div>
           <div className="flex-1 flex justify-end gap-3">
-            <Button type="primary" onClick={showCreateModal}>
-              <AddIcon />
-              Create
-            </Button>
+            {allowCreate && (
+              <Button type="primary" onClick={showCreateModal}>
+                <AddIcon />
+                Create
+              </Button>
+            )}
+
             <Button
               type="primary"
               className="!bg-sky-500"

@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { routes } from "@/constants/routes";
+import { useAuth } from "@/contexts/AuthContext";
 import Header from "../header";
 import Sidebar from "../sidebar/Sidebar";
 import styles from "./common.module.scss";
@@ -10,7 +13,31 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { checkPermission } = useAuth();
+  const pathName = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    let requiredPolicy: string | undefined;
+    routes.forEach((menuItem) => {
+      if (pathName.includes(menuItem?.key)) {
+        if (menuItem.children) {
+          menuItem.children.forEach((menuChildItem) => {
+            if (pathName.includes(menuChildItem.key)) {
+              requiredPolicy = menuChildItem.requiredPolicy;
+            }
+          });
+        } else {
+          requiredPolicy = menuItem.requiredPolicy;
+        }
+      }
+    });
+
+    if (requiredPolicy && !checkPermission(requiredPolicy)) {
+      router.push("/");
+    }
+  }, [pathName, router, checkPermission]);
 
   return (
     <>
