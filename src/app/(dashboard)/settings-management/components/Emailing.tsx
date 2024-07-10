@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SaveOutlined, SendOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { App, Button, Checkbox, Form, Input } from "antd";
+import { App, Button, Checkbox, Form, Input, Skeleton } from "antd";
 import { getEmailing, updateEmailing } from "@/api/settings-management.api";
 import { useToggle } from "@/hooks/useToggle";
 import { EmailingDto } from "@/types/settings-management";
@@ -17,7 +17,7 @@ const Emailing = () => {
     form
   );
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ["emailing"],
     queryFn: () => {
       return getEmailing();
@@ -42,6 +42,14 @@ const Emailing = () => {
       form.setFieldsValue(data);
     }
   }, [form, data]);
+
+  if (isFetching) {
+    return (
+      <div className="p-5">
+        <Skeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg p-5">
