@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
+import { App, Form, Input, Modal } from "antd";
 import { sendTestEmail } from "@/api/settings-management.api";
 import { SendTestEmailDto } from "@/types/settings-management";
 
@@ -9,6 +9,7 @@ type Props = {
 };
 
 const SendTestEmailModal = ({ isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [form] = Form.useForm<SendTestEmailDto>();
 
   const mutation = useMutation({

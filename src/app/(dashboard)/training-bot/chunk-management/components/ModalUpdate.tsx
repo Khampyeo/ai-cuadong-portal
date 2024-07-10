@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, message, Modal } from "antd";
+import { App, Form, Modal } from "antd";
 import {
   getChunkDocumentById,
   updateChunkDocument,
@@ -13,7 +13,7 @@ const ModalUpdate = ({
   closeModalUpdateChunk,
   handleRefetch,
 }: any) => {
-  //Add document
+  const { message } = App.useApp();
   const [formUpdate] = Form.useForm();
   const { data, isFetching } = useQuery({
     queryKey: [chunkIdSelected],

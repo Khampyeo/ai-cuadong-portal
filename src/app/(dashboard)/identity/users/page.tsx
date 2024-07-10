@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { App, Button, message, Table } from "antd";
+import { App, Button, Table } from "antd";
 import { deleteUser, getUsers } from "@/api/user-management.api";
 import { columnConfig } from "@/app/(dashboard)/identity/users/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -11,12 +11,12 @@ import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { convertPagination } from "@/utils/convert-pagination";
-import ModalCreate from "./Components/ModalCreate";
-import ModalUpdate from "./Components/ModalUpdate";
+import ModalCreate from "./components/ModalCreate";
+import ModalUpdate from "./components/ModalUpdate";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const UsersManagement = () => {
-  const { modal } = App.useApp();
+  const { modal, message } = App.useApp();
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [keywordSearch, setKeywordSearch] = useState({

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Form, Input, message, Modal } from "antd";
+import { App, Form, Input, Modal } from "antd";
 import { updateTenant } from "@/api/tenant-management.api";
 import { TenantDto } from "@/types/tenant";
 
@@ -10,6 +10,7 @@ type Props = {
 };
 
 const UpdateModal = ({ record, isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [form] = Form.useForm();
 
   const mutation = useMutation({

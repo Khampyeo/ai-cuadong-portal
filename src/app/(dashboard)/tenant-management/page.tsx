@@ -13,8 +13,9 @@ import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { GetTenantsInput, TenantDto } from "@/types/tenant";
 import { convertPagination } from "@/utils/convert-pagination";
-import CreateModal from "./Components/CreateModal";
-import UpdateModal from "./Components/UpdateModal";
+import CreateModal from "./components/CreateModal";
+import UpdateModal from "./components/UpdateModal";
+import FeaturesModal from "../components/FeaturesManagement/FeaturesModal";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
@@ -33,6 +34,9 @@ const TenantManagement = () => {
   const allowCreate = checkPermission("AbpTenantManagement.Tenants.Create");
   const allowUpdate = checkPermission("AbpTenantManagement.Tenants.Update");
   const allowDelete = checkPermission("AbpTenantManagement.Tenants.Delete");
+  const allowManageFeatures = checkPermission(
+    "AbpTenantManagement.Tenants.ManageFeatures"
+  );
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["list-tenants", filterData, param, keywordSearch],
@@ -62,6 +66,8 @@ const TenantManagement = () => {
 
   const [isCreateModalOpen, , hideCreateModal, showCreateModal] = useToggle();
   const [isUpdateModalOpen, , hideUpdateModal, showUpdateModal] = useToggle();
+  const [isFeaturesModalOpen, , hideFeaturesModal, showFeaturesModal] =
+    useToggle();
   const [selected, setSelected] = useState<TenantDto>();
 
   const reloadClick = () => {
@@ -82,6 +88,11 @@ const TenantManagement = () => {
     }
 
     hideUpdateModal();
+  };
+
+  const onFeaturesModalClose = () => {
+    setSelected(undefined);
+    hideFeaturesModal();
   };
 
   const onDeleteClick = (record: TenantDto) => {
@@ -121,6 +132,18 @@ const TenantManagement = () => {
                 showUpdateModal();
               }}
             ></Button>
+          )}
+          {allowManageFeatures && (
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                setSelected(record);
+                showFeaturesModal();
+              }}
+            >
+              Features
+            </Button>
           )}
           {allowDelete && (
             <Dropdown
@@ -201,12 +224,25 @@ const TenantManagement = () => {
       </div>
       <CreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
       {selected && (
-        <UpdateModal
-          isOpen={isUpdateModalOpen}
-          onClose={onUpdateModalClose}
-          record={selected}
-          key={selected.id}
-        />
+        <>
+          {isUpdateModalOpen && (
+            <UpdateModal
+              isOpen={isUpdateModalOpen}
+              onClose={onUpdateModalClose}
+              record={selected}
+              key={selected.id}
+            />
+          )}
+
+          {isFeaturesModalOpen && (
+            <FeaturesModal
+              isOpen={isFeaturesModalOpen}
+              onClose={onFeaturesModalClose}
+              record={selected}
+              key={"features-" + selected.id}
+            />
+          )}
+        </>
       )}
     </>
   );

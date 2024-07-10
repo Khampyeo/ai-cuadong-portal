@@ -1,23 +1,24 @@
 import { useMutation } from "@tanstack/react-query";
-import { Checkbox, Form, Input, message, Modal } from "antd";
-import { updateRole } from "@/api/role-management.api";
+import { App, Checkbox, Form, Input, Modal } from "antd";
+import { createRole } from "@/api/role-management.api";
 import { RoleDto } from "@/types/role";
 
 type Props = {
   isOpen: boolean;
   onClose: (success?: boolean) => void;
-  record?: RoleDto;
 };
 
-const UpdateModal = ({ record, isOpen, onClose }: Props) => {
+const CreateModal = ({ isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [form] = Form.useForm();
 
   const mutation = useMutation({
     mutationFn: (record: RoleDto) => {
-      return updateRole(record.id, record);
+      return createRole(record);
     },
     onSuccess: () => {
-      message.success("Update successful!");
+      message.success("Create successful!");
+      form.resetFields();
       onClose(true);
     },
   });
@@ -36,24 +37,16 @@ const UpdateModal = ({ record, isOpen, onClose }: Props) => {
   return (
     <Modal
       open={isOpen}
-      title={"Update Role"}
+      title={"Create Role"}
       width={600}
-      okText={"Update"}
       onOk={() => onSubmit()}
+      okText={"Create"}
       onCancel={() => onCloseClick()}
       confirmLoading={mutation.isPending}
       centered
     >
       <div>
-        <Form
-          form={form}
-          autoComplete="off"
-          layout="vertical"
-          initialValues={record}
-        >
-          <Form.Item name="id" hidden>
-            <Input />
-          </Form.Item>
+        <Form form={form} autoComplete="off" layout="vertical">
           <Form.Item
             label="Role Name"
             name="name"
@@ -73,4 +66,4 @@ const UpdateModal = ({ record, isOpen, onClose }: Props) => {
   );
 };
 
-export default UpdateModal;
+export default CreateModal;

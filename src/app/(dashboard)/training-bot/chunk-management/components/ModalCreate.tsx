@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Form, message, Modal } from "antd";
+import { App, Form, Modal } from "antd";
 import { createChunkDocument } from "@/api/chunk-management.api";
 import FormCreate from "./FormCreate";
 import styles from "../styles/modal-create.module.scss";
@@ -9,7 +9,7 @@ const ModalCreate = ({
   closeModalCreateChunk,
   handleRefetch,
 }: any) => {
-  //Add document
+  const { message } = App.useApp();
   const [formAdd] = Form.useForm();
 
   const mutationAddChunk = useMutation({

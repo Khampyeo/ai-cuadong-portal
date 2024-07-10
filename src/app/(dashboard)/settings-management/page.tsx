@@ -5,15 +5,12 @@ import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { useAuth } from "@/contexts/AuthContext";
 import { useHeaderStore } from "@/stores/headerStore";
-import Emailing from "./Components/Emailing";
+import Emailing from "./components/Emailing";
+import HostFeatures from "./components/HostFeatures";
 
 const SettingManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { checkPermission } = useAuth();
-
-  const onChange = (key: string) => {
-    console.log(key);
-  };
 
   const items: TabsProps["items"] = [];
 
@@ -22,6 +19,14 @@ const SettingManagement = () => {
       key: "emailing",
       label: "Emailing",
       children: <Emailing />,
+    });
+  }
+
+  if (checkPermission("FeatureManagement.ManageHostFeatures")) {
+    items.push({
+      key: "manageHostFeatures",
+      label: "Features",
+      children: <HostFeatures />,
     });
   }
 
@@ -34,12 +39,7 @@ const SettingManagement = () => {
 
   return (
     <>
-      <Tabs
-        tabPosition="left"
-        items={items}
-        onChange={onChange}
-        className="bg-white"
-      />
+      <Tabs tabPosition="left" items={items} className="bg-white" />
     </>
   );
 };

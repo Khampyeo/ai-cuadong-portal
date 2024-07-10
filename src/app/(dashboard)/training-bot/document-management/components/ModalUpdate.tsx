@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, message, Modal } from "antd";
+import { App, Form, Modal } from "antd";
 import { getDocumentById, updateDocument } from "@/api/document-management.api";
 import FormUpdate from "./FormUpdate";
 import styles from "../styles/modal-update.module.scss";
@@ -9,7 +9,7 @@ const ModalUpdate = ({
   showModalUpdateDocument,
   closeModalUpdateDocument,
 }: any) => {
-  //Add document
+  const { message } = App.useApp();
   const [formUpdate] = Form.useForm();
   const { data, isFetching } = useQuery({
     queryKey: [documentIdSelected],

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, message, Modal } from "antd";
+import { App, Form, Modal } from "antd";
 import {
   getAssignableRoles,
   getUserById,
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const ModalUpdate = ({ userId, isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [formUpdate] = Form.useForm();
   const userData = useQuery({
     queryKey: [userId, "user-data"],

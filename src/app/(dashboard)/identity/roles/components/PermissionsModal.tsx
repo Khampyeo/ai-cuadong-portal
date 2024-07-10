@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Checkbox, Divider, message, Modal, Tabs } from "antd";
+import { App, Checkbox, Divider, Modal, Tabs } from "antd";
 import type { CheckboxProps } from "antd";
 import {
   getRolePermissions,
   updateRolePermissions,
-} from "@/api/role-management.api";
+} from "@/api/permission-management.api";
 import useCheckedList from "@/hooks/useCheckedList";
 import {
   GetPermissionListResultDto,
@@ -20,9 +20,10 @@ type Props = {
 };
 
 const PermissionsModal = ({ record, isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const { checkedList, addItems, removeItems } = useCheckedList([]);
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ["role-permissions", record?.id],
 
     queryFn: () => {
@@ -93,6 +94,7 @@ const PermissionsModal = ({ record, isOpen, onClose }: Props) => {
       onOk={() => onSubmit()}
       okText={"Create"}
       onCancel={() => onCloseClick()}
+      loading={isFetching}
       confirmLoading={mutation.isPending}
       centered
     >

@@ -1,8 +1,7 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Form, message, Modal } from "antd";
-import { AnyObject } from "antd/es/_util/type";
+import { App, Form, Modal } from "antd";
 import { createUser, getAssignableRoles } from "@/api/user-management.api";
 import { UserDto } from "@/types/user";
 import FormCreate from "./FormCreate";
@@ -13,6 +12,7 @@ interface Props {
   onClose: (success?: boolean) => void;
 }
 const ModalCreate = ({ isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [formAdd] = Form.useForm();
 
   const createUsermutation = useMutation({

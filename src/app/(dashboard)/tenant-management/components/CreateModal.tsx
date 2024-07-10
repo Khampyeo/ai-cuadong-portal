@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { Checkbox, Form, Input, message, Modal } from "antd";
-import { createRole } from "@/api/role-management.api";
-import { RoleDto } from "@/types/role";
+import { App, Form, Input, Modal } from "antd";
+import { createTenant } from "@/api/tenant-management.api";
+import { TenantDto } from "@/types/tenant";
 
 type Props = {
   isOpen: boolean;
@@ -9,11 +9,12 @@ type Props = {
 };
 
 const CreateModal = ({ isOpen, onClose }: Props) => {
+  const { message } = App.useApp();
   const [form] = Form.useForm();
 
   const mutation = useMutation({
-    mutationFn: (record: RoleDto) => {
-      return createRole(record);
+    mutationFn: (record: TenantDto) => {
+      return createTenant(record);
     },
     onSuccess: () => {
       message.success("Create successful!");
@@ -23,7 +24,7 @@ const CreateModal = ({ isOpen, onClose }: Props) => {
   });
 
   const onSubmit = () => {
-    form.validateFields().then((values: RoleDto) => {
+    form.validateFields().then((values: TenantDto) => {
       mutation.mutate(values);
     });
   };
@@ -36,7 +37,7 @@ const CreateModal = ({ isOpen, onClose }: Props) => {
   return (
     <Modal
       open={isOpen}
-      title={"Create Role"}
+      title={"Create Tenant"}
       width={600}
       onOk={() => onSubmit()}
       okText={"Create"}
@@ -47,17 +48,33 @@ const CreateModal = ({ isOpen, onClose }: Props) => {
       <div>
         <Form form={form} autoComplete="off" layout="vertical">
           <Form.Item
-            label="Role Name"
+            label="Tenant Name"
             name="name"
-            rules={[{ required: true, message: "Please input role name!" }]}
+            rules={[{ required: true, message: "Please input tenant name!" }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name="isDefault" valuePropName="checked">
-            <Checkbox>Default</Checkbox>
+          <Form.Item
+            label="Admin Email Address"
+            name="adminEmailAddress"
+            rules={[
+              {
+                required: true,
+                type: "email",
+                message: "Please input admin email address!",
+              },
+            ]}
+          >
+            <Input />
           </Form.Item>
-          <Form.Item name="isPublic" valuePropName="checked">
-            <Checkbox>Public</Checkbox>
+          <Form.Item
+            label="Admin Password"
+            name="adminPassword"
+            rules={[
+              { required: true, message: "Please input admin password!" },
+            ]}
+          >
+            <Input.Password />
           </Form.Item>
         </Form>
       </div>
