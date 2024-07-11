@@ -88,14 +88,17 @@ const FeaturesModal = ({ record, isOpen, onClose }: Props) => {
       width={700}
       onOk={() => onSubmit()}
       okText={"Save"}
-      okButtonProps={{ icon: <SaveOutlined /> }}
+      okButtonProps={{
+        icon: <SaveOutlined />,
+        disabled: data?.groups.length == 0,
+      }}
       onCancel={() => onCloseClick()}
       loading={isFetching}
       confirmLoading={mutation.isPending}
       centered
     >
       <div>
-        {isReady && data && (
+        {isReady && data && data.groups.length > 0 && (
           <Tabs
             tabPosition="left"
             items={data.groups.map((g) => {
@@ -112,6 +115,9 @@ const FeaturesModal = ({ record, isOpen, onClose }: Props) => {
               };
             })}
           />
+        )}
+        {isReady && data?.groups.length == 0 && (
+          <div>There isn&apos;t any available feature.</div>
         )}
       </div>
     </Modal>
