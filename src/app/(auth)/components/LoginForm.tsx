@@ -1,9 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Divider, Form, Input } from "antd";
+import Cookies from "js-cookie";
+import { findTenantById } from "@/api/abp-tenant.api";
+import { COOKIE_TENANT_KEY } from "@/constants/app";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToggle } from "@/hooks/useToggle";
+import TenantSwitch from "./TenantSwitch";
 import EmailIcon from "@/../public/icon/icon_email.svg";
 import LockIcon from "@/../public/icon/icon_lock.svg";
 import UnlockIcon from "@/../public/icon/icon_unlock.svg";
@@ -12,6 +17,13 @@ import styles from "../styles/login-form.module.scss";
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm();
   const { handleLogin, isFetching, errorMessage } = useAuth();
+  const [tenantName, setTenantName] = useState("");
+  const [
+    isTenantSwitchModalOpen,
+    ,
+    hideTenantSwitchModal,
+    showTenantSwitchModal,
+  ] = useToggle();
 
   const login = () => {
     form
@@ -25,15 +37,48 @@ const LoginForm: React.FC = () => {
       );
   };
 
-  const onEnterEvent = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       login();
     }
   };
 
+  useEffect(() => {
+    const tenantId = Cookies.get(COOKIE_TENANT_KEY);
+    if (tenantId) {
+      const fetchTenantInfo = async () => {
+        const tenant = await findTenantById(tenantId);
+        if (tenant && tenant.success) {
+          setTenantName(tenant.name);
+        }
+      };
+
+      fetchTenantInfo();
+    }
+  }, []);
+
   return (
     <Form form={form} className={styles.login_container} layout="vertical">
-      <h1>Welcome !</h1>
+      <h1>Welcome!</h1>
+      <Divider />
+      <div className="flex justify-between items-center w-full">
+        <div>
+          <div>
+            <div className="uppercase">Tenant</div>
+            <div className="font-medium">
+              {tenantName ? (
+                <span>{tenantName}</span>
+              ) : (
+                <span>(Not selected)</span>
+              )}
+            </div>
+          </div>
+        </div>
+        <div>
+          <Button onClick={showTenantSwitchModal}>Switch</Button>
+        </div>
+      </div>
+      <Divider className="!mb-0" />
       <div className={styles.login_form}>
         <p className={styles.label}>Email</p>
         <Form.Item
@@ -55,7 +100,7 @@ const LoginForm: React.FC = () => {
             placeholder="Enter email or username"
             suffix={<EmailIcon />}
             onKeyDown={(e) => {
-              onEnterEvent(e);
+              handleKeyDown(e);
             }}
           />
         </Form.Item>
@@ -82,7 +127,7 @@ const LoginForm: React.FC = () => {
               visible ? <UnlockIcon /> : <LockIcon />
             }
             onKeyDown={(e) => {
-              onEnterEvent(e);
+              handleKeyDown(e);
             }}
           />
         </Form.Item>
@@ -115,6 +160,15 @@ const LoginForm: React.FC = () => {
       >
         Login
       </Button>
+      {isTenantSwitchModalOpen && (
+        <TenantSwitch
+          onCancel={hideTenantSwitchModal}
+          onSuccess={(name: string) => {
+            setTenantName(name);
+            hideTenantSwitchModal();
+          }}
+        />
+      )}
     </Form>
   );
 };
