@@ -25,6 +25,7 @@ interface AuthContextProps {
   ) => Promise<void>;
   handleLogout: () => void;
   checkPermission: (name: string) => boolean;
+  checkFeature: (name: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextProps>({
   handleLogout: () => {},
   errorMessage: null,
   checkPermission: () => false,
+  checkFeature: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -123,6 +125,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return !!configuration.auth.grantedPolicies[name];
   };
 
+  const checkFeature = (name: string) => {
+    if (!configuration) {
+      return false;
+    }
+
+    const feature = configuration.features.values[name];
+    return feature == "true";
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -134,6 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         errorMessage,
         handleLogout,
         checkPermission,
+        checkFeature,
       }}
     >
       {children}

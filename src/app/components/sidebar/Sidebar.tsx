@@ -13,7 +13,8 @@ import styles from "./common.module.scss";
 
 function filterMenuItems(
   menuItems: IMenuItem[],
-  grantedPolicies: Record<string, boolean>
+  grantedPolicies: Record<string, boolean>,
+  features: Record<string, string>
 ): IMenuItem[] | undefined {
   if (!menuItems || menuItems.length == 0) {
     return undefined;
@@ -21,24 +22,45 @@ function filterMenuItems(
 
   return menuItems
     .filter((item) => {
-      if (!item.requiredPolicy) {
+      if (!item.requiredPolicy && !item.requiredFeature) {
         return true;
       }
 
-      if (item.requiredPolicy.endsWith(".*")) {
-        const basePolicy = item.requiredPolicy.slice(0, -2);
-        return Object.keys(grantedPolicies).some(
-          (policy) => policy.startsWith(basePolicy) && grantedPolicies[policy]
-        );
+      if (item.requiredPolicy) {
+        if (item.requiredPolicy.endsWith(".*")) {
+          const basePolicy = item.requiredPolicy.slice(0, -2);
+          const matched = Object.keys(grantedPolicies).some(
+            (policy) => policy.startsWith(basePolicy) && grantedPolicies[policy]
+          );
+          if (!matched) {
+            return false;
+          }
+        } else {
+          const matched = grantedPolicies[item.requiredPolicy];
+          if (!matched) {
+            return false;
+          }
+        }
       }
 
-      return grantedPolicies[item.requiredPolicy];
+      if (item.requiredFeature) {
+        const matched = features[item.requiredFeature];
+        if (!matched || matched == "false") {
+          return false;
+        }
+      }
+
+      return true;
     })
     .map((item) => {
-      const { requiredPolicy, ...rest } = item;
+      const { requiredPolicy, requiredFeature, ...rest } = item;
       return {
         ...rest,
-        children: filterMenuItems(item.children || [], grantedPolicies),
+        children: filterMenuItems(
+          item.children || [],
+          grantedPolicies,
+          features
+        ),
       };
     });
 }
@@ -49,7 +71,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
   const { configuration } = useAuth();
   const menuItems = filterMenuItems(
     sidebarMenuItems,
-    configuration?.auth.grantedPolicies || {}
+    configuration?.auth.grantedPolicies || {},
+    configuration?.features.values || {}
   );
   const [Item, settItem] = useState<string>("/");
   const [defaultOpenItem, setDefaultOpenItem] = useState<string | null>(null);

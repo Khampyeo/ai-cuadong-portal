@@ -67,6 +67,7 @@ export const SETTING_MANAGEMENT: IMenuItem = {
   icon: <SettingsIcon />,
   children: [],
   requiredPolicy: "SettingManagement.*",
+  requiredFeature: "SettingManagement.Enable",
 };
 
 export const routes = [
@@ -76,3 +77,22 @@ export const routes = [
   IDENTITY_MANAGEMENT,
   SETTING_MANAGEMENT,
 ];
+
+export const findRouteByPath = (pathName: string): IMenuItem | null => {
+  function search(menuItems: IMenuItem[]): IMenuItem | null {
+    for (let item of menuItems) {
+      if (item.key === pathName) {
+        return item;
+      }
+      if (item.children && item.children.length > 0) {
+        const found = search(item.children);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  return search(routes);
+};
