@@ -145,7 +145,7 @@ const UsersManagement = () => {
           }}
         />
       )}
-      {userIdSelected && (
+      {isUpdateModalOpen && userIdSelected && (
         <ModalUpdate
           key={"users-" + userIdSelected}
           userId={userIdSelected}
