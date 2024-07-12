@@ -92,9 +92,8 @@ const ChunkManagement = () => {
             })
           }
           loading={isFetching}
-          rowKey={(record: any) => record.id}
+          rowKey="id"
           size={"large"}
-          key="id"
         />
       </div>
       <ModalCreate

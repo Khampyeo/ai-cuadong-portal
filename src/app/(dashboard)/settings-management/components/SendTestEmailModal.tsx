@@ -4,11 +4,10 @@ import { sendTestEmail } from "@/api/settings-management.api";
 import { SendTestEmailDto } from "@/types/settings-management";
 
 type Props = {
-  isOpen: boolean;
   onClose: (success?: boolean) => void;
 };
 
-const SendTestEmailModal = ({ isOpen, onClose }: Props) => {
+const SendTestEmailModal = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<SendTestEmailDto>();
 
@@ -26,25 +25,25 @@ const SendTestEmailModal = ({ isOpen, onClose }: Props) => {
     },
   });
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     form.validateFields().then((values: SendTestEmailDto) => {
       mutation.mutate(values);
     });
   };
 
-  const onCloseClick = () => {
+  const handleCancel = () => {
     form.resetFields();
     onClose(false);
   };
 
   return (
     <Modal
-      open={isOpen}
+      open={true}
       title={"Send Test Email"}
       width={600}
-      onOk={() => onSubmit()}
+      onOk={handleSubmit}
       okText={"Send"}
-      onCancel={() => onCloseClick()}
+      onCancel={handleCancel}
       confirmLoading={mutation.isPending}
       centered={true}
       maskClosable={false}

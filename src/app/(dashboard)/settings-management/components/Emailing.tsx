@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { SaveOutlined, SendOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Checkbox, Form, Input, Skeleton } from "antd";
@@ -37,13 +36,7 @@ const Emailing = () => {
     mutation.mutate(values);
   };
 
-  useEffect(() => {
-    if (data) {
-      form.setFieldsValue(data);
-    }
-  }, [form, data]);
-
-  if (isFetching) {
+  if (isFetching || !data) {
     return (
       <div className="p-5">
         <Skeleton />
@@ -57,6 +50,7 @@ const Emailing = () => {
         form={form}
         autoComplete="off"
         layout="vertical"
+        initialValues={data}
         onFinish={onFinish}
       >
         <Form.Item
@@ -140,7 +134,7 @@ const Emailing = () => {
           </Button>
         </div>
       </Form>
-      <SendTestEmailModal isOpen={isModalOpen} onClose={hideModal} />
+      {isModalOpen && <SendTestEmailModal onClose={hideModal} />}
     </div>
   );
 };

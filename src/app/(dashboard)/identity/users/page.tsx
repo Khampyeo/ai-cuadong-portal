@@ -136,7 +136,6 @@ const UsersManagement = () => {
       </div>
       {isCreateModalOpen && (
         <ModalCreate
-          isOpen={isCreateModalOpen}
           onClose={(success?: boolean) => {
             hideCreateModal();
             setUserIdSelected(undefined);
@@ -150,7 +149,6 @@ const UsersManagement = () => {
         <ModalUpdate
           key={"users-" + userIdSelected}
           userId={userIdSelected}
-          isOpen={isUpdateModalOpen}
           onClose={(success?: boolean) => {
             hideUpdateModal();
             setUserIdSelected(undefined);

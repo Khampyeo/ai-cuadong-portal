@@ -1,11 +1,11 @@
 import { fetchApi } from "@/config/fetchApi";
 import { PagedResultDto, PaginationDto } from "@/types/common";
-import { DocumentDto } from "@/types/document";
+import { DocumentChunkDto } from "@/types/document-chunk";
 
 const BASE_URL = "/app/document-chunk";
 
 export const getChunkDocuments = async (params: PaginationDto) => {
-  const response = await fetchApi.get<PagedResultDto<DocumentDto>>(
+  const response = await fetchApi.get<PagedResultDto<DocumentChunkDto>>(
     BASE_URL,
     params
   );
@@ -13,7 +13,7 @@ export const getChunkDocuments = async (params: PaginationDto) => {
   return response;
 };
 
-export const createChunkDocument = async (body: any) => {
+export const createChunkDocument = async (body: DocumentChunkDto) => {
   const response = fetchApi.post(BASE_URL, body);
 
   return response;
@@ -21,11 +21,11 @@ export const createChunkDocument = async (body: any) => {
 
 export const getChunkDocumentById = async (id: string) => {
   const url = BASE_URL + "/" + id;
-  const response = fetchApi.get<DocumentDto>(url);
+  const response = fetchApi.get<DocumentChunkDto>(url);
   return response;
 };
 
-export const updateChunkDocument = async (id: string, body: any) => {
+export const updateChunkDocument = async (id: string, body: DocumentChunkDto) => {
   const url = BASE_URL + "/" + id;
 
   const response = fetchApi.put(url, body);

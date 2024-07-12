@@ -1,32 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Checkbox, Form, FormInstance, Input, Switch, Tabs } from "antd";
 import { RoleDto } from "@/types/role";
-import styles from "../styles/form-update.module.scss";
+import { ignoreCaseCompareFn } from "@/utils/sorting";
 
-interface Props {
+type Props = {
   form: FormInstance;
-  listRoles: RoleDto[];
-}
-interface Role {
-  value: string;
-  label: string;
-}
-const FormUpdate = ({ form, listRoles }: Props) => {
-  const [roles, setRoles] = useState<Role[]>();
+  assignableRoles: RoleDto[];
+};
 
-  useEffect(() => {
-    if (listRoles) {
-      setRoles(
-        listRoles.map((item: RoleDto) => ({
-          value: item.name,
-          label: item.name,
-        }))
-      );
-    }
-  }, [listRoles]);
-  
+const FormUpdate = ({ form, assignableRoles }: Props) => {
   const items = [
     {
       key: "1",
@@ -58,7 +41,7 @@ const FormUpdate = ({ form, listRoles }: Props) => {
               },
             ]}
             style={{ flex: 1 }}
-            label="name"
+            label="Name"
             name="name"
           >
             <Input placeholder="Enter Name" />
@@ -94,18 +77,26 @@ const FormUpdate = ({ form, listRoles }: Props) => {
             <Input placeholder="Enter Email" />
           </Form.Item>
 
-          <div className="flex justify-between">
-            <Form.Item style={{ flex: 1 }} label="Active" name="isActive">
-              <Switch />
-            </Form.Item>
-            <Form.Item
-              style={{ flex: 1 }}
-              label="Lockout Enabled"
-              name="lockoutEnabled"
-            >
-              <Switch />
-            </Form.Item>
-          </div>
+          <Form.Item label="&nbsp;" colon={false}>
+            <div className="flex justify-between">
+              <Form.Item
+                style={{ flex: 1 }}
+                label="Active"
+                colon={false}
+                name="isActive"
+              >
+                <Switch />
+              </Form.Item>
+              <Form.Item
+                style={{ flex: 1 }}
+                label="Lockout Enabled"
+                colon={false}
+                name="lockoutEnabled"
+              >
+                <Switch />
+              </Form.Item>
+            </div>
+          </Form.Item>
         </>
       ),
     },
@@ -114,8 +105,13 @@ const FormUpdate = ({ form, listRoles }: Props) => {
       label: "Roles",
       children: (
         <>
-          <Form.Item style={{ flex: 1 }} name="roles">
-            <Checkbox.Group options={roles || []} className="flex flex-col" />
+          <Form.Item style={{ flex: 1 }} name="roleNames">
+            <Checkbox.Group
+              options={assignableRoles
+                .map((r) => r.name)
+                .toSorted(ignoreCaseCompareFn)}
+              className="flex flex-col"
+            />
           </Form.Item>
         </>
       ),
@@ -125,7 +121,16 @@ const FormUpdate = ({ form, listRoles }: Props) => {
 
   return (
     <div>
-      <Form form={form} className={styles.form_modal_content}>
+      <Form
+        form={form}
+        autoComplete="off"
+        labelCol={{
+          span: 6,
+        }}
+        wrapperCol={{
+          span: 18,
+        }}
+      >
         <Tabs defaultActiveKey="1" items={items} />
       </Form>
     </div>

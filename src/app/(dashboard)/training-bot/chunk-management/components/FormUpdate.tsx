@@ -1,28 +1,26 @@
 "use client";
 
-import { useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Form, FormInstance, Input, Radio, Select } from "antd";
-import styles from "../styles/form-update.module.scss";
+import { DocumentChunkDto } from "@/types/document-chunk";
 
 interface Props {
   form?: FormInstance;
-  data: any;
+  data: DocumentChunkDto;
 }
 const FormUpdate = ({ form, data }: Props) => {
-  useEffect(() => {
-    if (data && form) {
-      form.setFieldsValue({
-        "document-id": data.documentId,
-        language: data.language,
-        status: data.status,
-        content: data.content,
-      });
-    }
-  }, [data, form]);
-
   return (
-    <Form form={form} className={styles.form_modal_content}>
+    <Form
+      form={form}
+      autoComplete="off"
+      labelCol={{
+        span: 6,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+      initialValues={data}
+    >
       <div>
         <Form.Item
           rules={[
@@ -87,7 +85,6 @@ const FormUpdate = ({ form, data }: Props) => {
           ></Select>
         </Form.Item>
         <Form.Item
-          className={styles.form_modal_content_editor}
           rules={[
             {
               max: 5000,

@@ -14,12 +14,11 @@ import {
 } from "@/types/role";
 
 type Props = {
-  isOpen: boolean;
   onClose: (success?: boolean) => void;
   record?: RoleDto;
 };
 
-const PermissionsModal = ({ record, isOpen, onClose }: Props) => {
+const PermissionsModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
   const { checkedList, addItems, removeItems } = useCheckedList([]);
 
@@ -56,13 +55,13 @@ const PermissionsModal = ({ record, isOpen, onClose }: Props) => {
     },
   });
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     if (data && record) {
       mutation.mutate(record);
     }
   };
 
-  const onCloseClick = () => {
+  const handleCancel = () => {
     onClose(false);
   };
 
@@ -88,12 +87,12 @@ const PermissionsModal = ({ record, isOpen, onClose }: Props) => {
 
   return (
     <Modal
-      open={isOpen}
+      open={true}
       title={"Permissions - " + record?.name}
       width={600}
-      onOk={() => onSubmit()}
+      onOk={handleSubmit}
       okText={"Create"}
-      onCancel={() => onCloseClick()}
+      onCancel={handleCancel}
       loading={isFetching}
       confirmLoading={mutation.isPending}
       centered

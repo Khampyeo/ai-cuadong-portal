@@ -1,11 +1,11 @@
 import { fetchApi } from "@/config/fetchApi";
-import { PagedResultDto } from "@/types/common";
+import { PagedResultDto, PaginationDto } from "@/types/common";
 import { RoleDto } from "@/types/role";
 import { UserDto } from "@/types/user";
 
 const BASE_URL = "/identity/users";
 
-export const getUsers = async (params: any) => {
+export const getUsers = async (params: PaginationDto) => {
   const response = await fetchApi.get<PagedResultDto<UserDto>>(
     BASE_URL,
     params
@@ -21,7 +21,7 @@ export const getAssignableRoles = async () => {
   return response.items;
 };
 
-export const createUser = async (body: any) => {
+export const createUser = async (body: UserDto) => {
   const response = fetchApi.post(BASE_URL, body);
 
   return response;
@@ -39,7 +39,7 @@ export const getUserRoles = async (userId: string) => {
   return response;
 };
 
-export const updateUser = async (id: string, body: any) => {
+export const updateUser = async (id: string, body: UserDto) => {
   const url = BASE_URL + "/" + id;
   const response = fetchApi.put(url, body);
   return response;

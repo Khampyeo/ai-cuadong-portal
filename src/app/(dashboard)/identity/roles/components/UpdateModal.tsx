@@ -4,14 +4,13 @@ import { updateRole } from "@/api/role-management.api";
 import { RoleDto } from "@/types/role";
 
 type Props = {
-  isOpen: boolean;
   onClose: (success?: boolean) => void;
   record?: RoleDto;
 };
 
-const UpdateModal = ({ record, isOpen, onClose }: Props) => {
+const UpdateModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<RoleDto>();
 
   const mutation = useMutation({
     mutationFn: (record: RoleDto) => {
@@ -23,25 +22,25 @@ const UpdateModal = ({ record, isOpen, onClose }: Props) => {
     },
   });
 
-  const onSubmit = () => {
-    form.validateFields().then((values: RoleDto) => {
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
       mutation.mutate(values);
     });
   };
 
-  const onCloseClick = () => {
+  const handleCancel = () => {
     form.resetFields();
     onClose(false);
   };
 
   return (
     <Modal
-      open={isOpen}
+      open={true}
       title={"Update Role"}
       width={600}
       okText={"Update"}
-      onOk={() => onSubmit()}
-      onCancel={() => onCloseClick()}
+      onOk={handleSubmit}
+      onCancel={handleCancel}
       confirmLoading={mutation.isPending}
       centered
     >

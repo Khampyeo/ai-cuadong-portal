@@ -1,40 +1,44 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
 import { getDocumentById, updateDocument } from "@/api/document-management.api";
+import { DocumentDto } from "@/types/document";
 import FormUpdate from "./FormUpdate";
-import styles from "../styles/modal-update.module.scss";
 
 const ModalUpdate = ({
-  documentIdSelected,
+  documentId,
   showModalUpdateDocument,
   closeModalUpdateDocument,
 }: any) => {
   const { message } = App.useApp();
-  const [formUpdate] = Form.useForm();
+  const [formUpdate] = Form.useForm<DocumentDto>();
+
   const { data, isFetching } = useQuery({
-    queryKey: [documentIdSelected],
+    queryKey: ["document-details", documentId],
     queryFn: () => {
-      return getDocumentById(documentIdSelected);
+      return getDocumentById(documentId);
     },
-    enabled: !!documentIdSelected,
+    enabled: !!documentId,
   });
-  const mutationUpdateDocument = useMutation({
-    mutationFn: () => {
-      const body = {
-        name: formUpdate.getFieldValue("document-name"),
-        category: formUpdate.getFieldValue("category"),
-        language: formUpdate.getFieldValue("language"),
-        relatedLink: formUpdate.getFieldValue("related-link"),
-        status: formUpdate.getFieldValue("status"),
-        publishedDate: formUpdate.getFieldValue("published-date"),
-      };
-      return updateDocument(documentIdSelected, body);
+
+  const updateDocumentMutation = useMutation({
+    mutationFn: (data: DocumentDto) => {
+      return updateDocument(documentId, data);
     },
-    onSuccess: async (data: any) => {
+    onSuccess: () => {
       message.success("Create susccessed!");
       closeModalUpdateDocument();
     },
   });
+
+  const handleSubmit = () => {
+    formUpdate.validateFields().then((values) => {
+      updateDocumentMutation.mutate(values);
+    });
+  };
+
+  const handleCancel = () => {
+    closeModalUpdateDocument();
+  };
 
   return (
     <>
@@ -42,14 +46,13 @@ const ModalUpdate = ({
         open={showModalUpdateDocument}
         title={"Update document"}
         width={800}
-        onOk={() => mutationUpdateDocument.mutate()}
-        onCancel={closeModalUpdateDocument}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
         okText={"Update"}
         centered
+        loading={isFetching}
       >
-        <div className={styles.modal_wrapper}>
-          <FormUpdate form={formUpdate} data={data} />
-        </div>
+        {data && <FormUpdate form={formUpdate} data={data} />}
       </Modal>
     </>
   );

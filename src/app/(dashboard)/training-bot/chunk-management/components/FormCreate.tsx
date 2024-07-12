@@ -1,13 +1,21 @@
 import MDEditor from "@uiw/react-md-editor";
-import { Form, Input, Radio, Select } from "antd";
-import styles from "../styles/form-create.module.scss";
+import { Form, FormInstance, Input, Radio, Select } from "antd";
 
 interface Props {
-  form?: any;
+  form?: FormInstance;
 }
 const FormCreate = ({ form }: Props) => {
   return (
-    <Form form={form} className={styles.form_modal_content}>
+    <Form
+      form={form}
+      autoComplete="off"
+      labelCol={{
+        span: 6,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+    >
       <div>
         <Form.Item
           rules={[
@@ -72,7 +80,6 @@ const FormCreate = ({ form }: Props) => {
           ></Select>
         </Form.Item>
         <Form.Item
-          className={styles.form_modal_content_editor}
           rules={[
             {
               max: 5000,

@@ -216,12 +216,11 @@ const RoleManagement = () => {
           size={"large"}
         />
       </div>
-      <CreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      {isCreateModalOpen && <CreateModal onClose={onCreateModalClose} />}
       {selected && (
         <>
           {isUpdateModalOpen && (
             <UpdateModal
-              isOpen={isUpdateModalOpen}
               onClose={onUpdateModalClose}
               record={selected}
               key={"roles-" + selected.id}
@@ -229,7 +228,6 @@ const RoleManagement = () => {
           )}
           {isPermissionsModalOpen && (
             <PermissionsModal
-              isOpen={isPermissionsModalOpen}
               onClose={onPermissionsModalClose}
               record={selected}
               key={"permissions-" + selected.id}

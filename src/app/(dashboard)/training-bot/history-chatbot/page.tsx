@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Form, Table } from "antd";
+import { Table } from "antd";
 import { getHistoryChatbot } from "@/api/history-chatbot.api";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
@@ -14,7 +14,6 @@ import styles from "./common.module.scss";
 const HistoryChatbot = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
-  const [form] = Form.useForm();
   const [filterData, setFilterData] = useState<any>({});
   const [keyWordSearch, setKeyWordSearch] = useState({
     search: "",
@@ -69,9 +68,8 @@ const HistoryChatbot = () => {
             })
           }
           loading={isFetching}
-          rowKey={(record: any) => record.id}
+          rowKey="id"
           size={"large"}
-          key="id"
         />
       </div>
     </>

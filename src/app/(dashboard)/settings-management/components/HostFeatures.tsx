@@ -20,9 +20,7 @@ const HostFeatures = () => {
           </Button>
         </Flex>
       </Flex>
-      {isModalOpen && (
-        <FeaturesModal isOpen={isModalOpen} onClose={hideModal} />
-      )}
+      {isModalOpen && <FeaturesModal onClose={hideModal} />}
     </div>
   );
 };

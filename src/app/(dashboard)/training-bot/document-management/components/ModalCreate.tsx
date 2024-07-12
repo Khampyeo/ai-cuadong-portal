@@ -1,48 +1,49 @@
 import { useMutation } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
 import { createDocument } from "@/api/document-management.api";
+import { DocumentDto } from "@/types/document";
 import FormCreate from "./FormCreate";
-import styles from "../styles/modal-create.module.scss";
 
-const ModalCreate = ({
-  showModalCreateDocument,
-  closeModalCreateDocument,
-}: any) => {
+type Props = {
+  closeModalCreateDocument: () => void;
+};
+
+const ModalCreate = ({ closeModalCreateDocument }: Props) => {
   const { message } = App.useApp();
-  const [formAdd] = Form.useForm();
+  const [formAdd] = Form.useForm<DocumentDto>();
 
   const mutationAddDocument = useMutation({
-    mutationFn: () => {
-      const body = {
-        name: formAdd.getFieldValue(["document-name"]),
-        category: formAdd.getFieldValue("category"),
-        language: formAdd.getFieldValue("language"),
-        relatedLink: formAdd.getFieldValue("related-link"),
-        status: formAdd.getFieldValue("status"),
-        publishedDate: formAdd.getFieldValue("published-date"),
-      };
-      return createDocument(body);
+    mutationFn: (data: DocumentDto) => {
+      return createDocument(data);
     },
-    onSuccess: async (data: any) => {
+    onSuccess: () => {
       message.success("Create susccessed!");
       closeModalCreateDocument();
     },
   });
 
+  const handleSubmit = () => {
+    formAdd.validateFields().then((values) => {
+      mutationAddDocument.mutate(values);
+    });
+  };
+
+  const handleCancel = () => {
+    closeModalCreateDocument();
+  };
+
   return (
     <>
       <Modal
-        open={showModalCreateDocument}
+        open={true}
         title={"Create document"}
         width={800}
-        onOk={() => mutationAddDocument.mutate()}
-        onCancel={closeModalCreateDocument}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
         okText={"Create"}
         centered
       >
-        <div className={styles.modal_wrapper}>
-          <FormCreate form={formAdd} />
-        </div>
+        <FormCreate form={formAdd} />
       </Modal>
     </>
   );

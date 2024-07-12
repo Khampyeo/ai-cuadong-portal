@@ -10,12 +10,11 @@ import { TenantDto } from "@/types/tenant";
 import { FeaturesGroupTab } from "./FeaturesGroupTab";
 
 type Props = {
-  isOpen: boolean;
   onClose: (success?: boolean) => void;
   record?: TenantDto;
 };
 
-const FeaturesModal = ({ record, isOpen, onClose }: Props) => {
+const FeaturesModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
 
   const [isReady, setIsReady] = useState(false);
@@ -56,13 +55,13 @@ const FeaturesModal = ({ record, isOpen, onClose }: Props) => {
     },
   });
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     if (data) {
       mutation.mutate();
     }
   };
 
-  const onCloseClick = () => {
+  const handleCancel = () => {
     onClose(false);
   };
 
@@ -83,16 +82,16 @@ const FeaturesModal = ({ record, isOpen, onClose }: Props) => {
 
   return (
     <Modal
-      open={isOpen}
+      open={true}
       title={"Features - " + (record?.name || "Host")}
       width={700}
-      onOk={() => onSubmit()}
+      onOk={handleSubmit}
       okText={"Save"}
       okButtonProps={{
         icon: <SaveOutlined />,
         disabled: data?.groups.length == 0,
       }}
-      onCancel={() => onCloseClick()}
+      onCancel={handleCancel}
       loading={isFetching}
       confirmLoading={mutation.isPending}
       centered

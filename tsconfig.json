@@ -27,7 +27,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/components/training-bot/document/styles/form-create.scsss",
     "build/types/**/*.ts"
   ],
   "exclude": ["node_modules"]

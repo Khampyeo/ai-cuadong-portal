@@ -24,7 +24,7 @@ body {
 
 :root {
   --text-primary: #333;
-  --text-white:#fff
+  --text-white: #fff;
   --background: #fff;
   --background-content: #f2f4f7;
   --background-selected: #eff4fb;
@@ -46,10 +46,24 @@ body {
 .ant-menu.ant-menu-sub.ant-menu-vertical {
   margin-left: 0.625rem !important;
 }
-.ant-menu-root.ant-menu-inline{
+.ant-menu-root.ant-menu-inline {
   border-inline-end: none !important;
 }
 .ant-pagination {
   margin: 1rem !important;
 }
 
+.ant-form {
+  .ant-form-item-label {
+    text-align: start !important;
+    .ant-form-item-required {
+      &::before {
+        display: none !important;
+      }
+      &::after {
+        content: "*";
+        color: red;
+      }
+    }
+  }
+}

@@ -4,8 +4,8 @@ import {
   getChunkDocumentById,
   updateChunkDocument,
 } from "@/api/chunk-management.api";
+import { DocumentChunkDto } from "@/types/document-chunk";
 import FormUpdate from "./FormUpdate";
-import styles from "../styles/modal-update.module.scss";
 
 const ModalUpdate = ({
   chunkIdSelected,
@@ -14,7 +14,8 @@ const ModalUpdate = ({
   handleRefetch,
 }: any) => {
   const { message } = App.useApp();
-  const [formUpdate] = Form.useForm();
+  const [formUpdate] = Form.useForm<DocumentChunkDto>();
+
   const { data, isFetching } = useQuery({
     queryKey: [chunkIdSelected],
     queryFn: () => {
@@ -22,22 +23,27 @@ const ModalUpdate = ({
     },
     enabled: !!chunkIdSelected,
   });
-  const mutationUpdateChunk = useMutation({
-    mutationFn: () => {
-      const body = {
-        documentId: formUpdate.getFieldValue(["document-id"]),
-        content: formUpdate.getFieldValue(["content"]),
-        language: formUpdate.getFieldValue(["language"]),
-        status: formUpdate.getFieldValue(["status"]),
-      };
-      return updateChunkDocument(chunkIdSelected, body);
+
+  const updateChunkMutation = useMutation({
+    mutationFn: (data: DocumentChunkDto) => {
+      return updateChunkDocument(chunkIdSelected, data);
     },
-    onSuccess: async (data: any) => {
+    onSuccess: () => {
       message.success("Create susccessed!");
       closeModalUpdateChunk();
       handleRefetch();
     },
   });
+
+  const handleSubmit = () => {
+    formUpdate.validateFields().then((values) => {
+      updateChunkMutation.mutate(values);
+    });
+  };
+
+  const handleCancel = () => {
+    closeModalUpdateChunk();
+  };
 
   return (
     <>
@@ -45,14 +51,13 @@ const ModalUpdate = ({
         open={showModalUpdateChunk}
         title={"Update document"}
         width={800}
-        onOk={() => mutationUpdateChunk.mutate()}
-        onCancel={closeModalUpdateChunk}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
         okText={"Update"}
         centered
+        loading={isFetching}
       >
-        <div className={styles.modal_wrapper}>
-          <FormUpdate form={formUpdate} data={data} />
-        </div>
+        {data && <FormUpdate form={formUpdate} data={data} />}
       </Modal>
     </>
   );

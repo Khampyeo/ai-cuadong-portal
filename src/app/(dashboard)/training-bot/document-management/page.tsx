@@ -100,20 +100,20 @@ const DocumentManagement = () => {
             })
           }
           loading={isFetching}
-          rowKey={(record: any) => record.id}
+          rowKey="id"
           size={"large"}
-          key="id"
         />
       </div>
-      <ModalCreate
-        showModalCreateDocument={showModalCreateDocument}
-        closeModalCreateDocument={closeModalCreateDocument}
-      />
-      <ModalUpdate
-        documentIdSelected={documentIdSelected}
-        showModalUpdateDocument={showModalUpdateDocument}
-        closeModalUpdateDocument={closeModalUpdateDocument}
-      />
+      {showModalCreateDocument && (
+        <ModalCreate closeModalCreateDocument={closeModalCreateDocument} />
+      )}
+      {showModalUpdateDocument && (
+        <ModalUpdate
+          documentId={documentIdSelected}
+          showModalUpdateDocument={showModalUpdateDocument}
+          closeModalUpdateDocument={closeModalUpdateDocument}
+        />
+      )}
     </>
   );
 };

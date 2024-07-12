@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
 import { createChunkDocument } from "@/api/chunk-management.api";
+import { DocumentChunkDto } from "@/types/document-chunk";
 import FormCreate from "./FormCreate";
-import styles from "../styles/modal-create.module.scss";
 
 const ModalCreate = ({
   showModalCreateChunk,
@@ -10,24 +10,28 @@ const ModalCreate = ({
   handleRefetch,
 }: any) => {
   const { message } = App.useApp();
-  const [formAdd] = Form.useForm();
+  const [formAdd] = Form.useForm<DocumentChunkDto>();
 
   const mutationAddChunk = useMutation({
-    mutationFn: () => {
-      const body = {
-        documentId: formAdd.getFieldValue(["document-id"]),
-        content: formAdd.getFieldValue(["content"]),
-        language: formAdd.getFieldValue(["language"]),
-        status: formAdd.getFieldValue(["status"]),
-      };
-      return createChunkDocument(body);
+    mutationFn: (data: DocumentChunkDto) => {
+      return createChunkDocument(data);
     },
-    onSuccess: async (data: any) => {
+    onSuccess: () => {
       message.success("Create susccessed!");
       closeModalCreateChunk();
       handleRefetch();
     },
   });
+
+  const handleSubmit = () => {
+    formAdd.validateFields().then((values) => {
+      mutationAddChunk.mutate(values);
+    });
+  };
+
+  const handleCancel = () => {
+    closeModalCreateChunk();
+  };
 
   return (
     <>
@@ -35,15 +39,13 @@ const ModalCreate = ({
         open={showModalCreateChunk}
         title={"Add chunk"}
         width={800}
-        onOk={() => mutationAddChunk.mutate()}
-        onCancel={closeModalCreateChunk}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
         okText={"Add"}
         centered
         maskClosable={false}
       >
-        <div className={styles.modal_wrapper}>
-          <FormCreate form={formAdd} />
-        </div>
+        <FormCreate form={formAdd} />
       </Modal>
     </>
   );

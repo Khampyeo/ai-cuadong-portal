@@ -1,14 +1,22 @@
-import { DatePicker, Form, Input, Radio, Select } from "antd";
-import styles from "../styles/form-create.module.scss";
+import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
 
 interface Props {
-  form?: any;
+  form?: FormInstance;
 }
 const FormCreate = ({ form }: Props) => {
   return (
-    <Form form={form} className={styles.form_modal_content}>
+    <Form
+      form={form}
+      autoComplete="off"
+      labelCol={{
+        span: 6,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+    >
       <div>
-        <div className={styles.form_modal_content_name}>
+        <div>
           <Form.Item
             rules={[
               {

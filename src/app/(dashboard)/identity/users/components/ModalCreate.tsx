@@ -5,58 +5,61 @@ import { App, Form, Modal } from "antd";
 import { createUser, getAssignableRoles } from "@/api/user-management.api";
 import { UserDto } from "@/types/user";
 import FormCreate from "./FormCreate";
-import styles from "../styles/modal-create.module.scss";
 
-interface Props {
-  isOpen: boolean;
+type Props = {
   onClose: (success?: boolean) => void;
-}
-const ModalCreate = ({ isOpen, onClose }: Props) => {
-  const { message } = App.useApp();
-  const [formAdd] = Form.useForm();
+};
 
-  const createUsermutation = useMutation({
+const ModalCreate = ({ onClose }: Props) => {
+  const { message } = App.useApp();
+  const [formAdd] = Form.useForm<UserDto>();
+
+  const createUserMutation = useMutation({
     mutationFn: (values: UserDto) => {
       return createUser(values);
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       message.success("Create successful!");
       formAdd.resetFields();
       onClose(true);
     },
   });
 
-  const listRoles = useQuery({
-    queryKey: ["list-roles"],
+  const assignableRoles = useQuery({
+    queryKey: ["assignable-roles"],
     queryFn: async () => {
       return await getAssignableRoles();
     },
   });
 
-  const handleCloseModal = () => {
+  const handleCancel = () => {
     formAdd.resetFields();
     onClose();
+  };
+
+  const handleSubmit = () => {
+    formAdd
+      .validateFields()
+      .then((values) => createUserMutation.mutate(values));
   };
 
   return (
     <>
       <Modal
-        open={isOpen}
+        open={true}
         title={"New user"}
         width={600}
-        onOk={() =>
-          formAdd
-            .validateFields()
-            .then((values: UserDto) => createUsermutation.mutate(values))
-        }
-        onCancel={handleCloseModal}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
         okText={"Create"}
-        confirmLoading={createUsermutation.isPending}
         maskClosable={false}
+        confirmLoading={createUserMutation.isPending}
+        loading={assignableRoles.isFetching}
       >
-        <div className={styles.modal_wrapper}>
-          <FormCreate form={formAdd} listRoles={listRoles?.data || []} />
-        </div>
+        <FormCreate
+          form={formAdd}
+          assignableRoles={assignableRoles?.data || []}
+        />
       </Modal>
     </>
   );

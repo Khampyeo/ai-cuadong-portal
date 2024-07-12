@@ -4,14 +4,13 @@ import { updateTenant } from "@/api/tenant-management.api";
 import { TenantDto } from "@/types/tenant";
 
 type Props = {
-  isOpen: boolean;
   onClose: (success?: boolean) => void;
   record?: TenantDto;
 };
 
-const UpdateModal = ({ record, isOpen, onClose }: Props) => {
+const UpdateModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<TenantDto>();
 
   const mutation = useMutation({
     mutationFn: (record: TenantDto) => {
@@ -23,25 +22,25 @@ const UpdateModal = ({ record, isOpen, onClose }: Props) => {
     },
   });
 
-  const onSubmit = () => {
-    form.validateFields().then((values: TenantDto) => {
+  const handleSubmit = () => {
+    form.validateFields().then((values) => {
       mutation.mutate(values);
     });
   };
 
-  const onCloseClick = () => {
+  const handleCancel = () => {
     form.resetFields();
     onClose(false);
   };
 
   return (
     <Modal
-      open={isOpen}
+      open={true}
       title={"Update Tenant"}
       width={600}
       okText={"Update"}
-      onOk={() => onSubmit()}
-      onCancel={() => onCloseClick()}
+      onOk={handleSubmit}
+      onCancel={handleCancel}
       confirmLoading={mutation.isPending}
       centered
     >

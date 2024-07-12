@@ -222,12 +222,11 @@ const TenantManagement = () => {
           size={"large"}
         />
       </div>
-      <CreateModal isOpen={isCreateModalOpen} onClose={onCreateModalClose} />
+      {isCreateModalOpen && <CreateModal onClose={onCreateModalClose} />}
       {selected && (
         <>
           {isUpdateModalOpen && (
             <UpdateModal
-              isOpen={isUpdateModalOpen}
               onClose={onUpdateModalClose}
               record={selected}
               key={selected.id}
@@ -236,7 +235,6 @@ const TenantManagement = () => {
 
           {isFeaturesModalOpen && (
             <FeaturesModal
-              isOpen={isFeaturesModalOpen}
               onClose={onFeaturesModalClose}
               record={selected}
               key={"features-" + selected.id}

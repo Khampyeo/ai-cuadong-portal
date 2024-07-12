@@ -13,7 +13,7 @@ export const getDocuments = async (params: PaginationDto) => {
   return response;
 };
 
-export const createDocument = async (body: any) => {
+export const createDocument = async (body: DocumentDto) => {
   const response = fetchApi.post(BASE_URL, body);
 
   return response;
@@ -24,7 +24,7 @@ export const getDocumentById = async (id: string) => {
   return response;
 };
 
-export const updateDocument = async (id: string, body: any) => {
+export const updateDocument = async (id: string, body: DocumentDto) => {
   const url = BASE_URL + "/" + id;
   const response = fetchApi.put(url, body);
   return response;

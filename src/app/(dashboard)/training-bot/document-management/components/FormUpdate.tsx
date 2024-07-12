@@ -1,31 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
 import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
-import styles from "../styles/form-update.module.scss";
+import { DocumentDto } from "@/types/document";
 
 interface Props {
   form?: FormInstance;
-  data: any;
+  data: DocumentDto;
 }
 const FormUpdate = ({ form, data }: Props) => {
-  useEffect(() => {
-    if (data && form) {
-      form.setFieldsValue({
-        "document-name": data.name,
-        category: data.category,
-        language: data.language,
-        "related-link": data.relatedLink,
-        status: data.status,
-        "published-date": data.creationTime,
-      });
-    }
-  }, [data, form]);
-
   return (
-    <Form form={form} className={styles.form_modal_content}>
+    <Form
+      form={form}
+      autoComplete="off"
+      labelCol={{
+        span: 6,
+      }}
+      wrapperCol={{
+        span: 18,
+      }}
+      initialValues={data}
+    >
       <div>
-        <div className={styles.form_modal_content_name}>
+        <div>
           <Form.Item
             rules={[
               {
