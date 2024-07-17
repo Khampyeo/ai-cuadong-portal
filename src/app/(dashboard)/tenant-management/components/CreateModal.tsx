@@ -17,7 +17,6 @@ const CreateModal = ({ onClose }: Props) => {
     },
     onSuccess: () => {
       message.success("Create successful!");
-      form.resetFields();
       onClose(true);
     },
   });
@@ -29,7 +28,6 @@ const CreateModal = ({ onClose }: Props) => {
   };
 
   const handleCancel = () => {
-    form.resetFields();
     onClose(false);
   };
 

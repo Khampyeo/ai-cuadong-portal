@@ -2,19 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
-import { App, Table } from "antd";
-import { getDocuments } from "@/api/document-management.api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { App, Button, message, Table } from "antd";
+import { deleteDocument, getDocuments } from "@/api/document-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/document-management/config";
+import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { DocumentDto } from "@/types/document";
 import { convertPagination } from "@/utils/convert-pagination";
-import HeaderTable from "./components/HeaderTable";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
+import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const DocumentManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
@@ -39,12 +40,25 @@ const DocumentManagement = () => {
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
 
-  const [documentIdSelected, setDocumentIdSelected] = useState<string | null>(
-    null
-  );
+  const [documentIdSelected, setDocumentIdSelected] = useState<
+    string | undefined
+  >(undefined);
 
   const [showCreateModal, , closeCreateModal, openCreateModal] = useToggle();
   const [showUpdateModal, , closeUpdateModal, openUpdateModal] = useToggle();
+
+  const deleteDocumentMutation = useMutation({
+    mutationFn: () => {
+      if (documentIdSelected) return deleteDocument(documentIdSelected);
+      else {
+        throw new Error("Document ID is required to delete document.");
+      }
+    },
+    onSuccess: () => {
+      message.success("Delete successful!");
+      refetch();
+    },
+  });
 
   const onEditClick = (record: DocumentDto) => {
     setDocumentIdSelected(record.id);
@@ -59,7 +73,9 @@ const DocumentManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {},
+      onOk() {
+        deleteDocumentMutation.mutate();
+      },
     });
   };
 
@@ -73,7 +89,12 @@ const DocumentManagement = () => {
   return (
     <>
       <div>
-        <HeaderTable openModalCreateDocument={openCreateModal} />
+        <TableHeader>
+          <Button type="primary" onClick={openCreateModal}>
+            <AddIcon />
+            Add Document
+          </Button>
+        </TableHeader>
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
@@ -106,13 +127,26 @@ const DocumentManagement = () => {
         />
       </div>
       {showCreateModal && (
-        <ModalCreate closeModalCreateDocument={closeCreateModal} />
+        <ModalCreate
+          onClose={(success?: boolean) => {
+            closeCreateModal();
+            if (success) {
+              refetch();
+            }
+          }}
+        />
       )}
-      {showUpdateModal && (
+      {showUpdateModal && documentIdSelected && (
         <ModalUpdate
+          key={"document-" + documentIdSelected}
           documentId={documentIdSelected}
-          showModalUpdateDocument={showUpdateModal}
-          closeModalUpdateDocument={closeUpdateModal}
+          onClose={(success?: boolean) => {
+            closeUpdateModal();
+            setDocumentIdSelected(undefined);
+            if (success) {
+              refetch();
+            }
+          }}
         />
       )}
     </>

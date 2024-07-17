@@ -29,7 +29,6 @@ const UpdateModal = ({ record, onClose }: Props) => {
   };
 
   const handleCancel = () => {
-    form.resetFields();
     onClose(false);
   };
 

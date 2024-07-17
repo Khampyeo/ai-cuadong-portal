@@ -5,6 +5,7 @@ export type DocumentDto = {
   category: string;
   status: string;
   relatedLink: string;
+  publishedDate: string;
   creatorId: string;
   creationTime: string;
   lastModificationTime: string;

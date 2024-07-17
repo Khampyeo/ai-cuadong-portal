@@ -6,7 +6,7 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 100%;
-  background-color: #eff4fb;
+  background-color: var(--background-selected);
   &:hover {
     opacity: 0.8;
   }

@@ -7,31 +7,30 @@ import {
 import { DocumentChunkDto } from "@/types/document-chunk";
 import FormUpdate from "./FormUpdate";
 
-const ModalUpdate = ({
-  chunkIdSelected,
-  showModalUpdateChunk,
-  closeModalUpdateChunk,
-  handleRefetch,
-}: any) => {
+type Props = {
+  chunkId: string;
+  onClose: (success?: boolean) => void;
+};
+
+const ModalUpdate = ({ chunkId, onClose }: Props) => {
   const { message } = App.useApp();
   const [formUpdate] = Form.useForm<DocumentChunkDto>();
 
   const { data, isFetching } = useQuery({
-    queryKey: [chunkIdSelected],
+    queryKey: [chunkId],
     queryFn: () => {
-      return getChunkDocumentById(chunkIdSelected);
+      return getChunkDocumentById(chunkId);
     },
-    enabled: !!chunkIdSelected,
+    enabled: !!chunkId,
   });
 
   const updateChunkMutation = useMutation({
     mutationFn: (data: DocumentChunkDto) => {
-      return updateChunkDocument(chunkIdSelected, data);
+      return updateChunkDocument(chunkId, data);
     },
     onSuccess: () => {
       message.success("Create susccessed!");
-      closeModalUpdateChunk();
-      handleRefetch();
+      onClose(true);
     },
   });
 
@@ -42,13 +41,13 @@ const ModalUpdate = ({
   };
 
   const handleCancel = () => {
-    closeModalUpdateChunk();
+    onClose();
   };
 
   return (
     <>
       <Modal
-        open={showModalUpdateChunk}
+        open={true}
         title={"Update document"}
         width={800}
         onOk={handleSubmit}

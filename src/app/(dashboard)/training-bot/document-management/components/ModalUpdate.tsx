@@ -4,11 +4,12 @@ import { getDocumentById, updateDocument } from "@/api/document-management.api";
 import { DocumentDto } from "@/types/document";
 import FormUpdate from "./FormUpdate";
 
-const ModalUpdate = ({
-  documentId,
-  showModalUpdateDocument,
-  closeModalUpdateDocument,
-}: any) => {
+type Props = {
+  documentId: string;
+  onClose: (success?: boolean) => void;
+};
+
+const ModalUpdate = ({ documentId, onClose }: Props) => {
   const { message } = App.useApp();
   const [formUpdate] = Form.useForm<DocumentDto>();
 
@@ -26,7 +27,7 @@ const ModalUpdate = ({
     },
     onSuccess: () => {
       message.success("Create susccessed!");
-      closeModalUpdateDocument();
+      onClose(true);
     },
   });
 
@@ -37,13 +38,13 @@ const ModalUpdate = ({
   };
 
   const handleCancel = () => {
-    closeModalUpdateDocument();
+    onClose();
   };
 
   return (
     <>
       <Modal
-        open={showModalUpdateDocument}
+        open={true}
         title={"Update document"}
         width={800}
         onOk={handleSubmit}

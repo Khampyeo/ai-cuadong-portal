@@ -1,7 +1,7 @@
 import { Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
-import { timestampToFormattedString } from "@/utils/time-formating";
+import { formatDateTime } from "@/utils/time-formating";
 
 export const columnConfig = ({}: any) => {
   const columns: ColumnsType<any> = [
@@ -24,7 +24,7 @@ export const columnConfig = ({}: any) => {
       width: 200,
       render: (record) => (
         <p style={{ margin: 0, whiteSpace: "nowrap" }}>
-          {timestampToFormattedString(record)}
+          {formatDateTime(record)}
         </p>
       ),
     },

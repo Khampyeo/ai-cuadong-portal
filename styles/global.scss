@@ -24,18 +24,30 @@ body {
 
 :root {
   --text-primary: #333;
-  --text-white: #fff;
+  --text-secondary: #1677ff;
+  --text-hover: #1677ff;
+
   --background: #fff;
-  --background-content: #f2f4f7;
+  --background-secondary: #f2f4f7;
+  --background-item: #b7dcfa;
   --background-selected: #eff4fb;
+  --background-selected-2: #d8e8fd;
+
+  --border-primary: #ced0d4;
 }
 
-.dark-mode {
+.dark {
   --text-primary: #fff;
-  --text-white: #333;
-  --background: #111a2c;
-  --background-content: #333;
+  --text-secondary: #fff;
+  --text-hover: #fff;
+
+  --background: #242526;
+  --background-secondary: #18191a;
+  --background-item: #112545;
   --background-selected: #555;
+  --background-selected-2: #555;
+
+  --border-primary: #3e4042;
 }
 
 .ant-menu-item-selected,
@@ -51,6 +63,13 @@ body {
 }
 .ant-pagination {
   margin: 1rem !important;
+}
+
+.ant-table-body {
+  height: calc(100vh - 56px - 8px - 64px - 54px - 8px - 64px - 2px) !important;
+  max-height: calc(
+    100vh - 56px - 8px - 64px - 54px - 8px - 64px - 2px
+  ) !important;
 }
 
 .ant-form {

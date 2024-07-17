@@ -2,19 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
-import { App, Table } from "antd";
-import { getChunkDocuments } from "@/api/chunk-management.api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { App, Button, message, Table } from "antd";
+import {
+  deleteChunkDocument,
+  getChunkDocuments,
+} from "@/api/chunk-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
+import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { DocumentChunkDto } from "@/types/document-chunk";
 import { convertPagination } from "@/utils/convert-pagination";
-import HeaderTable from "./components/HeaderTable";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
+import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const ChunkManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
@@ -39,18 +43,27 @@ const ChunkManagement = () => {
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
 
-  const [chunkIdSelected, setChunkIdSelected] = useState<string | null>(null);
+  const [chunkIdSelected, setChunkIdSelected] = useState<string | undefined>(
+    undefined
+  );
 
   const [showModalCreateChunk, , closeModalCreateChunk, openModalCreateChunk] =
     useToggle();
   const [showModalUpdateChunk, , closeModalUpdateChunk, openModalUpdateChunk] =
     useToggle();
-  const [showModalDeleteChunk, , closeModalDeleteChunk, openModalDeleteChunk] =
-    useToggle();
 
-  const handleRefetch = () => {
-    refetch();
-  };
+  const deleteChunkMutation = useMutation({
+    mutationFn: () => {
+      if (chunkIdSelected) return deleteChunkDocument(chunkIdSelected);
+      else {
+        throw new Error("Chunk ID is required to delete chunk.");
+      }
+    },
+    onSuccess: () => {
+      message.success("Delete successful!");
+      refetch();
+    },
+  });
 
   const onEditClick = (record: DocumentChunkDto) => {
     setChunkIdSelected(record.id);
@@ -65,7 +78,9 @@ const ChunkManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {},
+      onOk() {
+        deleteChunkMutation.mutate();
+      },
     });
   };
 
@@ -79,7 +94,12 @@ const ChunkManagement = () => {
   return (
     <>
       <div>
-        <HeaderTable openModalCreateChunk={openModalCreateChunk} />
+        <TableHeader>
+          <Button type="primary" onClick={openModalCreateChunk}>
+            <AddIcon />
+            Add Chunk
+          </Button>
+        </TableHeader>
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
@@ -111,17 +131,29 @@ const ChunkManagement = () => {
           size={"large"}
         />
       </div>
-      <ModalCreate
-        showModalCreateChunk={showModalCreateChunk}
-        closeModalCreateChunk={closeModalCreateChunk}
-        handleRefetch={handleRefetch}
-      />
-      <ModalUpdate
-        chunkIdSelected={chunkIdSelected}
-        showModalUpdateChunk={showModalUpdateChunk}
-        closeModalUpdateChunk={closeModalUpdateChunk}
-        handleRefetch={handleRefetch}
-      />
+      {showModalCreateChunk && (
+        <ModalCreate
+          onClose={(success?: boolean) => {
+            closeModalCreateChunk();
+            if (success) {
+              refetch();
+            }
+          }}
+        />
+      )}
+      {showModalUpdateChunk && chunkIdSelected && (
+        <ModalUpdate
+          chunkId={chunkIdSelected}
+          key={"chunk-" + chunkIdSelected}
+          onClose={(success?: boolean) => {
+            closeModalUpdateChunk();
+            setChunkIdSelected(undefined);
+            if (success) {
+              refetch();
+            }
+          }}
+        />
+      )}
     </>
   );
 };

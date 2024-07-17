@@ -39,7 +39,11 @@ const SettingManagement = () => {
 
   return (
     <>
-      <Tabs tabPosition="left" items={items} className="bg-white" />
+      <Tabs
+        tabPosition="left"
+        items={items}
+        className="bg-background-primary"
+      />
     </>
   );
 };

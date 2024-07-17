@@ -4,7 +4,7 @@
     margin: 0;
   }
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-primary);
   .wrapper {
     display: flex;
     justify-content: space-between;
@@ -37,7 +37,7 @@
       &:hover {
         opacity: 1;
         &::after {
-          background-color: #ccc;
+          background-color: var(--background-selected);
         }
       }
     }
@@ -46,7 +46,7 @@
 
 .item_selected {
   opacity: 1 !important;
-  background-color: #eff4fb;
+  background-color: var(--background-selected);
   &::after {
     position: absolute;
     content: "";

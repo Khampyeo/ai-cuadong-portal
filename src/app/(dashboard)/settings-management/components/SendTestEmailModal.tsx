@@ -17,7 +17,6 @@ const SendTestEmailModal = ({ onClose }: Props) => {
     },
     onSuccess: () => {
       message.success("Send test email successful!");
-      form.resetFields();
       onClose(true);
     },
     onError: () => {
@@ -32,7 +31,6 @@ const SendTestEmailModal = ({ onClose }: Props) => {
   };
 
   const handleCancel = () => {
-    form.resetFields();
     onClose(false);
   };
 

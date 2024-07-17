@@ -5,10 +5,10 @@ import { DocumentDto } from "@/types/document";
 import FormCreate from "./FormCreate";
 
 type Props = {
-  closeModalCreateDocument: () => void;
+  onClose: (success?: boolean) => void;
 };
 
-const ModalCreate = ({ closeModalCreateDocument }: Props) => {
+const ModalCreate = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [formAdd] = Form.useForm<DocumentDto>();
 
@@ -18,7 +18,7 @@ const ModalCreate = ({ closeModalCreateDocument }: Props) => {
     },
     onSuccess: () => {
       message.success("Create susccessed!");
-      closeModalCreateDocument();
+      onClose(true);
     },
   });
 
@@ -29,7 +29,7 @@ const ModalCreate = ({ closeModalCreateDocument }: Props) => {
   };
 
   const handleCancel = () => {
-    closeModalCreateDocument();
+    onClose();
   };
 
   return (

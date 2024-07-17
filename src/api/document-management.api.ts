@@ -15,7 +15,6 @@ export const getDocuments = async (params: PaginationDto) => {
 
 export const createDocument = async (body: DocumentDto) => {
   const response = fetchApi.post(BASE_URL, body);
-
   return response;
 };
 export const getDocumentById = async (id: string) => {

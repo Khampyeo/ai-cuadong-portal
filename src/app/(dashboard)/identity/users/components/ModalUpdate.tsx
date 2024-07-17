@@ -47,7 +47,6 @@ const ModalUpdate = ({ userId, onClose }: Props) => {
     onSuccess: () => {
       message.success("Update successful!");
       onClose(true);
-      formUpdate.resetFields();
     },
   });
 
@@ -69,7 +68,6 @@ const ModalUpdate = ({ userId, onClose }: Props) => {
 
   const handleCancel = () => {
     onClose(false);
-    formUpdate.resetFields();
   };
 
   const handleSubmit = () => {

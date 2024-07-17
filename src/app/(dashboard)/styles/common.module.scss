@@ -1,5 +1,6 @@
 .homepage_container {
-  background-color: #fff;
+  background-color: var(--background);
+  color: var(--text-primary);
   border-radius: 8px;
   padding: 1rem;
   min-height: calc(100vh - 3.5rem - 1rem);

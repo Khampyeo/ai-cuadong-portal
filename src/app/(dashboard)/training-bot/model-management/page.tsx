@@ -5,6 +5,7 @@ import { ReloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Table } from "antd";
 import { getTalkingTrainedModel } from "@/api/ai-receptionist.api";
+import TableHeader from "@/app/components/table-header/TableHeader";
 import { useHeaderStore } from "@/stores/headerStore";
 import { columnConfig } from "./config";
 
@@ -33,19 +34,12 @@ const ModelsManagement = () => {
   return (
     <>
       <div className="table-container">
-        <div className="table-header flex mb-3">
-          <div></div>
-          <div className="flex-1 flex justify-end gap-3">
-            <Button
-              type="primary"
-              className="!bg-sky-500"
-              onClick={reloadClick}
-            >
-              <ReloadOutlined />
-              Reload
-            </Button>
-          </div>
-        </div>
+        <TableHeader>
+          <Button type="primary" className="!bg-sky-500" onClick={reloadClick}>
+            <ReloadOutlined />
+            Reload
+          </Button>
+        </TableHeader>
         <Table
           columns={columnConfig({})}
           dataSource={data}

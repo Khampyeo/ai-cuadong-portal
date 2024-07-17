@@ -30,7 +30,7 @@ const FormCreate = ({ form }: Props) => {
             ]}
             style={{ flex: 1 }}
             label="Document name"
-            name="document-name"
+            name="name"
           >
             <Input placeholder="Enter document name" />
           </Form.Item>
@@ -90,8 +90,8 @@ const FormCreate = ({ form }: Props) => {
                 message: "This field is required.",
               },
             ]}
-            name="published-date"
             label="Published date"
+            name="publishedDate"
           >
             <DatePicker placeholder="dd/mm/yyyy" format={"DD/MM/YYYY"} />
           </Form.Item>
@@ -124,7 +124,7 @@ const FormCreate = ({ form }: Props) => {
               },
             ]}
             label="Related link"
-            name="related-link"
+            name="relatedLink"
           >
             <Input placeholder="Enter related link" />
           </Form.Item>

@@ -1,6 +1,7 @@
 "use client";
 
 import { DatePicker, Form, FormInstance, Input, Radio, Select } from "antd";
+import dayjs from "dayjs";
 import { DocumentDto } from "@/types/document";
 
 interface Props {
@@ -18,7 +19,10 @@ const FormUpdate = ({ form, data }: Props) => {
       wrapperCol={{
         span: 18,
       }}
-      initialValues={data}
+      initialValues={{
+        ...data,
+        publishedDate: data.publishedDate ? dayjs(data.publishedDate) : null,
+      }}
     >
       <div>
         <div>
@@ -35,7 +39,7 @@ const FormUpdate = ({ form, data }: Props) => {
             ]}
             style={{ flex: 1 }}
             label="Document name"
-            name="document-name"
+            name="name"
           >
             <Input placeholder="Enter document name" />
           </Form.Item>
@@ -95,7 +99,7 @@ const FormUpdate = ({ form, data }: Props) => {
                 message: "This field is required.",
               },
             ]}
-            name="published-date"
+            name="publishedDate"
             label="Published date"
           >
             <DatePicker placeholder="dd/mm/yyyy" format={"DD/MM/YYYY"} />
@@ -129,7 +133,7 @@ const FormUpdate = ({ form, data }: Props) => {
               },
             ]}
             label="Related link"
-            name="related-link"
+            name="relatedLink"
           >
             <Input placeholder="Enter related link" />
           </Form.Item>

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useDarkModeStore } from "@/stores/darkmodeStore";
 import ArrowIcon from "@/../public/icon/icon_arrow__left.svg";
 import MoonIcon from "@/../public/icon/icon_moon.svg";
 import styles from "../styles/display.module.scss";
@@ -9,21 +10,15 @@ interface DisplayProps {
 }
 
 const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>();
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-      document.body.classList.toggle("dark-mode", savedTheme === "dark");
-    }
-  }, []);
+  const { isDarkMode, setDarkMode } = useDarkModeStore();
 
-  const toggleTheme = (isDarkMode: boolean) => {
-    const newTheme = isDarkMode ? "dark" : "light";
-    setIsDarkMode(isDarkMode);
-    document.body.classList.toggle("dark-mode", isDarkMode);
-    localStorage.setItem("theme", newTheme);
-  };
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   return (
     <div
@@ -47,22 +42,30 @@ const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
           <p className={styles.description}>
             Adjust the appearance to reduce glare and give your eyes a break
           </p>
-          <div
-            className={styles.radio_btn_wrapper}
-            onClick={() => toggleTheme(true)}
-          >
+          <div className={styles.radio_btn_wrapper}>
             <p>On</p>
             <label className={styles.radio_btn}>
-              <input type="radio" name="darkMode" checked={isDarkMode} />
+              <input
+                type="radio"
+                name="darkMode"
+                checked={isDarkMode}
+                onChange={() => {
+                  setDarkMode(true);
+                }}
+              />
             </label>
           </div>
-          <div
-            className={styles.radio_btn_wrapper}
-            onClick={() => toggleTheme(false)}
-          >
+          <div className={styles.radio_btn_wrapper}>
             <p>Off</p>
             <label className={styles.radio_btn}>
-              <input type="radio" name="darkMode" checked={!isDarkMode} />
+              <input
+                type="radio"
+                name="darkMode"
+                checked={!isDarkMode}
+                onChange={() => {
+                  setDarkMode(false);
+                }}
+              />
             </label>
           </div>
         </div>

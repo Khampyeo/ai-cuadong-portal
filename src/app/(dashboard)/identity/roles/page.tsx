@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Dropdown, Table } from "antd";
 import type { TableProps } from "antd";
 import { deleteRole, getRoles } from "@/api/role-management.api";
+import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
@@ -175,23 +176,16 @@ const RoleManagement = () => {
   return (
     <>
       <div className="table-container">
-        <div className="table-header flex mb-3">
-          <div></div>
-          <div className="flex-1 flex justify-end gap-3">
-            <Button type="primary" onClick={showCreateModal}>
-              <AddIcon />
-              Create
-            </Button>
-            <Button
-              type="primary"
-              className="!bg-sky-500"
-              onClick={reloadClick}
-            >
-              <ReloadOutlined />
-              Reload
-            </Button>
-          </div>
-        </div>
+        <TableHeader>
+          <Button type="primary" onClick={showCreateModal}>
+            <AddIcon />
+            Create
+          </Button>
+          <Button type="primary" className="!bg-sky-500" onClick={reloadClick}>
+            <ReloadOutlined />
+            Reload
+          </Button>
+        </TableHeader>
         <Table
           rowSelection={rowSelection}
           columns={columns}
@@ -221,16 +215,16 @@ const RoleManagement = () => {
         <>
           {isUpdateModalOpen && (
             <UpdateModal
+              key={"roles-" + selected.id}
               onClose={onUpdateModalClose}
               record={selected}
-              key={"roles-" + selected.id}
             />
           )}
           {isPermissionsModalOpen && (
             <PermissionsModal
+              key={"permissions-" + selected.id}
               onClose={onPermissionsModalClose}
               record={selected}
-              key={"permissions-" + selected.id}
             />
           )}
         </>

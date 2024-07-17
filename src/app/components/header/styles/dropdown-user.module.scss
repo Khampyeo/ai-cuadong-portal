@@ -6,7 +6,7 @@
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 8px;
-  background-color: #eff4fb;
+  background-color: var(--background-selected);
   &:hover {
     opacity: 0.8;
   }
@@ -19,7 +19,7 @@
   width: 20rem;
   padding: 0.5rem 0.5rem;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--background);
   overflow-y: auto;
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
@@ -36,12 +36,8 @@
     border-radius: 8px;
     transition: all 100ms linear;
     &:hover {
-      color: #156feb;
-      svg {
-        filter: invert(30%) sepia(38%) saturate(4784%) hue-rotate(207deg)
-          brightness(97%) contrast(90%);
-      }
-      background-color: #eff4fb;
+      color: #1677ff;
+      background-color: var(--background-selected);
     }
   }
   .chervon {
@@ -61,11 +57,7 @@
     border-radius: 8px;
     &:hover {
       color: #156feb;
-      svg {
-        filter: invert(30%) sepia(38%) saturate(4784%) hue-rotate(207deg)
-          brightness(97%) contrast(90%);
-      }
-      background-color: #eff4fb;
+      background-color: var(--background-selected);
     }
     &::before {
       position: absolute;
@@ -73,7 +65,7 @@
       top: -0.5rem;
       left: 0;
       width: 100%;
-      border-top: 1px dashed rgb(216, 216, 216);
+      border-top: 1px dashed var(--border-primary);
     }
   }
 }

@@ -1,6 +1,7 @@
 .sidebar {
   :global {
     .ant-menu {
+      transition: all 300ms linear !important;
       background-color: var(--background) !important;
     }
     .ant-menu-submenu svg,
@@ -34,11 +35,11 @@
   z-index: 999;
   height: 100%;
   background-color: var(--background);
-  transition: all 300ms;
+  transition: all 300ms linear;
   width: 16.25rem;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-primary);
   border-top: none;
   border-bottom: none;
   p {
@@ -46,7 +47,7 @@
   }
   .logo_wrapper {
     height: 7.5rem;
-    border-bottom: 2px dashed #ccc;
+    border-bottom: 2px dashed var(--border-primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,8 +68,7 @@
     position: absolute;
     top: calc(7.5rem - 12px);
     right: -0.75rem;
-    transition: all;
-    transition-duration: 300ms;
+    transition: all 300ms linear;
     cursor: pointer;
     z-index: 99;
     opacity: 0.8;
@@ -99,7 +99,7 @@
     padding: 1rem 0;
     font-weight: 400;
     text-align: center;
-    border-top: 2px dashed #ccc;
+    border-top: 2px dashed var(--border-primary);
     overflow: hidden;
     text-wrap: nowrap;
   }
@@ -107,8 +107,6 @@
 
 .collapsed {
   width: 4.5rem;
-  transition: all;
-  transition-duration: 300ms;
 
   .logo_wrapper {
     padding: 2rem 0;
@@ -129,24 +127,4 @@
 }
 .rotate_180 {
   transform: rotateZ(180deg);
-}
-
-.darkMode {
-  :global {
-    .ant-menu {
-      background-color: var(--background) !important;
-    }
-  }
-  background-color: var(--background);
-  border: 1px solid #ccc;
-
-  .collapse_icon {
-    background-color: #15417e;
-  }
-  .support {
-    color: var(--text-primary);
-  }
-  .footer {
-    color: var(--text-primary);
-  }
 }

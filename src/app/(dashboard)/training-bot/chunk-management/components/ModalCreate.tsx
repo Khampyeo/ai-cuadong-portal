@@ -4,11 +4,11 @@ import { createChunkDocument } from "@/api/chunk-management.api";
 import { DocumentChunkDto } from "@/types/document-chunk";
 import FormCreate from "./FormCreate";
 
-const ModalCreate = ({
-  showModalCreateChunk,
-  closeModalCreateChunk,
-  handleRefetch,
-}: any) => {
+type Props = {
+  onClose: (success?: boolean) => void;
+};
+
+const ModalCreate = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [formAdd] = Form.useForm<DocumentChunkDto>();
 
@@ -18,8 +18,7 @@ const ModalCreate = ({
     },
     onSuccess: () => {
       message.success("Create susccessed!");
-      closeModalCreateChunk();
-      handleRefetch();
+      onClose(true);
     },
   });
 
@@ -30,13 +29,13 @@ const ModalCreate = ({
   };
 
   const handleCancel = () => {
-    closeModalCreateChunk();
+    onClose();
   };
 
   return (
     <>
       <Modal
-        open={showModalCreateChunk}
+        open={true}
         title={"Add chunk"}
         width={800}
         onOk={handleSubmit}

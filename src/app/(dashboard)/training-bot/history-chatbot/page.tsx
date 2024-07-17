@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Table } from "antd";
 import { getHistoryChatbot } from "@/api/history-chatbot.api";
+import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useHeaderStore } from "@/stores/headerStore";
-import HeaderTable from "./components/HeaderTable";
 import { columnConfig } from "./config";
 
 const HistoryChatbot = () => {
@@ -40,7 +40,7 @@ const HistoryChatbot = () => {
   return (
     <>
       <div>
-        <HeaderTable />
+        <TableHeader />
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({})}

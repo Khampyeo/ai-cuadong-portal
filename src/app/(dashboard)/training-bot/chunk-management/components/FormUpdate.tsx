@@ -35,7 +35,7 @@ const FormUpdate = ({ form, data }: Props) => {
           ]}
           style={{ flex: 1 }}
           label="Document ID"
-          name="document-id"
+          name="documentId"
         >
           <Input placeholder="Enter document ID" />
         </Form.Item>

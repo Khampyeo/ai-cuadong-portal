@@ -2,9 +2,11 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ConfigProvider, theme } from "antd";
 import DefaultLayout from "@/app/components/layout/Layout";
 import Loader from "@/app/components/loader/Loader";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDarkModeStore } from "@/stores/darkmodeStore";
 
 const MainLayout = ({
   children,
@@ -13,6 +15,8 @@ const MainLayout = ({
 }>) => {
   const router = useRouter();
   const { isAuthenticated, isLoading } = useAuth();
+  const { defaultAlgorithm, darkAlgorithm } = theme;
+  const { isDarkMode } = useDarkModeStore();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -25,7 +29,13 @@ const MainLayout = ({
       {isLoading || !isAuthenticated ? (
         <Loader />
       ) : (
-        <DefaultLayout>{children}</DefaultLayout>
+        <ConfigProvider
+          theme={{
+            algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
+          }}
+        >
+          <DefaultLayout>{children}</DefaultLayout>
+        </ConfigProvider>
       )}
     </>
   );

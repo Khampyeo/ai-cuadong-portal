@@ -20,7 +20,6 @@ const ModalCreate = ({ onClose }: Props) => {
     },
     onSuccess: () => {
       message.success("Create successful!");
-      formAdd.resetFields();
       onClose(true);
     },
   });
@@ -33,7 +32,6 @@ const ModalCreate = ({ onClose }: Props) => {
   });
 
   const handleCancel = () => {
-    formAdd.resetFields();
     onClose();
   };
 
