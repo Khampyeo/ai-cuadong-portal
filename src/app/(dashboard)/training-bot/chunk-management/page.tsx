@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Table } from "antd";
+import { App, Table } from "antd";
 import { getChunkDocuments } from "@/api/chunk-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
+import { DocumentChunkDto } from "@/types/document-chunk";
 import { convertPagination } from "@/utils/convert-pagination";
 import HeaderTable from "./components/HeaderTable";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
-import styles from "./styles/common.module.scss";
 
 const ChunkManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
+  const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
   const [keyWordSearch, setKeyWordSearch] = useState({
@@ -37,20 +39,34 @@ const ChunkManagement = () => {
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
 
-  const [chunkIdSelected, setChunkIdSelected] = useState(null);
+  const [chunkIdSelected, setChunkIdSelected] = useState<string | null>(null);
 
-  //create chunk
   const [showModalCreateChunk, , closeModalCreateChunk, openModalCreateChunk] =
     useToggle();
-  //update chunk
   const [showModalUpdateChunk, , closeModalUpdateChunk, openModalUpdateChunk] =
     useToggle();
-  //delete chunk
   const [showModalDeleteChunk, , closeModalDeleteChunk, openModalDeleteChunk] =
     useToggle();
 
   const handleRefetch = () => {
     refetch();
+  };
+
+  const onEditClick = (record: DocumentChunkDto) => {
+    setChunkIdSelected(record.id);
+    openModalUpdateChunk();
+  };
+
+  const onDeleteClick = (record: DocumentChunkDto) => {
+    setChunkIdSelected(record.id);
+    modal.confirm({
+      title: "Are you sure delete this record?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {},
+    });
   };
 
   useEffect(() => {
@@ -62,14 +78,13 @@ const ChunkManagement = () => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div>
         <HeaderTable openModalCreateChunk={openModalCreateChunk} />
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
-            setChunkIdSelected,
-            openModalUpdateChunk,
-            openModalDeleteChunk,
+            onEditClick,
+            onDeleteClick,
           })}
           dataSource={data?.items || []}
           scroll={{

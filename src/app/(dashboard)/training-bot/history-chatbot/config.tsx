@@ -4,7 +4,7 @@ import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
 import { timestampToFormattedString } from "@/utils/time-formating";
 
 export const columnConfig = ({}: any) => {
-  const arr: ColumnsType<any> = [
+  const columns: ColumnsType<any> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -71,5 +71,5 @@ export const columnConfig = ({}: any) => {
       width: 162,
     },
   ];
-  return arr;
+  return columns;
 };

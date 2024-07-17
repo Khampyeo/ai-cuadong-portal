@@ -43,7 +43,12 @@ const fetchApi = async <T>(path: string, options: RequestInit) => {
     return data as T;
   }
 
-  return response.text() as T;
+  if (contentType?.startsWith("text/plain")) {
+    const data = await response.text();
+    return data as T;
+  }
+
+  return response as T;
 };
 
 fetchApi.get = <T>(path: string, params?: Record<string, any>) => {

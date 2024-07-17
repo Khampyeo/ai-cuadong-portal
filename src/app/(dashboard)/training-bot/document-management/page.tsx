@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Table } from "antd";
+import { App, Table } from "antd";
 import { getDocuments } from "@/api/document-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/document-management/config";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
+import { DocumentDto } from "@/types/document";
 import { convertPagination } from "@/utils/convert-pagination";
 import HeaderTable from "./components/HeaderTable";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
-import styles from "./common.module.scss";
 
 const DocumentManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
+  const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
   const [keyWordSearch, setKeyWordSearch] = useState({
@@ -37,29 +39,29 @@ const DocumentManagement = () => {
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
 
-  const [documentIdSelected, setDocumentIdSelected] = useState(null);
+  const [documentIdSelected, setDocumentIdSelected] = useState<string | null>(
+    null
+  );
 
-  //create document
-  const [
-    showModalCreateDocument,
-    ,
-    closeModalCreateDocument,
-    openModalCreateDocument,
-  ] = useToggle();
-  //update document
-  const [
-    showModalUpdateDocument,
-    ,
-    closeModalUpdateDocument,
-    openModalUpdateDocument,
-  ] = useToggle();
-  //delete document
-  const [
-    showModalDeleteDocument,
-    ,
-    closeModalDeleteDocument,
-    openModalDeleteDocument,
-  ] = useToggle();
+  const [showCreateModal, , closeCreateModal, openCreateModal] = useToggle();
+  const [showUpdateModal, , closeUpdateModal, openUpdateModal] = useToggle();
+
+  const onEditClick = (record: DocumentDto) => {
+    setDocumentIdSelected(record.id);
+    openUpdateModal();
+  };
+
+  const onDeleteClick = (record: DocumentDto) => {
+    setDocumentIdSelected(record.id);
+    modal.confirm({
+      title: "Are you sure delete this record?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {},
+    });
+  };
 
   useEffect(() => {
     setHeaderTitle("Document Management");
@@ -70,14 +72,13 @@ const DocumentManagement = () => {
 
   return (
     <>
-      <div className={styles.container}>
-        <HeaderTable openModalCreateDocument={openModalCreateDocument} />
+      <div>
+        <HeaderTable openModalCreateDocument={openCreateModal} />
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
-            setDocumentIdSelected,
-            openModalUpdateDocument,
-            openModalDeleteDocument,
+            onEditClick,
+            onDeleteClick,
           })}
           dataSource={data?.items || []}
           scroll={{
@@ -104,14 +105,14 @@ const DocumentManagement = () => {
           size={"large"}
         />
       </div>
-      {showModalCreateDocument && (
-        <ModalCreate closeModalCreateDocument={closeModalCreateDocument} />
+      {showCreateModal && (
+        <ModalCreate closeModalCreateDocument={closeCreateModal} />
       )}
-      {showModalUpdateDocument && (
+      {showUpdateModal && (
         <ModalUpdate
           documentId={documentIdSelected}
-          showModalUpdateDocument={showModalUpdateDocument}
-          closeModalUpdateDocument={closeModalUpdateDocument}
+          showModalUpdateDocument={showUpdateModal}
+          closeModalUpdateDocument={closeUpdateModal}
         />
       )}
     </>

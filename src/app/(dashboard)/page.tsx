@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ITEMS } from "@/constants/homepage";
+import { useHeaderStore } from "@/stores/headerStore";
 import FeatureItem from "./components/FeatureItem";
 import HomepageHeader from "./components/HomepageHeader";
 import styles from "./styles/common.module.scss";
 
 const Homepage = () => {
+  const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [filterSelectedItem, setFilterSelectedItem] = useState<number>(0);
-  setTimeout(() => {}, 3000);
+  useEffect(() => {
+    setHeaderTitle("Home");
+    return () => {
+      setHeaderTitle("");
+    };
+  }, [setHeaderTitle]);
   return (
     <div className={styles.homepage_container}>
       <div className={styles.introdution}></div>

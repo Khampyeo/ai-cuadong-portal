@@ -151,7 +151,7 @@ const RoleManagement = () => {
                 {
                   key: "delete",
                   danger: true,
-                  label: "Delete Role",
+                  label: "Delete",
                   onClick: () => onDeleteClick(record),
                 },
               ],

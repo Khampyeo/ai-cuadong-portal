@@ -10,6 +10,7 @@ import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
+import { UserDto } from "@/types/user";
 import { convertPagination } from "@/utils/convert-pagination";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
@@ -62,7 +63,13 @@ const UsersManagement = () => {
     },
   });
 
-  const onDeleteClick = () => {
+  const onEditClick = (user: UserDto) => {
+    setUserIdSelected(user.id);
+    showUpdateModal();
+  };
+
+  const onDeleteClick = (user: UserDto) => {
+    setUserIdSelected(user.id);
     modal.confirm({
       title: "Are you sure delete this user?",
       icon: <ExclamationCircleFilled />,
@@ -105,8 +112,7 @@ const UsersManagement = () => {
         <Table
           rowSelection={rowSelection}
           columns={columnConfig({
-            setUserIdSelected,
-            showUpdateModal,
+            onEditClick,
             onDeleteClick,
           })}
           dataSource={data?.items || []}

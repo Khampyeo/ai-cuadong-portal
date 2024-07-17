@@ -25,12 +25,20 @@ export const CHUNK_MANAGEMENT: IMenuItem = {
   key: "/training-bot/chunk-management",
   label: "Chunk Management",
 };
-
+export const MODEL_MANAGEMENT: IMenuItem = {
+  key: "/training-bot/model-management",
+  label: "Model Management",
+};
 export const TRAINING_BOT: IMenuItem = {
   key: "/training-bot",
   label: "Training Bot",
   icon: <BotIcon />,
-  children: [DOCUMENT_MANAGEMENT, CHUNK_MANAGEMENT, HISTORY_CHATBOT],
+  children: [
+    DOCUMENT_MANAGEMENT,
+    CHUNK_MANAGEMENT,
+    HISTORY_CHATBOT,
+    MODEL_MANAGEMENT,
+  ],
   requiredPolicy: "WebPortal.Documents",
 };
 

@@ -9,7 +9,6 @@ import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useHeaderStore } from "@/stores/headerStore";
 import HeaderTable from "./components/HeaderTable";
 import { columnConfig } from "./config";
-import styles from "./common.module.scss";
 
 const HistoryChatbot = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
@@ -31,8 +30,6 @@ const HistoryChatbot = () => {
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
 
-  const [questionSelected, setQuestionSelected] = useState(null);
-
   useEffect(() => {
     setHeaderTitle("Chatbot History");
     return () => {
@@ -42,7 +39,7 @@ const HistoryChatbot = () => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div>
         <HeaderTable />
         <Table
           rowSelection={rowSelection}

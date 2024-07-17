@@ -2,17 +2,18 @@ import { Button, Dropdown, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Status from "@/app/components/status/Status";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
+import { DocumentDto } from "@/types/document";
 import { formatDateTime } from "@/utils/time-formating";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
-import styles from "./styles/config.module.scss";
 
-export const columnConfig = ({
-  setDocumentIdSelected,
-  openModalUpdateDocument,
-  openModalDeleteDocument,
-}: any) => {
-  const arr: ColumnsType<any> = [
+type Props = {
+  onEditClick: (record: DocumentDto) => void;
+  onDeleteClick: (record: DocumentDto) => void;
+};
+
+export const columnConfig = ({ onEditClick, onDeleteClick }: Props) => {
+  const columns: ColumnsType<DocumentDto> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -97,52 +98,35 @@ export const columnConfig = ({
       key: "action",
       fixed: "right",
       width: 110,
-      render: (record: any) => (
-        <div className={styles.action_wrapper}>
+      render: (_, record) => (
+        <div className="flex gap-5 justify-center">
           <Button
-            className={styles.button_edit}
             type="text"
             size="small"
             icon={<EditIcon />}
             onClick={() => {
-              setDocumentIdSelected(record.id);
-              openModalUpdateDocument();
+              onEditClick(record);
             }}
           ></Button>
           <Dropdown
             placement="bottomRight"
-            menu={{ items: menuItems({ openModalDeleteDocument }) }}
+            menu={{
+              items: [
+                {
+                  key: "delete",
+                  danger: true,
+                  label: "Delete",
+                  onClick: () => onDeleteClick(record),
+                },
+              ],
+            }}
             trigger={["click"]}
           >
-            <Button
-              className={styles.button_edit}
-              type="text"
-              size="small"
-              icon={<ListIcon />}
-              onClick={() => {
-                setDocumentIdSelected(record.id);
-              }}
-            ></Button>
+            <Button type="text" size="small" icon={<ListIcon />}></Button>
           </Dropdown>
         </div>
       ),
     },
   ];
-  return arr;
-};
-
-export const menuItems = ({ openModalDeleteDocument }: any) => {
-  return [
-    {
-      key: 2,
-      label: (
-        <p
-          className={styles.dropdown_text}
-          onClick={() => openModalDeleteDocument()}
-        >
-          Delete
-        </p>
-      ),
-    },
-  ];
+  return columns;
 };

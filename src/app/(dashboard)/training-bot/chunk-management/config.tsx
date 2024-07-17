@@ -1,16 +1,17 @@
 import { Button, Dropdown, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
+import { DocumentChunkDto } from "@/types/document-chunk";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
-import styles from "./styles/config.module.scss";
 
-export const columnConfig = ({
-  setChunkIdSelected,
-  openModalUpdateChunk,
-  openModalDeleteChunk,
-}: any) => {
-  const arr: ColumnsType<any> = [
+type Props = {
+  onEditClick: (record: DocumentChunkDto) => void;
+  onDeleteClick: (record: DocumentChunkDto) => void;
+};
+
+export const columnConfig = ({ onEditClick, onDeleteClick }: Props) => {
+  const columns: ColumnsType<DocumentChunkDto> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -52,51 +53,32 @@ export const columnConfig = ({
       key: "action",
       fixed: "right",
       width: 110,
-      render: (record: any) => (
-        <div className={styles.action_wrapper}>
+      render: (_, record) => (
+        <div className="flex gap-5 justify-center">
           <Button
-            className={styles.button_edit}
             type="text"
             size="small"
             icon={<EditIcon />}
-            onClick={() => {
-              setChunkIdSelected(record.id);
-              openModalUpdateChunk();
-            }}
+            onClick={() => onEditClick(record)}
           ></Button>
           <Dropdown
             placement="bottomRight"
-            menu={{ items: menuItems({ openModalDeleteChunk }) }}
-            trigger={["click"]}
+            menu={{
+              items: [
+                {
+                  key: "delete",
+                  danger: true,
+                  label: "Delete",
+                  onClick: () => onDeleteClick(record),
+                },
+              ],
+            }}
           >
-            <Button
-              className={styles.button_edit}
-              type="text"
-              size="small"
-              icon={<ListIcon />}
-              onClick={() => {
-                setChunkIdSelected(record.id);
-              }}
-            ></Button>
+            <Button type="text" size="small" icon={<ListIcon />}></Button>
           </Dropdown>
         </div>
       ),
     },
   ];
-  return arr;
-};
-export const menuItems = ({ openModalDeleteChunk }: any) => {
-  return [
-    {
-      key: 2,
-      label: (
-        <p
-          className={styles.dropdown_text}
-          onClick={() => openModalDeleteChunk()}
-        >
-          Delete
-        </p>
-      ),
-    },
-  ];
+  return columns;
 };

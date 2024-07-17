@@ -192,6 +192,7 @@ export const ITEMS = [
       "Creates new content, such as text, images, or music, by learning patterns from existing data.",
     icon: <KubernetesOutlined />,
     type: "AI",
+    link: "/generative-ai",
   },
   {
     key: 16,

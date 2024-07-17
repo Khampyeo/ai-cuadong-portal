@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { Button, Dropdown } from "antd";
 import { ColumnsType } from "antd/es/table";
 import RenderContent from "@/app/components/TextEllipsis/TextEllipsis";
@@ -6,20 +5,14 @@ import { UserDto } from "@/types/user";
 import { formatDateTime } from "@/utils/time-formating";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
-import styles from "./styles/config.module.scss";
 
-interface ColumnConfigProps {
-  setUserIdSelected: Dispatch<SetStateAction<string | undefined>>;
-  showUpdateModal: () => void;
-  onDeleteClick: () => void;
-}
+type Props = {
+  onEditClick: (record: UserDto) => void;
+  onDeleteClick: (record: UserDto) => void;
+};
 
-export const columnConfig = ({
-  setUserIdSelected,
-  showUpdateModal,
-  onDeleteClick,
-}: ColumnConfigProps) => {
-  const arr: ColumnsType<UserDto> = [
+export const columnConfig = ({ onEditClick, onDeleteClick }: Props) => {
+  const columns: ColumnsType<UserDto> = [
     {
       title: "Username",
       dataIndex: "userName",
@@ -85,53 +78,32 @@ export const columnConfig = ({
       key: "action",
       fixed: "right",
       width: 110,
-      render: (record: UserDto) => (
-        <div className={styles.action_wrapper}>
+      render: (_, record) => (
+        <div className="flex gap-5 justify-center">
           <Button
-            className={styles.button_edit}
             type="text"
             size="small"
             icon={<EditIcon />}
-            onClick={() => {
-              setUserIdSelected(record.id);
-              showUpdateModal();
-            }}
+            onClick={() => onEditClick(record)}
           ></Button>
           <Dropdown
             placement="bottomRight"
-            menu={{ items: menuItems({ onDeleteClick }) }}
-            trigger={["click"]}
+            menu={{
+              items: [
+                {
+                  key: "delete",
+                  danger: true,
+                  label: "Delete",
+                  onClick: () => onDeleteClick(record),
+                },
+              ],
+            }}
           >
-            <Button
-              className={styles.button_edit}
-              type="text"
-              size="small"
-              icon={<ListIcon />}
-              onClick={() => {
-                setUserIdSelected(record.id);
-              }}
-            ></Button>
+            <Button type="text" size="small" icon={<ListIcon />}></Button>
           </Dropdown>
         </div>
       ),
     },
   ];
-  return arr;
-};
-
-interface MenuItemsProps {
-  onDeleteClick: () => void;
-}
-
-export const menuItems = ({ onDeleteClick }: MenuItemsProps) => {
-  return [
-    {
-      key: 2,
-      label: (
-        <p className={styles.dropdown_text} onClick={() => onDeleteClick()}>
-          Delete
-        </p>
-      ),
-    },
-  ];
+  return columns;
 };

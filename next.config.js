@@ -2,13 +2,14 @@ module.exports = {
   reactStrictMode: false,
   rewrites: () => [
     {
+      source: "/api/AI-model/:path*",
+      destination: process.env.AI_MODEL_API_URL + "/api/AI-model/:path*",
+    },
+    {
       source: "/api/:path*",
       destination: process.env.API_URL + "/api/:path*",
     },
   ],
-  env: {
-    API_URL: process.env.API_URL,
-  },
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")
