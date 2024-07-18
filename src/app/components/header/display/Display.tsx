@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useDarkModeStore } from "@/stores/darkmodeStore";
 import ArrowIcon from "@/../public/icon/icon_arrow__left.svg";
 import MoonIcon from "@/../public/icon/icon_moon.svg";
@@ -11,14 +11,6 @@ interface DisplayProps {
 
 const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
   const { isDarkMode, setDarkMode } = useDarkModeStore();
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
 
   return (
     <div
