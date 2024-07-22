@@ -34,30 +34,22 @@ const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
           <p className={styles.description}>
             Adjust the appearance to reduce glare and give your eyes a break
           </p>
-          <div className={styles.radio_btn_wrapper}>
+          <div
+            className={styles.radio_btn_wrapper}
+            onClick={() => setDarkMode(true)}
+          >
             <p>On</p>
             <label className={styles.radio_btn}>
-              <input
-                type="radio"
-                name="darkMode"
-                checked={isDarkMode}
-                onChange={() => {
-                  setDarkMode(true);
-                }}
-              />
+              <input type="radio" name="darkMode" checked={isDarkMode} />
             </label>
           </div>
-          <div className={styles.radio_btn_wrapper}>
+          <div
+            className={styles.radio_btn_wrapper}
+            onClick={() => setDarkMode(false)}
+          >
             <p>Off</p>
             <label className={styles.radio_btn}>
-              <input
-                type="radio"
-                name="darkMode"
-                checked={!isDarkMode}
-                onChange={() => {
-                  setDarkMode(false);
-                }}
-              />
+              <input type="radio" name="darkMode" checked={!isDarkMode} />
             </label>
           </div>
         </div>

@@ -19,6 +19,14 @@ const MainLayout = ({
   const { isDarkMode } = useDarkModeStore();
 
   useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.replace("/login");
     }
