@@ -54,7 +54,7 @@
       height: 2.5rem;
       border-radius: 100%;
       background-color: #eff4fb;
-      color: #156feb;
+      color: var(--primary-color);
     }
     .title {
       font-weight: 500;
@@ -80,7 +80,7 @@
       .radio_btn input[type="radio"] {
         width: 20px;
         height: 20px;
-        accent-color: #156feb;
+        accent-color: var(--primary-color);
       }
     }
   }

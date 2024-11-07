@@ -7,6 +7,6 @@
 
 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
 
-<g id="SVGRepo_iconCarrier"> <path d="M19 5H5L12 13.4L19 5Z" fill="#1570ef"/> <path d="M12 13.4L19 5H5L12 13.4ZM12 13.4V19" stroke="#1570ef" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> </g>
+<g id="SVGRepo_iconCarrier"> <path d="M19 5H5L12 13.4L19 5Z" fill="currentColor"/> <path d="M12 13.4L19 5H5L12 13.4ZM12 13.4V19" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> </g>
 
 </svg>

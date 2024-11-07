@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu } from "antd";
+import { Flex, Menu } from "antd";
 import { useAuth } from "@/contexts/AuthContext";
 import useClickOutside from "@/hooks/useDetectClickOutSide";
 import { IMenuItem, ISidebarProps } from "@/types/sidebar";
@@ -68,12 +68,7 @@ function filterMenuItems(
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
   const router = useRouter();
   const pathName = usePathname();
-  const { configuration } = useAuth();
-  const menuItems = filterMenuItems(
-    sidebarMenuItems,
-    configuration?.auth.grantedPolicies || {},
-    configuration?.features.values || {}
-  );
+  const menuItems = sidebarMenuItems;
   const [Item, settItem] = useState<string>("/");
   const [defaultOpenItem, setDefaultOpenItem] = useState<string | null>(null);
 
@@ -122,7 +117,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebarProps) => {
       className={`${styles.sidebar} ${!sidebarOpen && styles.collapsed} `}
     >
       <div className={`${styles.logo_wrapper} `}>
-        <h1>{sidebarOpen ? "AVAGAI" : "A"}</h1>
+        <Flex vertical justify="center" align="center" className="">
+          <img alt="" src="./img/logo.png" className="w-20"></img>
+          {sidebarOpen && <p className="text-base">AI - Cua Dong</p>}
+        </Flex>
       </div>
       <div className={styles.content}>
         <Menu

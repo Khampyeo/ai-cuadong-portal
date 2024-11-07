@@ -17,20 +17,6 @@ export default function DefaultLayout({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  useEffect(() => {
-    const route = findRouteByPath(pathName);
-
-    if (route) {
-      if (route.requiredPolicy && !checkPermission(route.requiredPolicy)) {
-        router.push("/");
-      }
-
-      if (route.requiredFeature && !checkFeature(route.requiredFeature)) {
-        router.push("/");
-      }
-    }
-  }, [pathName, router, checkPermission, checkFeature]);
-
   return (
     <>
       <div className={styles.layout}>

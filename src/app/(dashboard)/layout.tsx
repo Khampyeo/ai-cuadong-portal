@@ -26,9 +26,7 @@ const MainLayout = ({
       {isLoading || !isAuthenticated ? (
         <Loader />
       ) : (
-        <ConfigProvider>
-          <DefaultLayout>{children}</DefaultLayout>
-        </ConfigProvider>
+        <DefaultLayout>{children}</DefaultLayout>
       )}
     </>
   );

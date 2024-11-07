@@ -24,20 +24,12 @@ import EditIcon from "@/../public/icon/icon_edit.svg";
 const TenantManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
-  const { checkPermission } = useAuth();
   const [param, setParam] = useState(DEFAULT_PARAM);
   const [filterData, setFilterData] = useState<any>({});
   const [keywordSearch, setKeywordSearch] = useState({
     search: "",
     seed: null,
   });
-
-  const allowCreate = checkPermission("AbpTenantManagement.Tenants.Create");
-  const allowUpdate = checkPermission("AbpTenantManagement.Tenants.Update");
-  const allowDelete = checkPermission("AbpTenantManagement.Tenants.Delete");
-  const allowManageFeatures = checkPermission(
-    "AbpTenantManagement.Tenants.ManageFeatures"
-  );
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["list-tenants", filterData, param, keywordSearch],
@@ -123,7 +115,7 @@ const TenantManagement = () => {
       width: 150,
       render: (record: TenantDto) => (
         <div className="flex gap-5 justify-center">
-          {allowUpdate && (
+          {true && (
             <Button
               type="text"
               size="small"
@@ -134,7 +126,7 @@ const TenantManagement = () => {
               }}
             ></Button>
           )}
-          {allowManageFeatures && (
+          {true && (
             <Button
               type="primary"
               size="small"
@@ -146,7 +138,7 @@ const TenantManagement = () => {
               Features
             </Button>
           )}
-          {allowDelete && (
+          {true && (
             <Dropdown
               placement="bottomRight"
               menu={{
@@ -180,7 +172,7 @@ const TenantManagement = () => {
     <>
       <div className="table-container">
         <TableHeader>
-          {allowCreate && (
+          {true && (
             <Button type="primary" onClick={showCreateModal}>
               <AddIcon />
               Create

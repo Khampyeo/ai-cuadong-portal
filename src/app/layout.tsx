@@ -2,7 +2,7 @@
 
 import { PropsWithChildren } from "react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { App } from "antd";
+import { App, ConfigProvider } from "antd";
 import { ClientProviders } from "./components/ClientProviders";
 import "@/../styles/global.scss";
 import "regenerator-runtime/runtime";
@@ -13,7 +13,17 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body>
         <AntdRegistry>
           <App>
-            <ClientProviders>{children}</ClientProviders>
+            <ClientProviders>
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#ea580c",
+                  },
+                }}
+              >
+                {children}
+              </ConfigProvider>
+            </ClientProviders>
           </App>
         </AntdRegistry>
       </body>

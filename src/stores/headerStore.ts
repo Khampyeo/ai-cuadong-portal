@@ -9,6 +9,6 @@ export const useHeaderStore = create<HeaderState>((set) => ({
   headerTitle: "",
   setHeaderTitle: (title: string) => {
     set({ headerTitle: title });
-    document.title = title ? title + " - AVAGAI" : "AVAGAI";
+    document.title = title ? title + " - AI-CuaDong" : "AI-CuaDong";
   },
 }));

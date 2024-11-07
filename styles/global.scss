@@ -23,15 +23,16 @@ body {
 }
 
 :root {
+  --primary-color:#ea580c;
   --text-primary: #333;
-  --text-secondary: #1677ff;
-  --text-hover: #1677ff;
+  --text-secondary: #ea580c;
+  --text-hover: #ea580c;
 
   --background: #fff;
-  --background-secondary: #f2f4f7;
-  --background-item: #b7dcfa;
-  --background-selected: #eff4fb;
-  --background-selected-2: #d8e8fd;
+  --background-secondary: #fff7ed ;
+  --background-item: #ffedd5;
+  --background-selected: #ffedd5;
+  --background-selected-2: #ffedd5;
 
   --border-primary: #ced0d4;
 
