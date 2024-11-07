@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { findRouteByPath } from "@/constants/routes";
-import { useAuth } from "@/contexts/AuthContext";
 import Header from "../header";
 import Sidebar from "../sidebar/Sidebar";
 import styles from "./common.module.scss";
@@ -13,7 +12,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { checkPermission, checkFeature } = useAuth();
+  // const { checkPermission, checkFeature } = useAuth();
   const pathName = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);

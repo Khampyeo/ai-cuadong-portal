@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-import { useDarkModeStore } from "@/stores/darkmodeStore";
 import ArrowIcon from "@/../public/icon/icon_arrow__left.svg";
 import MoonIcon from "@/../public/icon/icon_moon.svg";
 import styles from "../styles/display.module.scss";
@@ -10,8 +9,6 @@ interface DisplayProps {
 }
 
 const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
-  const { isDarkMode, setDarkMode } = useDarkModeStore();
-
   return (
     <div
       className={`${styles.main} ${isDisplaySetting && styles.display_setting}`}
@@ -34,22 +31,16 @@ const Display = ({ isDisplaySetting, setIsDisplaySetting }: DisplayProps) => {
           <p className={styles.description}>
             Adjust the appearance to reduce glare and give your eyes a break
           </p>
-          <div
-            className={styles.radio_btn_wrapper}
-            onClick={() => setDarkMode(true)}
-          >
+          <div className={styles.radio_btn_wrapper}>
             <p>On</p>
             <label className={styles.radio_btn}>
-              <input type="radio" name="darkMode" checked={isDarkMode} />
+              <input type="radio" name="darkMode" />
             </label>
           </div>
-          <div
-            className={styles.radio_btn_wrapper}
-            onClick={() => setDarkMode(false)}
-          >
+          <div className={styles.radio_btn_wrapper}>
             <p>Off</p>
             <label className={styles.radio_btn}>
-              <input type="radio" name="darkMode" checked={!isDarkMode} />
+              <input type="radio" name="darkMode" />
             </label>
           </div>
         </div>

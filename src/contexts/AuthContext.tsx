@@ -16,7 +16,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   isLoading: boolean;
   isFetching: boolean;
-  configuration?: ApplicationConfiguration;
+  // configuration?: ApplicationConfiguration;
   errorMessage: string | null;
   handleLogin: (
     username: string,
@@ -24,20 +24,20 @@ interface AuthContextProps {
     rememberMe: boolean
   ) => Promise<void>;
   handleLogout: () => void;
-  checkPermission: (name: string) => boolean;
-  checkFeature: (name: string) => boolean;
+  // checkPermission: (name: string) => boolean;
+  // checkFeature: (name: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isLoading: true,
   isFetching: false,
-  configuration: undefined,
+  // configuration: undefined,
   handleLogin: async () => {},
   handleLogout: () => {},
   errorMessage: null,
-  checkPermission: () => false,
-  checkFeature: () => false,
+  // checkPermission: () => false,
+  // checkFeature: () => false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -46,34 +46,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [configuration, setConfiguration] = useState<
-    ApplicationConfiguration | undefined
-  >(undefined);
+  // const [configuration, setConfiguration] = useState<
+  //   ApplicationConfiguration | undefined
+  // >(undefined);
 
-  useEffect(() => {
-    handleGetApplicationConfiguration();
-  }, []);
+  // useEffect(() => {
+  //   handleGetApplicationConfiguration();
+  // }, []);
 
-  const handleGetApplicationConfiguration = async () => {
-    try {
-      setIsLoading(true);
-      const response = await getApplicationConfiguration();
+  // const handleGetApplicationConfiguration = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const response = await getApplicationConfiguration();
 
-      if (response) {
-        setConfiguration(response);
-        if (response.currentUser.isAuthenticated) {
-          setIsAuthenticated(true);
-        }
-      } else {
-        throw new Error("Failed to fetch account");
-      }
-    } catch (error) {
-      console.error(error);
-      setIsAuthenticated(false);
-      setConfiguration(undefined);
-    }
-    setIsLoading(false);
-  };
+  //     if (response) {
+  //       setConfiguration(response);
+  //       if (response.currentUser.isAuthenticated) {
+  //         setIsAuthenticated(true);
+  //       }
+  //     } else {
+  //       throw new Error("Failed to fetch account");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setIsAuthenticated(false);
+  //     setConfiguration(undefined);
+  //   }
+  //   setIsLoading(false);
+  // };
 
   const handleLogin = async (
     email: string,
@@ -82,57 +82,61 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   ) => {
     setIsFetching(true);
     setErrorMessage(null);
-    try {
-      const response = await login({
-        userNameOrEmailAddress: email,
-        password,
-        rememberMe,
-      });
-      if (response.result === 1) {
-        await handleGetApplicationConfiguration();
-        router.push("/");
-      } else {
-        setErrorMessage("Authentication Failed");
-      }
-    } catch (error) {
-      setErrorMessage("Authentication Failed");
-      console.error(error);
-    }
-    setIsFetching(false);
+    // try {
+    //   const response = await login({
+    //     userNameOrEmailAddress: email,
+    //     password,
+    //     rememberMe,
+    //   });
+    //   if (response.result === 1) {
+    //     await handleGetApplicationConfiguration();
+    //     router.push("/");
+    //   } else {
+    //     setErrorMessage("Authentication Failed");
+    //   }
+    // } catch (error) {
+    //   setErrorMessage("Authentication Failed");
+    //   console.error(error);
+    // }
+    setIsAuthenticated(true);
+    setIsLoading(false);
+    router.push("/");
+
+    // setIsFetching(false);
   };
 
   const handleLogout = async () => {
     await logout();
     setIsAuthenticated(false);
-    setConfiguration(undefined);
+    // setConfiguration(undefined);
     router.push("/login");
   };
 
-  const checkPermission = (name: string) => {
-    if (!configuration) {
-      return false;
-    }
+  // const checkPermission = (name: string) => {
+  //   if (!configuration) {
+  //     return false;
+  //   }
 
-    if (name.endsWith(".*")) {
-      const basePolicy = name.slice(0, -2);
-      return Object.keys(configuration.auth.grantedPolicies).some(
-        (policy) =>
-          policy.startsWith(basePolicy) &&
-          configuration.auth.grantedPolicies[policy]
-      );
-    }
+  //   if (name.endsWith(".*")) {
+  //     const basePolicy = name.slice(0, -2);
+  //     return Object.keys(configuration.auth.grantedPolicies).some(
+  //       (policy) =>
+  //         policy.startsWith(basePolicy) &&
+  //         configuration.auth.grantedPolicies[policy]
+  //     );
+  //   }
 
-    return !!configuration.auth.grantedPolicies[name];
-  };
+  //   return !!configuration.auth.grantedPolicies[name];
+  // };
 
-  const checkFeature = (name: string) => {
-    if (!configuration) {
-      return false;
-    }
+  // const checkFeature = (name: string) => {
+  //   if (!configuration) {
+  //     return false;
+  //   }
 
-    const feature = configuration.features.values[name];
-    return feature == "true";
-  };
+  //   const feature = configuration.features.values[name];
+  //   return feature == "true";
+  // };
 
   return (
     <AuthContext.Provider
@@ -140,12 +144,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         isLoading,
         isFetching,
-        configuration,
+        // configuration,
         handleLogin,
         errorMessage,
         handleLogout,
-        checkPermission,
-        checkFeature,
+        // checkPermission,
+        // checkFeature,
       }}
     >
       {children}
