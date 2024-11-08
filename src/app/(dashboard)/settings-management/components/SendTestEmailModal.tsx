@@ -1,6 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { App, Form, Input, Modal } from "antd";
-import { sendTestEmail } from "@/api/settings-management.api";
 import { SendTestEmailDto } from "@/types/settings-management";
 
 type Props = {
@@ -11,23 +9,8 @@ const SendTestEmailModal = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<SendTestEmailDto>();
 
-  const mutation = useMutation({
-    mutationFn: (record: SendTestEmailDto) => {
-      return sendTestEmail(record);
-    },
-    onSuccess: () => {
-      message.success("Send test email successful!");
-      onClose(true);
-    },
-    onError: () => {
-      message.error("Send test email failed!");
-    },
-  });
-
   const handleSubmit = () => {
-    form.validateFields().then((values: SendTestEmailDto) => {
-      mutation.mutate(values);
-    });
+    form.validateFields().then((values: SendTestEmailDto) => {});
   };
 
   const handleCancel = () => {
@@ -42,7 +25,6 @@ const SendTestEmailModal = ({ onClose }: Props) => {
       onOk={handleSubmit}
       okText={"Send"}
       onCancel={handleCancel}
-      confirmLoading={mutation.isPending}
       centered={true}
       maskClosable={false}
     >

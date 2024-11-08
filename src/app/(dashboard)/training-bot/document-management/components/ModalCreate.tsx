@@ -1,6 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
-import { createDocument } from "@/api/document-management.api";
 import { DocumentDto } from "@/types/document";
 import FormCreate from "./FormCreate";
 
@@ -12,20 +10,8 @@ const ModalCreate = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [formAdd] = Form.useForm<DocumentDto>();
 
-  const mutationAddDocument = useMutation({
-    mutationFn: (data: DocumentDto) => {
-      return createDocument(data);
-    },
-    onSuccess: () => {
-      message.success("Create susccessed!");
-      onClose(true);
-    },
-  });
-
   const handleSubmit = () => {
-    formAdd.validateFields().then((values) => {
-      mutationAddDocument.mutate(values);
-    });
+    formAdd.validateFields().then((values) => {});
   };
 
   const handleCancel = () => {

@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Checkbox, Divider, Modal, Tabs } from "antd";
 import type { CheckboxProps } from "antd";
-import {
-  getRolePermissions,
-  updateRolePermissions,
-} from "@/api/permission-management.api";
 import useCheckedList from "@/hooks/useCheckedList";
 import {
   GetPermissionListResultDto,
@@ -22,44 +17,9 @@ const PermissionsModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
   const { checkedList, addItems, removeItems } = useCheckedList([]);
 
-  const { data, isFetching } = useQuery({
-    queryKey: ["role-permissions", record?.id],
+  const data: any = [];
 
-    queryFn: () => {
-      return getRolePermissions(record?.name!);
-    },
-  });
-
-  const mutation = useMutation({
-    mutationFn: (record: RoleDto) => {
-      const permissionNames: string[] = [];
-
-      data?.groups.forEach((group) => {
-        group.permissions.forEach((permission) => {
-          permissionNames.push(permission.name);
-        });
-      });
-
-      const permissions = permissionNames.map((p) => {
-        const isGranted = checkedList.includes(p);
-        return {
-          name: p,
-          isGranted,
-        };
-      });
-      return updateRolePermissions(record.name, permissions);
-    },
-    onSuccess: () => {
-      message.success("Update successful!");
-      onClose(true);
-    },
-  });
-
-  const handleSubmit = () => {
-    if (data && record) {
-      mutation.mutate(record);
-    }
-  };
+  const handleSubmit = () => {};
 
   const handleCancel = () => {
     onClose(false);
@@ -93,15 +53,14 @@ const PermissionsModal = ({ record, onClose }: Props) => {
       onOk={handleSubmit}
       okText={"Create"}
       onCancel={handleCancel}
-      loading={isFetching}
-      confirmLoading={mutation.isPending}
+      loading={false}
       centered
     >
       <div>
         {data && (
           <Tabs
             tabPosition="left"
-            items={data.groups.map((g) => {
+            items={data.groups.map((g: any) => {
               return {
                 label: g.displayName,
                 key: g.name,

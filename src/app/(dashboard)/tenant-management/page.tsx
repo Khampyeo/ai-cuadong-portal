@@ -2,18 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Dropdown, Table } from "antd";
 import type { TableProps } from "antd";
-import { deleteTenant, getTenants } from "@/api/tenant-management.api";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
-import { useAuth } from "@/contexts/AuthContext";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
-import { GetTenantsInput, TenantDto } from "@/types/tenant";
-import { convertPagination } from "@/utils/convert-pagination";
+import { TenantDto } from "@/types/tenant";
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
 import FeaturesModal from "../components/FeaturesManagement/FeaturesModal";
@@ -31,28 +27,7 @@ const TenantManagement = () => {
     seed: null,
   });
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-tenants", filterData, param, keywordSearch],
-
-    queryFn: () => {
-      const params: GetTenantsInput = convertPagination(
-        param.current,
-        param.pageSize
-      );
-      params.sorting = "Name";
-
-      return getTenants(params);
-    },
-  });
-
-  const mutation = useMutation({
-    mutationFn: (record: TenantDto) => {
-      return deleteTenant(record.id);
-    },
-    onSuccess: () => {
-      refetch();
-    },
-  });
+  const data: any = [];
 
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
@@ -61,15 +36,12 @@ const TenantManagement = () => {
   const [isUpdateModalOpen, , hideUpdateModal, showUpdateModal] = useToggle();
   const [isFeaturesModalOpen, , hideFeaturesModal, showFeaturesModal] =
     useToggle();
-  const [selected, setSelected] = useState<TenantDto>();
+  const [selected, setSelected] = useState<any>();
 
-  const reloadClick = () => {
-    refetch();
-  };
+  const reloadClick = () => {};
 
   const onCreateModalClose = (success?: boolean) => {
     if (success) {
-      refetch();
     }
 
     hideCreateModal();
@@ -77,7 +49,6 @@ const TenantManagement = () => {
 
   const onUpdateModalClose = (success?: boolean) => {
     if (success) {
-      refetch();
     }
 
     hideUpdateModal();
@@ -95,9 +66,7 @@ const TenantManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        mutation.mutate(record);
-      },
+      onOk() {},
     });
   };
 
@@ -203,7 +172,6 @@ const TenantManagement = () => {
               pageSize: pagination?.pageSize,
             })
           }
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />

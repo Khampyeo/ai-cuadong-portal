@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Table } from "antd";
-import { getHistoryChatbot } from "@/api/history-chatbot.api";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
 import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
@@ -19,13 +17,7 @@ const HistoryChatbot = () => {
     seed: null,
   });
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-chats", filterData, param, keyWordSearch],
-
-    queryFn: () => {
-      return getHistoryChatbot();
-    },
-  });
+  const data: any = [];
 
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
@@ -64,7 +56,6 @@ const HistoryChatbot = () => {
               pageSize: pagination?.pageSize,
             })
           }
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />

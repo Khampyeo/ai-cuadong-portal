@@ -1,7 +1,5 @@
 import { SaveOutlined, SendOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Checkbox, Form, Input, Skeleton } from "antd";
-import { getEmailing, updateEmailing } from "@/api/settings-management.api";
 import { useToggle } from "@/hooks/useToggle";
 import { EmailingDto } from "@/types/settings-management";
 import SendTestEmailModal from "./SendTestEmailModal";
@@ -16,33 +14,9 @@ const Emailing = () => {
     form
   );
 
-  const { data, isFetching } = useQuery({
-    queryKey: ["emailing"],
-    queryFn: () => {
-      return getEmailing();
-    },
-  });
+  const data: any = [];
 
-  const mutation = useMutation({
-    mutationFn: (values: EmailingDto) => {
-      return updateEmailing(values);
-    },
-    onSuccess: () => {
-      message.success("Update successful!");
-    },
-  });
-
-  const onFinish = (values: EmailingDto) => {
-    mutation.mutate(values);
-  };
-
-  if (isFetching || !data) {
-    return (
-      <div className="p-5">
-        <Skeleton />
-      </div>
-    );
-  }
+  const onFinish = (values: EmailingDto) => {};
 
   return (
     <div className="max-w-lg p-5">
@@ -118,7 +92,6 @@ const Emailing = () => {
             type="primary"
             htmlType="submit"
             icon={<SaveOutlined />}
-            loading={mutation.isPending}
           >
             Save
           </Button>

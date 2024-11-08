@@ -1,6 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { App, Form, Input, Modal } from "antd";
-import { createTenant } from "@/api/tenant-management.api";
 import { TenantDto } from "@/types/tenant";
 
 type Props = {
@@ -11,20 +9,8 @@ const CreateModal = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<TenantDto>();
 
-  const mutation = useMutation({
-    mutationFn: (record: TenantDto) => {
-      return createTenant(record);
-    },
-    onSuccess: () => {
-      message.success("Create successful!");
-      onClose(true);
-    },
-  });
-
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      mutation.mutate(values);
-    });
+    form.validateFields().then((values) => {});
   };
 
   const handleCancel = () => {
@@ -39,7 +25,6 @@ const CreateModal = ({ onClose }: Props) => {
       onOk={handleSubmit}
       okText={"Create"}
       onCancel={handleCancel}
-      confirmLoading={mutation.isPending}
       centered
     >
       <div>

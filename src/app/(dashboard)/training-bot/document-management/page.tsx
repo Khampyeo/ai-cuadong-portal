@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, message, Table } from "antd";
-import { deleteDocument, getDocuments } from "@/api/document-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/document-management/config";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -27,15 +25,7 @@ const DocumentManagement = () => {
     seed: null,
   });
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-document", filterData, param, keyWordSearch],
-
-    queryFn: () => {
-      const params = convertPagination(param.current, param.pageSize);
-
-      return getDocuments(params);
-    },
-  });
+  const data: any = [];
 
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
@@ -46,19 +36,6 @@ const DocumentManagement = () => {
 
   const [showCreateModal, , closeCreateModal, openCreateModal] = useToggle();
   const [showUpdateModal, , closeUpdateModal, openUpdateModal] = useToggle();
-
-  const deleteDocumentMutation = useMutation({
-    mutationFn: () => {
-      if (documentIdSelected) return deleteDocument(documentIdSelected);
-      else {
-        throw new Error("Document ID is required to delete document.");
-      }
-    },
-    onSuccess: () => {
-      message.success("Delete successful!");
-      refetch();
-    },
-  });
 
   const onEditClick = (record: DocumentDto) => {
     setDocumentIdSelected(record.id);
@@ -73,9 +50,7 @@ const DocumentManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        deleteDocumentMutation.mutate();
-      },
+      onOk() {},
     });
   };
 
@@ -121,7 +96,6 @@ const DocumentManagement = () => {
               pageSize: pagination?.pageSize,
             })
           }
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />
@@ -131,7 +105,6 @@ const DocumentManagement = () => {
           onClose={(success?: boolean) => {
             closeCreateModal();
             if (success) {
-              refetch();
             }
           }}
         />
@@ -144,7 +117,6 @@ const DocumentManagement = () => {
             closeUpdateModal();
             setDocumentIdSelected(undefined);
             if (success) {
-              refetch();
             }
           }}
         />

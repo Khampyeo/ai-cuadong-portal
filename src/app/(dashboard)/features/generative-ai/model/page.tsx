@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useMutation } from "@tanstack/react-query";
 import { Button, Form, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import Input from "antd/es/input/Input";
-import { generateTalkingFace } from "@/api/ai-receptionist.api";
 import BreadcrumbCustom from "@/app/components/breadcrumb/BreadcrumbCustom";
 import { GetVideoTrainedByModelDto } from "@/types/generative-ai";
 
@@ -14,23 +12,12 @@ const GenerateVideoAI = () => {
   const [form] = useForm<GetVideoTrainedByModelDto>();
   const [url, setUrl] = useState<string | undefined>(undefined);
 
-  const generateMutation = useMutation({
-    mutationFn: async (formData: FormData) => {
-      return await generateTalkingFace(formData);
-    },
-    onSuccess: async (response) => {
-      const videoUrl = URL.createObjectURL(await response.blob());
-      setUrl(videoUrl);
-    },
-  });
-
   const handleSubmit = () => {
     form.validateFields().then((values: GetVideoTrainedByModelDto) => {
       const formData = new FormData();
       formData.append("text", values.text);
       formData.append("video_id", values.video_id);
       formData.append("language", values.language);
-      generateMutation.mutate(formData);
     });
   };
 
@@ -142,7 +129,6 @@ const GenerateVideoAI = () => {
               type="primary"
               className="font-semibold mt-20"
               onClick={handleSubmit}
-              loading={generateMutation.isPending}
             >
               Submit
             </Button>

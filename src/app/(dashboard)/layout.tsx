@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ConfigProvider } from "antd";
 import DefaultLayout from "@/app/components/layout/Layout";
 import Loader from "@/app/components/loader/Loader";
 import { useAuth } from "@/contexts/AuthContext";
@@ -23,11 +22,7 @@ const MainLayout = ({
 
   return (
     <>
-      {isLoading || !isAuthenticated ? (
-        <Loader />
-      ) : (
-        <DefaultLayout>{children}</DefaultLayout>
-      )}
+      <DefaultLayout>{children}</DefaultLayout>
     </>
   );
 };

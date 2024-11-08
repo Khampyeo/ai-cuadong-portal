@@ -3,13 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { InboxOutlined } from "@ant-design/icons";
-import { useMutation } from "@tanstack/react-query";
 import { Button, Form, Image, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import Input from "antd/es/input/Input";
 import { RcFile, UploadChangeParam } from "antd/es/upload";
 import Dragger from "antd/es/upload/Dragger";
-import { generateSadtalkerTalkingFace } from "@/api/ai-receptionist.api";
 import BreadcrumbCustom from "@/app/components/breadcrumb/BreadcrumbCustom";
 import { GetVideoTrainedByImageDto } from "@/types/generative-ai";
 
@@ -19,16 +17,6 @@ const GenerateVideoAI = () => {
   const [url, setUrl] = useState<string | undefined>(undefined);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const generateMutation = useMutation({
-    mutationFn: async (formData: FormData) => {
-      return await generateSadtalkerTalkingFace(formData);
-    },
-    onSuccess: async (response) => {
-      const videoUrl = URL.createObjectURL(await response.blob());
-      setUrl(videoUrl);
-    },
-  });
-
   const handleSubmit = () => {
     form.validateFields().then((values: GetVideoTrainedByImageDto) => {
       const formData = new FormData();
@@ -37,7 +25,6 @@ const GenerateVideoAI = () => {
         formData.append("file", file);
         formData.append("language", values.language);
       }
-      generateMutation.mutate(formData);
     });
   };
 
@@ -188,7 +175,6 @@ const GenerateVideoAI = () => {
               type="primary"
               className="font-semibold mt-10 "
               onClick={handleSubmit}
-              loading={generateMutation.isPending}
             >
               Generate
             </Button>

@@ -1,8 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
-import { createUser, getAssignableRoles } from "@/api/user-management.api";
 import { UserDto } from "@/types/user";
 import FormCreate from "./FormCreate";
 
@@ -14,31 +12,12 @@ const ModalCreate = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [formAdd] = Form.useForm<UserDto>();
 
-  const createUserMutation = useMutation({
-    mutationFn: (values: UserDto) => {
-      return createUser(values);
-    },
-    onSuccess: () => {
-      message.success("Create successful!");
-      onClose(true);
-    },
-  });
-
-  const assignableRoles = useQuery({
-    queryKey: ["assignable-roles"],
-    queryFn: async () => {
-      return await getAssignableRoles();
-    },
-  });
-
   const handleCancel = () => {
     onClose();
   };
 
   const handleSubmit = () => {
-    formAdd
-      .validateFields()
-      .then((values) => createUserMutation.mutate(values));
+    formAdd.validateFields();
   };
 
   return (
@@ -51,13 +30,8 @@ const ModalCreate = ({ onClose }: Props) => {
         onCancel={handleCancel}
         okText={"Create"}
         maskClosable={false}
-        confirmLoading={createUserMutation.isPending}
-        loading={assignableRoles.isFetching}
       >
-        <FormCreate
-          form={formAdd}
-          assignableRoles={assignableRoles?.data || []}
-        />
+        <FormCreate form={formAdd} assignableRoles={[]} />
       </Modal>
     </>
   );

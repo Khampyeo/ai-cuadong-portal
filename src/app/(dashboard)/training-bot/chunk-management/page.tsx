@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, message, Table } from "antd";
-import {
-  deleteChunkDocument,
-  getChunkDocuments,
-} from "@/api/chunk-management.api";
 import { columnConfig } from "@/app/(dashboard)/training-bot/chunk-management/config";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -30,18 +25,8 @@ const ChunkManagement = () => {
     seed: null,
   });
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-chunk-document", filterData, param, keyWordSearch],
-
-    queryFn: () => {
-      const params = convertPagination(param.current, param.pageSize);
-
-      return getChunkDocuments(params);
-    },
-  });
-
   const [rowSelection, currentSelected, setCurrentSelected] =
-    useOnClickCheckboxTable(data?.items || []);
+    useOnClickCheckboxTable([]);
 
   const [chunkIdSelected, setChunkIdSelected] = useState<string | undefined>(
     undefined
@@ -51,19 +36,6 @@ const ChunkManagement = () => {
     useToggle();
   const [showModalUpdateChunk, , closeModalUpdateChunk, openModalUpdateChunk] =
     useToggle();
-
-  const deleteChunkMutation = useMutation({
-    mutationFn: () => {
-      if (chunkIdSelected) return deleteChunkDocument(chunkIdSelected);
-      else {
-        throw new Error("Chunk ID is required to delete chunk.");
-      }
-    },
-    onSuccess: () => {
-      message.success("Delete successful!");
-      refetch();
-    },
-  });
 
   const onEditClick = (record: DocumentChunkDto) => {
     setChunkIdSelected(record.id);
@@ -78,9 +50,7 @@ const ChunkManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        deleteChunkMutation.mutate();
-      },
+      onOk() {},
     });
   };
 
@@ -106,18 +76,10 @@ const ChunkManagement = () => {
             onEditClick,
             onDeleteClick,
           })}
-          dataSource={data?.items || []}
+          dataSource={[]}
           scroll={{
             x: 1400,
             y: 500,
-          }}
-          pagination={{
-            current: param.current,
-            pageSize: param.pageSize,
-            pageSizeOptions: APP_PAGE_SIZES,
-            showSizeChanger: true,
-            hideOnSinglePage: true,
-            total: data?.totalCount,
           }}
           onChange={(pagination) =>
             setParam({
@@ -126,7 +88,6 @@ const ChunkManagement = () => {
               pageSize: pagination?.pageSize,
             })
           }
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />
@@ -136,7 +97,6 @@ const ChunkManagement = () => {
           onClose={(success?: boolean) => {
             closeModalCreateChunk();
             if (success) {
-              refetch();
             }
           }}
         />
@@ -149,7 +109,6 @@ const ChunkManagement = () => {
             closeModalUpdateChunk();
             setChunkIdSelected(undefined);
             if (success) {
-              refetch();
             }
           }}
         />

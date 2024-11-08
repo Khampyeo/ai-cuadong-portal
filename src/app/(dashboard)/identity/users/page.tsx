@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ExclamationCircleFilled, ReloadOutlined } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { App, Button, Table } from "antd";
-import { deleteUser, getUsers } from "@/api/user-management.api";
 import { columnConfig } from "@/app/(dashboard)/identity/users/config";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { APP_PAGE_SIZES, DEFAULT_PARAM } from "@/constants/app";
@@ -12,7 +10,6 @@ import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { UserDto } from "@/types/user";
-import { convertPagination } from "@/utils/convert-pagination";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
@@ -26,16 +23,7 @@ const UsersManagement = () => {
     seed: null,
   });
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-users", param, keywordSearch],
-
-    queryFn: () => {
-      const params = convertPagination(param.current, param.pageSize);
-      params.sorting = "NormalizedUserName";
-
-      return getUsers(params);
-    },
-  });
+  const data: any = [];
 
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
@@ -47,22 +35,7 @@ const UsersManagement = () => {
   const [isCreateModalOpen, , hideCreateModal, showCreateModal] = useToggle();
   const [isUpdateModalOpen, , hideUpdateModal, showUpdateModal] = useToggle();
 
-  const reloadClick = () => {
-    refetch();
-  };
-
-  const deleteUserMutation = useMutation({
-    mutationFn: () => {
-      if (userIdSelected) return deleteUser(userIdSelected);
-      else {
-        throw new Error("User ID is required to delete user.");
-      }
-    },
-    onSuccess: () => {
-      message.success("Delete successful!");
-      refetch();
-    },
-  });
+  const reloadClick = () => {};
 
   const onEditClick = (user: UserDto) => {
     setUserIdSelected(user.id);
@@ -77,9 +50,7 @@ const UsersManagement = () => {
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
-      onOk() {
-        deleteUserMutation.mutate();
-      },
+      onOk() {},
     });
   };
 
@@ -129,7 +100,6 @@ const UsersManagement = () => {
               pageSize: pagination.pageSize,
             })
           }
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />
@@ -139,7 +109,6 @@ const UsersManagement = () => {
           onClose={(success?: boolean) => {
             hideCreateModal();
             if (success) {
-              refetch();
             }
           }}
         />
@@ -152,7 +121,6 @@ const UsersManagement = () => {
             hideUpdateModal();
             setUserIdSelected(undefined);
             if (success) {
-              refetch();
             }
           }}
         />

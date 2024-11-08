@@ -1,6 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { App, Form, Modal } from "antd";
-import { createChunkDocument } from "@/api/chunk-management.api";
 import { DocumentChunkDto } from "@/types/document-chunk";
 import FormCreate from "./FormCreate";
 
@@ -12,20 +10,8 @@ const ModalCreate = ({ onClose }: Props) => {
   const { message } = App.useApp();
   const [formAdd] = Form.useForm<DocumentChunkDto>();
 
-  const mutationAddChunk = useMutation({
-    mutationFn: (data: DocumentChunkDto) => {
-      return createChunkDocument(data);
-    },
-    onSuccess: () => {
-      message.success("Create susccessed!");
-      onClose(true);
-    },
-  });
-
   const handleSubmit = () => {
-    formAdd.validateFields().then((values) => {
-      mutationAddChunk.mutate(values);
-    });
+    formAdd.validateFields().then((values) => {});
   };
 
   const handleCancel = () => {

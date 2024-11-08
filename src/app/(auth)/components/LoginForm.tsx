@@ -3,9 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button, Checkbox, Divider, Form, Input } from "antd";
-import Cookies from "js-cookie";
-import { findTenantById } from "@/api/abp-tenant.api";
-import { COOKIE_TENANT_KEY } from "@/constants/app";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToggle } from "@/hooks/useToggle";
 import TenantSwitch from "./TenantSwitch";
@@ -42,20 +39,6 @@ const LoginForm: React.FC = () => {
       login();
     }
   };
-
-  useEffect(() => {
-    const tenantId = Cookies.get(COOKIE_TENANT_KEY);
-    if (tenantId) {
-      const fetchTenantInfo = async () => {
-        const tenant = await findTenantById(tenantId);
-        if (tenant && tenant.success) {
-          setTenantName(tenant.name);
-        }
-      };
-
-      fetchTenantInfo();
-    }
-  }, []);
 
   return (
     <Form form={form} className={styles.login_container} layout="vertical">

@@ -2,9 +2,7 @@
 
 import { useEffect } from "react";
 import { ReloadOutlined } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
 import { Button, Table } from "antd";
-import { getTalkingTrainedModel } from "@/api/ai-receptionist.api";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { useHeaderStore } from "@/stores/headerStore";
 import { columnConfig } from "./config";
@@ -12,17 +10,9 @@ import { columnConfig } from "./config";
 const ModelsManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
 
-  const { data, isFetching, refetch } = useQuery({
-    queryKey: ["list-models"],
+  const data: any = [];
 
-    queryFn: () => {
-      return getTalkingTrainedModel();
-    },
-  });
-
-  const reloadClick = () => {
-    refetch();
-  };
+  const reloadClick = () => {};
 
   useEffect(() => {
     setHeaderTitle("Model Management");
@@ -43,7 +33,6 @@ const ModelsManagement = () => {
         <Table
           columns={columnConfig({})}
           dataSource={data}
-          loading={isFetching}
           rowKey="id"
           size={"large"}
         />

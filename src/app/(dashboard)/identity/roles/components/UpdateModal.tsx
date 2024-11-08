@@ -1,6 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
 import { App, Checkbox, Form, Input, Modal } from "antd";
-import { updateRole } from "@/api/role-management.api";
 import { RoleDto } from "@/types/role";
 
 type Props = {
@@ -12,20 +10,8 @@ const UpdateModal = ({ record, onClose }: Props) => {
   const { message } = App.useApp();
   const [form] = Form.useForm<RoleDto>();
 
-  const mutation = useMutation({
-    mutationFn: (record: RoleDto) => {
-      return updateRole(record.id, record);
-    },
-    onSuccess: () => {
-      message.success("Update successful!");
-      onClose(true);
-    },
-  });
-
   const handleSubmit = () => {
-    form.validateFields().then((values) => {
-      mutation.mutate(values);
-    });
+    form.validateFields().then((values) => {});
   };
 
   const handleCancel = () => {
@@ -40,7 +26,6 @@ const UpdateModal = ({ record, onClose }: Props) => {
       okText={"Update"}
       onOk={handleSubmit}
       onCancel={handleCancel}
-      confirmLoading={mutation.isPending}
       centered
     >
       <div>
