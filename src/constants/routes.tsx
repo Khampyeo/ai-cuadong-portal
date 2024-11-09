@@ -1,5 +1,6 @@
 import { IMenuItem } from "@/types/sidebar";
 import BotIcon from "@/../public/icon/icon_bot.svg";
+import BrainIcon from "@/../public/icon/icon_brain.svg";
 import HomeIcon from "@/../public/icon/icon_home.svg";
 import SettingsIcon from "@/../public/icon/icon_settings.svg";
 import TenantIcon from "@/../public/icon/icon_tenant.svg";
@@ -60,7 +61,12 @@ export const IDENTITY_ROLES: IMenuItem = {
   label: "Roles",
   requiredPolicy: "AbpIdentity.Roles",
 };
-
+export const AI_GOVERNANCE: IMenuItem = {
+  key: "/ai-governance",
+  label: "AI Governance",
+  icon: <BrainIcon />,
+  requiredPolicy: "AbpIdentity.Roles",
+};
 export const IDENTITY_MANAGEMENT: IMenuItem = {
   key: "/identity",
   label: "Identity Management",
@@ -73,7 +79,6 @@ export const SETTING_MANAGEMENT: IMenuItem = {
   key: "/settings-management",
   label: "Setting Management",
   icon: <SettingsIcon />,
-  children: [],
   requiredPolicy: "SettingManagement.*",
   requiredFeature: "SettingManagement.Enable",
 };

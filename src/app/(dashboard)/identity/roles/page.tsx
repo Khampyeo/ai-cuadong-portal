@@ -13,6 +13,7 @@ import { RoleDto } from "@/types/role";
 import CreateModal from "./components/CreateModal";
 import PermissionsModal from "./components/PermissionsModal";
 import UpdateModal from "./components/UpdateModal";
+import { mockData } from "./mockData";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 import EditIcon from "@/../public/icon/icon_edit.svg";
@@ -151,7 +152,7 @@ const RoleManagement = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={[]}
+          dataSource={mockData}
           onChange={(pagination) =>
             setParam({
               ...param,

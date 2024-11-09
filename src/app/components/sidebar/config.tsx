@@ -1,4 +1,5 @@
 import {
+  AI_GOVERNANCE,
   HOMEPAGE,
   IDENTITY_MANAGEMENT,
   SETTING_MANAGEMENT,
@@ -10,6 +11,7 @@ import { IMenuItem } from "@/types/sidebar";
 export const sidebarMenuItems: IMenuItem[] = [
   HOMEPAGE,
   TRAINING_BOT,
+  AI_GOVERNANCE,
   TENANT_MANAGEMENT,
   IDENTITY_MANAGEMENT,
   SETTING_MANAGEMENT,

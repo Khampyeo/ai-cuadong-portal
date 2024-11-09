@@ -13,6 +13,7 @@ import { DocumentChunkDto } from "@/types/document-chunk";
 import { convertPagination } from "@/utils/convert-pagination";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
+import { mockData } from "./mockData";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const ChunkManagement = () => {
@@ -76,10 +77,17 @@ const ChunkManagement = () => {
             onEditClick,
             onDeleteClick,
           })}
-          dataSource={[]}
+          dataSource={mockData}
           scroll={{
             x: 1400,
             y: 500,
+          }}
+          pagination={{
+            current: param.current,
+            pageSize: param.pageSize,
+            pageSizeOptions: APP_PAGE_SIZES,
+            showSizeChanger: true,
+            hideOnSinglePage: true,
           }}
           onChange={(pagination) =>
             setParam({

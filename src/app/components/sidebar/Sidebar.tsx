@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Flex, Menu } from "antd";
-import { useAuth } from "@/contexts/AuthContext";
 import useClickOutside from "@/hooks/useDetectClickOutSide";
 import { IMenuItem, ISidebarProps } from "@/types/sidebar";
 import { sidebarMenuItems } from "./config";

@@ -9,7 +9,7 @@ import { useHeaderStore } from "@/stores/headerStore";
 import { columnConfig } from "./config";
 import { mockData } from "./mockData";
 
-const HistoryChatbot = () => {
+const AIGovernance = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const [param, setParam] = useState(DEFAULT_PARAM);
 
@@ -19,7 +19,7 @@ const HistoryChatbot = () => {
     useOnClickCheckboxTable(data?.items || []);
 
   useEffect(() => {
-    setHeaderTitle("Chatbot History");
+    setHeaderTitle("AI Governance");
     return () => {
       setHeaderTitle("");
     };
@@ -58,4 +58,4 @@ const HistoryChatbot = () => {
     </>
   );
 };
-export default HistoryChatbot;
+export default AIGovernance;

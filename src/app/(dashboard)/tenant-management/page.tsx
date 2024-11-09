@@ -12,6 +12,7 @@ import { useHeaderStore } from "@/stores/headerStore";
 import { TenantDto } from "@/types/tenant";
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
+import { mockData } from "./mockData";
 import FeaturesModal from "../components/FeaturesManagement/FeaturesModal";
 import ListIcon from "@/../public/icon/icon_3dots.svg";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
@@ -156,7 +157,7 @@ const TenantManagement = () => {
         <Table
           rowSelection={rowSelection}
           columns={columns}
-          dataSource={data?.items || []}
+          dataSource={mockData}
           pagination={{
             current: param.current,
             pageSize: param.pageSize,

@@ -65,13 +65,21 @@ export const FEATURES = [
 
 export const ITEMS = [
   {
+    key: 11,
+    title: "Virtual Assistant",
+    description:
+      "AI programs that assist users with tasks and provide information through voice or text interactions.",
+    icon: <AlibabaOutlined />,
+    type: "AI",
+    link: "http://lucy-ai.eastus.cloudapp.azure.com:3000",
+  },
+  {
     key: 0,
     title: "Chat bot",
     description:
       "Bring your favorite characters to life using this template. Simply define a few features of the character you want to create a bot for and start chatting away.",
     icon: <ChatbotIcon />,
     type: "chat",
-    link: "/chatbot",
   },
   {
     key: 1,
@@ -153,14 +161,7 @@ export const ITEMS = [
     icon: <GoogleOutlined />,
     type: "AI",
   },
-  {
-    key: 11,
-    title: "Virtual Assistant",
-    description:
-      "AI programs that assist users with tasks and provide information through voice or text interactions.",
-    icon: <AlibabaOutlined />,
-    type: "AI",
-  },
+
   {
     key: 12,
     title: "AI Customer Insights",

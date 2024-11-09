@@ -12,6 +12,7 @@ import { useHeaderStore } from "@/stores/headerStore";
 import { UserDto } from "@/types/user";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
+import { mockData } from "./mockData";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const UsersManagement = () => {
@@ -80,7 +81,7 @@ const UsersManagement = () => {
             onEditClick,
             onDeleteClick,
           })}
-          dataSource={data?.items || []}
+          dataSource={mockData}
           scroll={{
             x: 1400,
             y: 500,
@@ -91,7 +92,6 @@ const UsersManagement = () => {
             pageSizeOptions: APP_PAGE_SIZES,
             showSizeChanger: true,
             hideOnSinglePage: true,
-            total: data?.totalCount,
           }}
           onChange={(pagination) =>
             setParam({

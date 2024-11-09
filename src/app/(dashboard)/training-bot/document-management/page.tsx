@@ -10,22 +10,17 @@ import { useOnClickCheckboxTable } from "@/hooks/useOnClickCheckboxTable";
 import { useToggle } from "@/hooks/useToggle";
 import { useHeaderStore } from "@/stores/headerStore";
 import { DocumentDto } from "@/types/document";
-import { convertPagination } from "@/utils/convert-pagination";
 import ModalCreate from "./components/ModalCreate";
 import ModalUpdate from "./components/ModalUpdate";
+import { mockData } from "./mockData";
 import AddIcon from "@/../public/icon/icon_add__circle.svg";
 
 const DocumentManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
   const { modal } = App.useApp();
   const [param, setParam] = useState(DEFAULT_PARAM);
-  const [filterData, setFilterData] = useState<any>({});
-  const [keyWordSearch, setKeyWordSearch] = useState({
-    search: "",
-    seed: null,
-  });
 
-  const data: any = [];
+  const data: any = mockData;
 
   const [rowSelection, currentSelected, setCurrentSelected] =
     useOnClickCheckboxTable(data?.items || []);
@@ -76,7 +71,7 @@ const DocumentManagement = () => {
             onEditClick,
             onDeleteClick,
           })}
-          dataSource={data?.items || []}
+          dataSource={data || []}
           scroll={{
             x: 1400,
             y: 500,

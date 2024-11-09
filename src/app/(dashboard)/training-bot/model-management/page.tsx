@@ -6,6 +6,7 @@ import { Button, Table } from "antd";
 import TableHeader from "@/app/components/table-header/TableHeader";
 import { useHeaderStore } from "@/stores/headerStore";
 import { columnConfig } from "./config";
+import { mockData } from "./mockData";
 
 const ModelsManagement = () => {
   const setHeaderTitle = useHeaderStore((state) => state.setHeaderTitle);
@@ -32,9 +33,10 @@ const ModelsManagement = () => {
         </TableHeader>
         <Table
           columns={columnConfig({})}
-          dataSource={data}
+          dataSource={mockData}
           rowKey="id"
           size={"large"}
+          pagination={false}
         />
       </div>
     </>

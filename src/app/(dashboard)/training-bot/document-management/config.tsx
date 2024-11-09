@@ -97,17 +97,9 @@ export const columnConfig = ({ onEditClick, onDeleteClick }: Props) => {
       align: "center",
       key: "action",
       fixed: "right",
-      width: 110,
+      width: 80,
       render: (_, record) => (
         <div className="flex gap-5 justify-center">
-          <Button
-            type="text"
-            size="small"
-            icon={<EditIcon />}
-            onClick={() => {
-              onEditClick(record);
-            }}
-          ></Button>
           <Dropdown
             placement="bottomRight"
             menu={{

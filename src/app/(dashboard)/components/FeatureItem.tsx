@@ -8,7 +8,7 @@ const FeatureItem = ({ item, hidden = false }: any) => {
   return (
     <div
       className={`${styles.container} ${hidden && styles.hidden}`}
-      onClick={() => item.link && router.push("/features" + item.link)}
+      onClick={() => item.link && router.push(item.link)}
     >
       <div className={styles.icon_wrapper}>{item.icon}</div>
       <p className={styles.title}>{item.title}</p>
