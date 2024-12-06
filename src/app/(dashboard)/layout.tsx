@@ -22,7 +22,11 @@ const MainLayout = ({
 
   return (
     <>
-      <DefaultLayout>{children}</DefaultLayout>
+      {!isLoading && isAuthenticated ? (
+        <DefaultLayout>{children}</DefaultLayout>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 };

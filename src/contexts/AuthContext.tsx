@@ -38,6 +38,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    const adminData = localStorage.getItem("admin");
+
+    if (adminData === `"admin"`) {
+      setIsFetching(true);
+      setErrorMessage(null);
+      setIsAuthenticated(true);
+      setIsLoading(false);
+      router.push("/");
+    }
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
   const handleLogin = async (
     email: string,
     password: string,
@@ -49,12 +65,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
       setIsLoading(false);
       router.push("/");
+      localStorage.setItem("admin", JSON.stringify("admin"));
     } else setErrorMessage("Login Fail!");
   };
 
   const handleLogout = async () => {
     setIsAuthenticated(false);
     router.push("/login");
+    localStorage.removeItem("admin");
   };
 
   return (

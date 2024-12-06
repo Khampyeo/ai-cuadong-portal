@@ -4,10 +4,23 @@
   border-radius: 8px;
   padding: 1rem;
   min-height: calc(100vh - 3.5rem - 1rem);
+}
+.content {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
   .content {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
   }
 }

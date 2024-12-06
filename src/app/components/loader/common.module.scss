@@ -5,7 +5,7 @@
   background-color: white;
   &_item {
     border-radius: 100%;
-    border: 4px solid #3c50e0;
+    border: 4px solid var(--primary-color);
     border-top-color: transparent;
     animation: spin 1s linear infinite;
     @keyframes spin {
